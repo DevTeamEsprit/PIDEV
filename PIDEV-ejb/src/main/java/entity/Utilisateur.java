@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
  
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Utilisateur implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -72,6 +72,12 @@ public class Utilisateur implements Serializable{
 
 	public void setActif(boolean actif) {
 		Actif = actif;
+	}
+
+
+
+	public Utilisateur() {
+		super();
 	}
 
 
