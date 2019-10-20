@@ -9,9 +9,9 @@ import entity.Employe;
 @Local
 public interface UtilisateurServiceLocal {
 
-	public void addEmplyee(Employe employe);
-	public void updateEmplyee(Employe employe);
-	public void blockEmplyee(Employe employe);
+	public void addEmploye(Employe employe);
+	public void updateEmploye(Employe employe);
+	public void blockEmploye(long  idemploye);
 	public List<Employe> consulterEmploye();
 	
 }
