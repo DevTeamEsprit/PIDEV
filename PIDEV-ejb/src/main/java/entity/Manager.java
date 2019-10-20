@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
+@DiscriminatorValue(value="manager")
 public class Manager extends Utilisateur implements Serializable{
 
 	public Manager(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
