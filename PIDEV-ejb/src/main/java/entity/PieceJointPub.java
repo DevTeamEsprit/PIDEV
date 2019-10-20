@@ -11,42 +11,45 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Publication implements Serializable {
+public class PieceJointPub implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private long id;
 	private String description;
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreation;
+	private Date datecreation;
 	
 	
-	public Publication() {
+	private Publication publication;
+	
+	
+	public PieceJointPub() {
 		super();
 	}
 
 
-	public Publication(Long id, String description, Date dateCreation) {
+	public PieceJointPub(String description, Date datecreation) {
+		super();
+		this.description = description;
+		this.datecreation = datecreation;
+	}
+
+
+	public PieceJointPub(long id, String description, Date datecreation) {
 		super();
 		this.id = id;
 		this.description = description;
-		this.dateCreation = dateCreation;
+		this.datecreation = datecreation;
 	}
 
 
-	public Publication(String description, Date dateCreation) {
-		super();
-		this.description = description;
-		this.dateCreation = dateCreation;
-	}
-
-
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -61,22 +64,20 @@ public class Publication implements Serializable {
 	}
 
 
-	public Date getDateCreation() {
-		return dateCreation;
+	public Date getDatecreation() {
+		return datecreation;
 	}
 
 
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
+	public void setDatecreation(Date datecreation) {
+		this.datecreation = datecreation;
 	}
 
 
 	@Override
 	public String toString() {
-		return "Publication [id=" + id + ", description=" + description + ", dateCreation=" + dateCreation + "]";
+		return "PieceJointPub [id=" + id + ", description=" + description + ", datecreation=" + datecreation + "]";
 	}
-	
-	
 	
 	
 }
