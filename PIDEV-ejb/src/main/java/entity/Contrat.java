@@ -1,0 +1,102 @@
+package entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+ 
+
+ 
+
+@Entity
+public class Contrat implements Serializable{
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int reference;
+	@Temporal(TemporalType.DATE)
+	private Date dateDebut;
+	private TypeContrat typeContrat;
+	private float salaire;
+	
+	@OneToOne(mappedBy="contrat")
+	private Utilisateur utilisatuer;
+
+	
+	public Contrat(int reference, Date dateDebut, TypeContrat typeContrat, float salaire, Utilisateur employe) {
+		super();
+		this.reference = reference;
+		this.dateDebut = dateDebut;
+		this.typeContrat = typeContrat;
+		this.salaire = salaire;
+		this.utilisatuer = employe;
+	}
+
+
+	public int getReference() {
+		return reference;
+	}
+
+
+	public void setReference(int reference) {
+		this.reference = reference;
+	}
+
+
+	public Date getDateDebut() {
+		return dateDebut;
+	}
+
+
+	public void setDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+
+	public TypeContrat getTypeContrat() {
+		return typeContrat;
+	}
+
+
+	public void setTypeContrat(TypeContrat typeContrat) {
+		this.typeContrat = typeContrat;
+	}
+
+
+	public float getSalaire() {
+		return salaire;
+	}
+
+
+	public void setSalaire(float salaire) {
+		this.salaire = salaire;
+	}
+
+
+	public Utilisateur getEmploye() {
+		return  utilisatuer;
+	}
+
+
+	public void setEmploye(Utilisateur employe) {
+		this.utilisatuer = employe;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Contrat [reference=" + reference + ", dateDebut=" + dateDebut + ", typeContrat=" + typeContrat
+				+ ", salaire=" + salaire + "]";
+	}
+	
+ 
+	
+	
+}
