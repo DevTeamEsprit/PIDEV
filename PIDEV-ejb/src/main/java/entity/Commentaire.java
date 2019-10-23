@@ -51,6 +51,10 @@ public class Commentaire implements Serializable {
 	public Commentaire() {
 		super();
 	}
+	
+	public Commentaire(Publication pub) {
+		this.pub = pub;
+	}
 
 	public Commentaire(long id, String description, Publication pub, Utilisateur user) {
 		super();

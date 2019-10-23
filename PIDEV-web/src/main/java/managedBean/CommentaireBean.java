@@ -1,6 +1,9 @@
 package managedBean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -13,6 +16,8 @@ import service.ServiceManager;
 @Named
 @ViewScoped
 public class CommentaireBean implements Serializable {
+	
+	//public List<String> strings  = new ArrayList<String>(); 
 	
 	private Commentaire commentaire = new Commentaire();
 	private String description; 
@@ -37,8 +42,10 @@ public class CommentaireBean implements Serializable {
 	}
 	
 	
-	public void addComm() {
-		System.out.println(commentaire);
+	public void addComm(Publication pub) {
+		commentaire.setDateCreation(new Date());
+		commentaire.setPub(pub);
+	//	System.out.println(commentaire);
 		 
 	 
 	}

@@ -5,30 +5,99 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:a4j="http://richfaces.org/a4j"
-	template="/template/index.xhtml">
+	xmlns:a4j="http://richfaces.org/a4j" template="/template/index.xhtml">
 	<ui:param name="page_name" value="index" />
 	<ui:define name="content2">
-	
+
 		<h:form>
- 		<ui:repeat var="pub" value="#{publicationBean.lstPublications}">
- 	
-			<div class="card-body">
-			
-							<div class="form-group">
-								<p:inputTextarea
-									value="#{commentaireBean.commentaire.description}"
-									class="form-control" rows="3" placeholder="Exprimez-vous" />
-							</div>
+			<ui:repeat value="#{publicationBean.mapPub.entrySet().toArray()}"
+				var="entry">
+
+				<div class="card card-widget">
+					<div class="card-header">
+						<div class="user-block">
+							<img class="img-circle"
+								src="../resources/dist/img/user1-128x128.jpg" alt="User Image" />
+							<span class="username"><a href="#">#{entry.key.user.nom}
+									#{entry.key.user.prenom}</a></span> <span class="description">Shared
+								publicly - <h:outputText id="date"
+									converterMessage="#{i18n['converter-message']}"
+									value="#{entry.key.dateCreation}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+								</h:outputText>
+							</span>
+						</div>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-toggle="tooltip"
+								title="Mark as read">
+								<i class="fa fa-circle-o"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-widget="remove">
+								<i class="fa fa-times"></i>
+							</button>
+						</div>
+						<!-- /.card-header -->
+						<div class="card-body">
+
+							<p>
+								<h:outputText value="#{entry.key.description}"></h:outputText>
+							</p>
+							<button type="button" class="btn btn-default btn-sm">
+								<i class="fa fa-thumbs-o-up"></i> Like
+							</button>
+							<span class="float-right text-muted">127 likes -
+								#{entry.key.lstComm.size()} comments</span>
+						</div>
+						<div class="card-footer card-comments">
+							<ui:repeat value="#{entry.key.lstComm}" var="com">
+								<div class="card-comment">
+									<!-- User image -->
+									<img class="img-circle img-sm"
+										src="../dist/img/user3-128x128.jpg" alt="User Image" />
+
+									<div class="comment-text">
+										<span class="username">#{com.user.nom}
+											#{com.user.prenom} <span class="text-muted float-right">
+												<span class="description"> <h:outputText id="date"
+														converterMessage="#{i18n['converter-message']}"
+														value="#{com.dateCreation}">
+														<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+													</h:outputText>
+											</span>
+
+										</span>
+										</span>
+										<!-- /.username -->
+										#{com.description} .
+									</div>
+									<!-- /.comment-text -->
+								</div>
+								<!-- /.card-comment -->
+							</ui:repeat>
 						</div>
 
+						<!-- /.card-footer -->
 						<div class="card-footer">
-							<h:commandButton class="btn btn-primary float-right"
-								value="Publier" action="#{commentaireBean.addComm()}" />
+
+							<img class="img-fluid img-circle img-sm"
+								src="../dist/img/user4-128x128.jpg" alt="Alt Text" />
+							<!-- .img-push is used to add margin to elements next to floating images -->
+							<div class="img-push">
+								<h:inputText value="#{entry.value.description}" type="text"
+									class="form-control form-control-sm"
+									placeholder="Press enter to post comment" />
+								<h:commandButton
+									action="#{publicationBean.addComm(entry.value)}" />
+							</div>
 						</div>
-			 
-		</ui:repeat>
-	</h:form>	
+					</div>
+				</div>
+
+			</ui:repeat>
+		</h:form>
 	</ui:define>
-	
-	</ui:composition>
+
+</ui:composition>

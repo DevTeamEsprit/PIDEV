@@ -3,7 +3,9 @@ package managedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,6 +34,9 @@ public class PublicationBean implements Serializable{
 	private Utilisateur user;
 		
 	private List<Publication> lstPublications;
+	Map<Publication, Commentaire> mapPub = new HashMap<>();
+	
+	private Commentaire commentaire = new Commentaire();
 	
 	@Inject
 	private ServiceManager serviceManager;
@@ -71,12 +76,48 @@ public class PublicationBean implements Serializable{
 	}
 	
 	
+	public Map<Publication, Commentaire> getMapPub() {
+		return mapPub;
+	}
+
+
+
+	public void setMapPub(Map<Publication, Commentaire> mapPub) {
+		this.mapPub = mapPub;
+	}
+
+
+
 	private void getPubs() {
 		this.lstPublications = serviceManager.getPubs();
 		if(this.lstPublications == null) {
 			this.lstPublications =  new ArrayList<>();
 		}
+		this.mapPub=this.convertListBeforeJava8(lstPublications);
+		
 	}
-
+	public void addComm(Commentaire com) {
+		
+		this.serviceManager.addCom(com);
+		this.getPubs();
+//		commentaire.setUser(user);
+//		commentaire.setDateCreation(new Date());
+//		commentaire.setPub(pub);
+//		if(commentaire.getDescription()==null)
+//			commentaire.setDescription("jjj");
+//		serviceManager.addCom(commentaire);
+//		//System.out.println(commentaire);
+//		 commentaire = new Commentaire();
+//		 this.getPubs();
+	}
+	
+	
+	public Map<Publication, Commentaire> convertListBeforeJava8(List<Publication> list) {
+		Map<Publication, Commentaire> map = new HashMap<>();
+	    for (Publication pub : list) {
+	        map.put(pub,new Commentaire(pub));
+	    }
+	    return map;
+	}
 	 
 }
