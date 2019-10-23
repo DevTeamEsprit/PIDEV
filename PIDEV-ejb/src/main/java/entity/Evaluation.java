@@ -15,10 +15,29 @@ public class Evaluation implements Serializable{
 	private int ID_Eval;
 	private EvalType type;
 	private Date date;
+	private boolean status;
 	
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	public Evaluation() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	@ManyToOne
 	private Manager manager;
 	
+	public Evaluation(int iD_Eval, EvalType type, Date date, Manager manager,boolean status) {
+		super();
+		ID_Eval = iD_Eval;
+		this.type = type;
+		this.date = date;
+		this.manager = manager;
+		this.status = status;
+	}
 	@OneToMany(mappedBy="evaluation")
 	private List<Goal> goals = new ArrayList<Goal>();
 	public List<Goal> getGoals() {

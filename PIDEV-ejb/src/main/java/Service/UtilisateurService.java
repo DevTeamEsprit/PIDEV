@@ -9,7 +9,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import entity.Employe;
+ 
 import entity.Utilisateur;
+ 
+import entity.Manager;
  
 
 /**
@@ -63,10 +66,16 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 		return null;
 	}
 
-	@Override
+ 
 	public Utilisateur getUser(long idemploye) {
 		 return em.find(Employe.class,idemploye);
 		
+	}
+	public Manager findManager(long id) {
+		TypedQuery<Manager> query = em.createQuery("select e from Manager e  where e.id=:id", Manager.class);
+		     query.setParameter("id", id);
+		return query.getSingleResult();
+ 
 	}
 
 }
