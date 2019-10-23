@@ -4,17 +4,22 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"> 
-<h:form id="form">
+      <h:body>
+      <h:form id="form">
 
 <h:panelGrid columns="2">
-<h:outputText value="Date"/><h:inputText  value="#{evaluationBean.date}"/>
+<h:outputText value="Date"/><h:inputText  value = "#{evaluationBean.date}" >
+            <f:convertDateTime pattern = "yyyy/MM/dd" />
+         </h:inputText>
 <h:outputText value="Type"></h:outputText>
 <h:selectOneMenu value="#{evaluationBean.evalType}">
-<f:selectItem itemLabel ="Selectionnner le type"/>
+<f:selectItem itemLabel ="Select the type"/>
 <f:selectItems value="#{evalTypes.evals}"/>
 </h:selectOneMenu>
-<h:commandButton id="btn" value="Ajouter " />
+<h:commandButton id="btn" value="Add " action="#{evaluationBean.addEval}" />
 <h:message for="btn-addeval"/>
 </h:panelGrid>
 </h:form>
+      </h:body>
+
 </html>

@@ -4,9 +4,23 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"> 
-<h:form id="form">
+      <h:body>
+      <ul>
+    <ui:repeat value="#{evaluationBean.evals}" var="eval">
+        <li>
+        <h:form>
+            <h:commandButton value="Evaluation of #{eval.date}" action="#{evaluationBean.showEval}">
+            <f:setPropertyActionListener target="#{evaluationBean.date}" value="#{eval.date}" />
+            </h:commandButton>
+            </h:form>
+            </li>
+        <hr />
+    </ui:repeat>
+</ul>
 
-<h:commandButton id="btn-add" value="Add an evaluation" action="#{evaluationBean.doShowEval}" />
+      <h:form id="form">
+
+<h:link outcome="evaluationAdd" value="Add an evaluation"></h:link>
 </h:form>
-
+      </h:body>
 </html>
