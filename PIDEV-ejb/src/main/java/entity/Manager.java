@@ -11,6 +11,11 @@ import javax.persistence.*;
 @DiscriminatorValue(value="manager")
 public class Manager extends Utilisateur implements Serializable{
 
+	
+	public Manager() {
+		super();
+	}
+
 	public Manager(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
 			String password, Date datNais) {
 		super(id, nom, prenom, cin, adresse, tel, email, password, datNais);

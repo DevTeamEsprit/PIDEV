@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import entity.Employe;
+import entity.Utilisateur;
  
 
 /**
@@ -31,8 +32,8 @@ public class UtilisateurService implements UtilisateurServiceLocal {
     }
 
 	@Override
-	public void addEmploye(Employe employe) {
-		em.persist(employe);
+	public void addUser(Utilisateur user) {
+		em.persist(user);
 		
 	}
 
@@ -60,6 +61,12 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 				System.err.println(e.getMessage());
 			}
 		return null;
+	}
+
+	@Override
+	public Utilisateur getUser(long idemploye) {
+		 return em.find(Employe.class,idemploye);
+		
 	}
 
 }
