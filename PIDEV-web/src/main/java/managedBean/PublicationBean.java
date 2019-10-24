@@ -97,18 +97,11 @@ public class PublicationBean implements Serializable{
 		
 	}
 	public void addComm(Commentaire com) {
-		
+		commentaire.setDateCreation(new Date());
 		this.serviceManager.addCom(com);
 		this.getPubs();
-//		commentaire.setUser(user);
-//		commentaire.setDateCreation(new Date());
-//		commentaire.setPub(pub);
-//		if(commentaire.getDescription()==null)
-//			commentaire.setDescription("jjj");
-//		serviceManager.addCom(commentaire);
-//		//System.out.println(commentaire);
-//		 commentaire = new Commentaire();
-//		 this.getPubs();
+ 
+ 
 	}
 	
 	
