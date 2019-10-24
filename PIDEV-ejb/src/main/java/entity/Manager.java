@@ -13,10 +13,12 @@ public class Manager extends Utilisateur implements Serializable{
 
 	@OneToMany(mappedBy = "manager")
 	public List<Employe> employes;
+
 	public Manager() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
+	
+ 
 
 	public Manager(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
 			String password, Date datNais) {
