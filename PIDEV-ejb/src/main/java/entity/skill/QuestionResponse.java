@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -20,8 +21,7 @@ public class QuestionResponse implements Serializable {
 	private boolean isCorrect;
 	private String content;
 
-	@OneToMany
-	@JoinColumn(name = "question_id")
+	@ManyToOne
 	private QuizQuestion question;
 
 	public QuestionResponse() {

@@ -28,4 +28,42 @@ public class Quiz implements Serializable {
 	
 	@ManyToMany
 	private List<QuizQuestion> questions;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Skill getSkill() {
+		return skill;
+	}
+
+	public void setSkill(Skill skill) {
+		this.skill = skill;
+	}
+
+	public List<QuizQuestion> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<QuizQuestion> questions) {
+		this.questions = questions;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
 }

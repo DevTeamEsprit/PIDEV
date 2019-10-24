@@ -27,4 +27,49 @@ public class UserQuestionQuizResponse implements Serializable {
 
 	@Column(name = "is_checked")
 	private boolean isChecked;
+
+	public UserQuestionQuizResponse(Utilisateur user, QuestionResponse questionResponse, boolean isChecked) {
+		super();
+		this.user = user;
+		this.questionResponse = questionResponse;
+		this.isChecked = isChecked;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Utilisateur getUser() {
+		return user;
+	}
+
+	public void setUser(Utilisateur user) {
+		this.user = user;
+	}
+
+	public QuestionResponse getQuestionResponse() {
+		return questionResponse;
+	}
+
+	public void setQuestionResponse(QuestionResponse questionResponse) {
+		this.questionResponse = questionResponse;
+	}
+
+	public boolean isChecked() {
+		return isChecked;
+	}
+
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
 }
