@@ -25,6 +25,13 @@ public class EvaluationSheet implements Serializable {
 		return pk;
 	}
 
+	public EvaluationSheet(EvaluationSheetId pk, Employe employe, Evaluation evaluation) {
+		super();
+		this.pk = pk;
+		this.employe = employe;
+		this.evaluation = evaluation;
+	}
+
 	public void setPk(EvaluationSheetId pk) {
 		this.pk = pk;
 	}

@@ -10,6 +10,10 @@ import javax.persistence.TypedQuery;
 
 import entity.Employe;
  
+import entity.Utilisateur;
+ 
+import entity.Manager;
+ 
 
 /**
  * Session Bean implementation class UtilisateurService
@@ -31,8 +35,8 @@ public class UtilisateurService implements UtilisateurServiceLocal {
     }
 
 	@Override
-	public void addEmploye(Employe employe) {
-		em.persist(employe);
+	public void addUser(Utilisateur user) {
+		em.persist(user);
 		
 	}
 
@@ -60,6 +64,18 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 				System.err.println(e.getMessage());
 			}
 		return null;
+	}
+
+ 
+	public Utilisateur getUser(long idemploye) {
+		 return em.find(Employe.class,idemploye);
+		
+	}
+	public Manager findManager(long id) {
+		TypedQuery<Manager> query = em.createQuery("select e from Manager e  where e.id=:id", Manager.class);
+		     query.setParameter("id", id);
+		return query.getSingleResult();
+ 
 	}
 
 }

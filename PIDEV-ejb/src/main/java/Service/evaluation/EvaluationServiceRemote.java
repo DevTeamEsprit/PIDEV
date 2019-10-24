@@ -2,11 +2,10 @@ package Service.evaluation;
 
 import javax.ejb.Remote;
 
-import entity.*;
+import entity.Evaluation;
 
 @Remote
 public interface EvaluationServiceRemote {
-     
-	public void createEvaluation(Evaluation e);
-	public void createEvaluationSheet(EvaluationSheet ev);
+
+	public Evaluation findEval(int id);
 }

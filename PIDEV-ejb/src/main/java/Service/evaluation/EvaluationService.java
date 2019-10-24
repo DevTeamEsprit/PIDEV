@@ -1,5 +1,7 @@
 package Service.evaluation;
 
+import java.util.List;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import entity.*;
  */
 @Stateless
 @LocalBean
-public class EvaluationService implements EvaluationServiceRemote {
+public class EvaluationService implements EvaluationServiceLocal,EvaluationServiceRemote {
 
 	@PersistenceContext
 	EntityManager em;
@@ -31,6 +33,20 @@ public class EvaluationService implements EvaluationServiceRemote {
 	public void createEvaluationSheet(EvaluationSheet ev) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Evaluation findEval(int id) {
+		// TODO Auto-generated method stub
+		return em.find(Evaluation.class, id);
+	}
+
+	@Override
+	public List<Evaluation> findByManager(long manid) {
+		// TODO Auto-generated method stub
+		Query q = em.createQuery("select e from Evaluation e where e.manager.id =:id");
+		q.setParameter("id", manid);
+		return q.getResultList();
 	}
 
 
