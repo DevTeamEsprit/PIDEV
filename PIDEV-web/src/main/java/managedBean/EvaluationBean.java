@@ -14,18 +14,34 @@ import javax.faces.context.FacesContext;
 
 import Service.UtilisateurService;
 import Service.evaluation.EvaluationService;
-import entity.EvalType;
-import entity.Evaluation;
-import entity.Manager;
+import entity.*;
 
 @ManagedBean
 @SessionScoped
 public class EvaluationBean {
-       private Date date;
+	   private int evalId;
+       public int getEvalId() {
+		return evalId;
+	}
+
+	public void setEvalId(int evalId) {
+		this.evalId = evalId;
+	}
+
+	private Date date;
        private EvalType evalType;
        private String EvalTitle;
        private Manager manager;
-       public List<Evaluation> evals;
+       private boolean status;
+       public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public List<Evaluation> evals;
        
 	
 	public List<Evaluation> getEvals() {
@@ -89,17 +105,34 @@ public class EvaluationBean {
 		
 		Evaluation e = new Evaluation(0, evalType, date,manager,false);
 		try {
-			if(evalType.ordinal()!=3 ) {
-				
+			if(evalType.ordinal()!=0  ) {
+				if((new Date()).compareTo(date)<0) {
+				if(evalType.ordinal()==2 && evaluationService.isAnnualExists(1)) {
+					FacesContext.getCurrentInstance().addMessage("form:btn-addeval", new FacesMessage("Annual evaluation already programmed by you"));
+				}
+				else {
+					
 				evaluationService.createEvaluation(e);
+				if(evalType.ordinal()==2) {
+					for(Employe emp : evaluationService.getEmployeesOfManager(1)) {
+						EvaluationSheetId pk = new EvaluationSheetId(emp.getId(), evalId, "", "", false);
+						EvaluationSheet ev = new EvaluationSheet(pk);
+						evaluationService.createEvaluationSheet(ev);
+					}
+					}
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(e.getDate());
+				this.setStatus(e.isStatus());
 				this.setEvalTitle("Evaluation of "+ date +"(by "+manager.getNom()+" "+manager.getPrenom()+")");
 				return "evaluationDetails.xhtml?faces-redirect=true";
+				}
+				}
+				else
+					FacesContext.getCurrentInstance().addMessage("form:btn-addeval", new FacesMessage("Please select a valid date!(after tomorrow)"));
 			}
 			
 		} catch (NullPointerException e2) {
-			FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Bad credentials"));
+			FacesContext.getCurrentInstance().addMessage("form:btn-addeval", new FacesMessage("Bad credentials"));
 			// TODO: handle exception
 		}
 		
@@ -114,10 +147,22 @@ public class EvaluationBean {
 		return "evaluationDetails.xhtml?faces-redirect=true";
 	}
 	
-	/*
-	public List<Evaluation> evaluations(){
-		evals = evaluationService.findByManager(1);
-		return evals;
-	}
-	*/
+     public void SwitchEvaluation() {
+    	 
+    	if(evaluationService.findEmployesByEval(evalId)==null) {
+    		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("No employee affected!"));
+    	}
+    	
+        if(evaluationService.findGoalsByEval(evalId)==null) {
+        	FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("No goal affected!"));
+    	}
+        else {
+        	evaluationService.SwitchState(evalId);
+        	status = evaluationService.findEval(evalId).isStatus();
+        	if(status)
+        		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation switched off"));
+        	else
+        		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation triggered"));
+        }
+     }
 }

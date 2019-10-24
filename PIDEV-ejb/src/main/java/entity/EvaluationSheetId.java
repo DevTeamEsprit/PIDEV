@@ -6,14 +6,29 @@ import javax.persistence.*;
 
 @Embeddable
 public class EvaluationSheetId implements Serializable {
-   private int EmployeId;
+   private long EmployeId;
    private int EvaluationId;
    private String appreciation;
 	private String comment;
-	public int getEmployeId() {
+	private boolean status;
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	public EvaluationSheetId(long employeId, int evaluationId, String appreciation, String comment, boolean status) {
+		super();
+		EmployeId = employeId;
+		EvaluationId = evaluationId;
+		this.appreciation = appreciation;
+		this.comment = comment;
+		this.status = status;
+	}
+	public long getEmployeId() {
 		return EmployeId;
 	}
-	public void setEmployeId(int employeId) {
+	public void setEmployeId(long employeId) {
 		EmployeId = employeId;
 	}
 	

@@ -12,7 +12,7 @@ public class Evaluation implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int ID_Eval;
+	private int id;
 	private EvalType type;
 	private Date date;
 	private boolean status;
@@ -30,15 +30,15 @@ public class Evaluation implements Serializable{
 	@ManyToOne
 	private Manager manager;
 	
-	public Evaluation(int iD_Eval, EvalType type, Date date, Manager manager,boolean status) {
+	public Evaluation(int id, EvalType type, Date date, Manager manager,boolean status) {
 		super();
-		ID_Eval = iD_Eval;
+		this.id = id;
 		this.type = type;
 		this.date = date;
 		this.manager = manager;
 		this.status = status;
 	}
-	@OneToMany(mappedBy="evaluation")
+	@OneToMany(mappedBy="evaluation" , cascade = { CascadeType.PERSIST,CascadeType.REMOVE})
 	private List<Goal> goals = new ArrayList<Goal>();
 	public List<Goal> getGoals() {
 		return goals;
@@ -52,11 +52,11 @@ public class Evaluation implements Serializable{
 	public void setManager(Manager manager) {
 		this.manager = manager;
 	}
-	public int getID_Eval() {
-		return ID_Eval;
+	public int getId() {
+		return id;
 	}
-	public void setID_Eval(int iD_Eval) {
-		ID_Eval = iD_Eval;
+	public void setId(int iD_Eval) {
+		id = iD_Eval;
 	}
 	public EvalType getType() {
 		return type;
