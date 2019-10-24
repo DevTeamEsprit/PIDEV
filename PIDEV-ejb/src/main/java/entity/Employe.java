@@ -9,7 +9,8 @@ import javax.persistence.*;
 @DiscriminatorValue(value="employe")
 public class Employe extends Utilisateur implements Serializable {
 
-	
+	@ManyToOne
+	private Manager manager;
 	public Employe() {
 		super();
 	}
