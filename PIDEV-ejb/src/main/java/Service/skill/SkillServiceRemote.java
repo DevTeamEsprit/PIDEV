@@ -2,8 +2,7 @@ package Service.skill;
 
 import javax.ejb.Remote;
 
-import entity.Category;
-import entity.Skill;
+import entity.skill.*;
 
 @Remote
 public interface SkillServiceRemote {

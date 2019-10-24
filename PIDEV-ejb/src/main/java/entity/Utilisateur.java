@@ -18,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import entity.skill.UserQuestionQuizResponse;
+
  
 
 @Entity
@@ -25,6 +27,8 @@ import javax.persistence.TemporalType;
 @DiscriminatorColumn(name="type")
 public class Utilisateur implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id ;
@@ -46,7 +50,8 @@ public class Utilisateur implements Serializable{
 	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
 	private List<Commentaire> lstcom;
 	
-	
+	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
+	private List<UserQuestionQuizResponse> qqResponses;
 	
 	public List<Commentaire> getLstcom() {
 		return lstcom;
@@ -57,8 +62,6 @@ public class Utilisateur implements Serializable{
 	public void setLstcom(List<Commentaire> lstcom) {
 		this.lstcom = lstcom;
 	}
-
-
 
 	@OneToOne(cascade= {CascadeType.PERSIST,CascadeType.REMOVE} , fetch=FetchType.LAZY)
 	private Contrat contrat;

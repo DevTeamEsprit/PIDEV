@@ -1,20 +1,17 @@
-package entity;
+package entity.skill;
 
 import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Response implements Serializable {
+public class QuestionResponse implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +22,12 @@ public class Response implements Serializable {
 
 	@OneToMany
 	@JoinColumn(name = "question_id")
-	private Question question;
+	private QuizQuestion question;
 
-	public Response() {
+	public QuestionResponse() {
 	}
 
-	public Response(int id, boolean isCorrect, String content, Question question) {
+	public QuestionResponse(int id, boolean isCorrect, String content, QuizQuestion question) {
 		super();
 		this.id = id;
 		this.isCorrect = isCorrect;
@@ -62,11 +59,11 @@ public class Response implements Serializable {
 		this.content = content;
 	}
 
-	public Question getQuestion() {
+	public QuizQuestion getQuestion() {
 		return question;
 	}
 
-	public void setQuestion(Question question) {
+	public void setQuestion(QuizQuestion question) {
 		this.question = question;
 	}
 

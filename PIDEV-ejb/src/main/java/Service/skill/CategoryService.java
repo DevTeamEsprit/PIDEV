@@ -8,8 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import entity.Category;
-import entity.Skill;
+import entity.skill.*;
 
 @Stateless
 @LocalBean

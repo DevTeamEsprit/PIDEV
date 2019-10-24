@@ -1,4 +1,4 @@
-package entity;
+package entity.skill;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,12 +14,14 @@ import javax.persistence.OneToMany;
 @Entity
 public class Skill implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String name;
 	private String description;
-	private int level;
+	//private int level;
 	@ManyToOne(cascade= {CascadeType.PERSIST})
 	private Category category;
 	@OneToMany(mappedBy="skill")
@@ -34,24 +36,24 @@ public class Skill implements Serializable {
 		this.quizzes = quizzes;
 	}
 
-	public Skill(int id, String name, String description, int level, Category category, List<Quiz> quizzes) {
+	public Skill(int id, String name, String description,  Category category, List<Quiz> quizzes) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.level = level;
 		this.category = category;
 		this.quizzes = quizzes;
 	}
 
-	private Skill() {}
+	public Skill() {
+		super();
+	}
 	
-	public Skill(int id, String name, String description, int level, Category category ) {
+	public Skill(int id, String name, String description,  Category category ) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.level = level;
 		this.category = category;
 	}
 
@@ -73,12 +75,7 @@ public class Skill implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getLevel() {
-		return level;
-	}
-	public void setLevel(int level) {
-		this.level = level;
-	}
+	
 	public Category getCategory() {
 		return category;
 	}

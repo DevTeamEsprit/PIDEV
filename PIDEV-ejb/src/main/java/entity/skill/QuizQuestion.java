@@ -1,19 +1,18 @@
-package entity;
+package entity.skill;
 
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Question implements Serializable {
+public class QuizQuestion implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -24,10 +23,10 @@ public class Question implements Serializable {
 	private List<Quiz> quizzes;
 	
 	@OneToMany(mappedBy="question")
-	private List<Response> responses;
+	private List<QuestionResponse> responses;
 
-	public Question() {}
-	public Question(int id, String content, List<Quiz> quizzes, List<Response> responses) {
+	public QuizQuestion() {}
+	public QuizQuestion(int id, String content, List<Quiz> quizzes, List<QuestionResponse> responses) {
 		super();
 		this.id = id;
 		this.content = content;
@@ -59,11 +58,11 @@ public class Question implements Serializable {
 		this.quizzes = quizzes;
 	}
 
-	public List<Response> getResponses() {
+	public List<QuestionResponse> getResponses() {
 		return responses;
 	}
 
-	public void setResponses(List<Response> responses) {
+	public void setResponses(List<QuestionResponse> responses) {
 		this.responses = responses;
 	}
 	

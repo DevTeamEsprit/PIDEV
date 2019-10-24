@@ -4,8 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import entity.Category;
-import entity.Skill;
+import entity.skill.*;
 
 @Remote
 public interface CategoryServiceRemote {

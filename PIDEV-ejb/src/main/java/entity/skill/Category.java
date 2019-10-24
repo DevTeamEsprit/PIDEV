@@ -1,4 +1,4 @@
-package entity;
+package entity.skill;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,8 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Category implements Serializable{
+public class Category implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;

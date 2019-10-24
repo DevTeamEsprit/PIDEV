@@ -5,8 +5,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import entity.Category;
-import entity.Skill;
+import entity.skill.*;
 
 @Stateless
 @LocalBean
