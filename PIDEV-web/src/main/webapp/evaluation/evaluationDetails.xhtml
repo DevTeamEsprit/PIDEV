@@ -8,6 +8,10 @@
       <h2><h:outputText value="#{evaluationBean.evalTitle}"></h:outputText>  </h2>
       </h:head>
       <h:body>
- 
+      <h:form id="form1">
+      <h:commandButton id="btn-eval" value="Switch state" action="#{evaluationBean.SwitchEvaluation}"></h:commandButton>
+      <h:message for="btn-eval"/>
+      </h:form>
+       
       </h:body>
 </html>
