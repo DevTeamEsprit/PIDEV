@@ -43,7 +43,18 @@ public class Utilisateur implements Serializable{
 	private Date datNais;
 	private boolean Actif;
 	private String image;
+	private String sexe;
 	
+	public String getSexe() {
+		return sexe;
+	}
+
+
+
+	public void setSexe(String sexe) {
+		this.sexe = sexe;
+	}
+
 	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
 	private List<Publication> lstPub;
 
@@ -65,6 +76,7 @@ public class Utilisateur implements Serializable{
 
 	@OneToOne(cascade= {CascadeType.PERSIST,CascadeType.REMOVE} , fetch=FetchType.LAZY)
 	private Contrat contrat;
+	
 	
 	public Utilisateur(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
 			String password, Date datNais) {

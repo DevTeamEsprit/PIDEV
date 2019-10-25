@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,7 @@ public class Contrat implements Serializable{
 	private int reference;
 	@Temporal(TemporalType.DATE)
 	private Date dateDebut;
+	@Enumerated(EnumType.STRING)
 	private TypeContrat typeContrat;
 	private float salaire;
 	
@@ -42,6 +45,11 @@ public class Contrat implements Serializable{
 
 	public int getReference() {
 		return reference;
+	}
+
+
+	public Contrat() {
+		super();
 	}
 
 

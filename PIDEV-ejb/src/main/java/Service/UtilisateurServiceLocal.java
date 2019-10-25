@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import entity.Contrat;
 import entity.Employe;
  
 import entity.Utilisateur;

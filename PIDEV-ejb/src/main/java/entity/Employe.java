@@ -11,6 +11,8 @@ public class Employe extends Utilisateur implements Serializable {
 
 	@ManyToOne
 	private Manager manager;
+	
+	
 	public Employe() {
 		super();
 	}
@@ -19,6 +21,14 @@ public class Employe extends Utilisateur implements Serializable {
 			Date datNais) {
 		super(nom, prenom, cin, adresse, tel, email, password, datNais);
 		
+	}
+
+	public Manager getManager() {
+		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
 	}
 
 

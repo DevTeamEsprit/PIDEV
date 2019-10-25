@@ -9,6 +9,8 @@ import Service.CommentaireService;
 import Service.PublicationService;
 import Service.UtilisateurService;
 import entity.Commentaire;
+import entity.Contrat;
+import entity.Employe;
 import entity.Publication;
 import entity.Utilisateur;
 
@@ -21,7 +23,7 @@ public class ServiceManager implements Serializable{
 	@EJB
 	private CommentaireService commentaireService;
 	
-	public void addUser(Utilisateur user) {
+	public void addUser(Employe user )  {
 		this.utilisateurService.addUser(user);
 	}
 	
@@ -44,5 +46,5 @@ public class ServiceManager implements Serializable{
 	public Utilisateur getUser() {
 		return utilisateurService.getUser(1L);
 	}
-	
+	 
 }

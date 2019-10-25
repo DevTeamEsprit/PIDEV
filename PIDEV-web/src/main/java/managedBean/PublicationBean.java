@@ -44,6 +44,7 @@ public class PublicationBean implements Serializable{
 
 	@PostConstruct
 	public void init() {	
+	 
 		user = serviceManager.getUser();
 		this.getPubs();
 	}
