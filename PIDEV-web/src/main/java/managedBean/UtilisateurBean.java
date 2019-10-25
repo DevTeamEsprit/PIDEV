@@ -96,7 +96,7 @@ public class UtilisateurBean implements Serializable{
 	        
 	            byte[] fileContent = file.getContents();
 	            String encodedString = Base64.getEncoder().encodeToString(fileContent);
-	             System.out.println(encodedString);
+	           //  System.out.println(encodedString);
 	             
 	        //     this.emp.setImage(encodedString);
 	             this.serviceManager.addUser(emp);
