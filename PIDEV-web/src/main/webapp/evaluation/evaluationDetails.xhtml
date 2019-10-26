@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -39,4 +40,22 @@
        
        </ul>
       </h:body>
+=======
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"> 
+      <h:head>
+      <h2><h:outputText value="#{evaluationBean.evalTitle}"></h:outputText>  </h2>
+      </h:head>
+      <h:body>
+      <h:form id="form1">
+      <h:commandButton id="btn-eval" value="Switch state" action="#{evaluationBean.SwitchEvaluation}"></h:commandButton>
+      <h:message for="btn-eval"/>
+      </h:form>
+       
+      </h:body>
+>>>>>>> branch 'master' of https://github.com/DevTeamEsprit/PIDEV.git
 </html>

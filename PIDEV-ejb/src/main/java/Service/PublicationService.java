@@ -34,7 +34,7 @@ public class PublicationService {
     
     
     public void addPublicaion(Publication p ) {
-    	Utilisateur u =em.find(Utilisateur.class,4L);
+    	Utilisateur u =em.find(Utilisateur.class,1L);
     	if(u instanceof Employe)
     		p.setUser((Employe)u);
     	else

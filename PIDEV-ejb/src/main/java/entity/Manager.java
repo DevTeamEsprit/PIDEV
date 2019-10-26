@@ -1,5 +1,11 @@
 package entity;
 
+<<<<<<< HEAD
+	@OneToMany(mappedBy = "manager", cascade=CascadeType.PERSIST)
+	public List<Employe> employes = new ArrayList<Employe>();
+
+	
+=======
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,8 +18,9 @@ import javax.persistence.*;
 public class Manager extends Utilisateur implements Serializable{
 
 	@OneToMany(mappedBy = "manager", cascade=CascadeType.PERSIST)
-	public List<Employe> employes = new ArrayList<Employe>();
+	public List<Employe> employes;
 
+>>>>>>> branch 'master' of https://github.com/DevTeamEsprit/PIDEV.git
 	
 	
 	public Manager() {

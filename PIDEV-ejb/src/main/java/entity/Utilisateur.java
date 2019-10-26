@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,16 +45,18 @@ public class Utilisateur implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date datNais;
 	private boolean Actif;
+	@Column(columnDefinition = "LONGTEXT")
 	private String image;
-	private String sexe;
+	@Enumerated(EnumType.STRING)
+	private Sexe sexe;
 	
-	public String getSexe() {
+	public Sexe getSexe() {
 		return sexe;
 	}
 
 
 
-	public void setSexe(String sexe) {
+	public void setSexe(Sexe sexe) {
 		this.sexe = sexe;
 	}
 

@@ -25,6 +25,10 @@ public class Contrat implements Serializable{
 	private int reference;
 	@Temporal(TemporalType.DATE)
 	private Date dateDebut;
+	@Temporal(TemporalType.DATE)
+	private Date dateFin;
+
+
 	@Enumerated(EnumType.STRING)
 	private TypeContrat typeContrat;
 	private float salaire;
@@ -32,7 +36,15 @@ public class Contrat implements Serializable{
 	@OneToOne(mappedBy="contrat")
 	private Utilisateur utilisatuer;
 
-	
+	public Date getDateFin() {
+		return dateFin;
+	}
+
+
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
+	}
+
 	public Contrat(int reference, Date dateDebut, TypeContrat typeContrat, float salaire, Utilisateur employe) {
 		super();
 		this.reference = reference;

@@ -1,5 +1,5 @@
 package entity;
 
 public enum TypeContrat {
-	SIVP,CDI,CDD
+	SIVP,CDI,CDD,CTT,CDP
 }

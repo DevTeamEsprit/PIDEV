@@ -1,5 +1,7 @@
 package Service;
 
+import java.util.Date;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,13 +33,13 @@ public class CommentaireService {
     }
     
     public void addComm(Commentaire c) {
-    	Utilisateur u =em.find(Utilisateur.class,4L);
+    	Utilisateur u =em.find(Utilisateur.class,1L);
     	if(u instanceof Employe)
     		c.setUser((Employe)u);
     	else
     		c.setUser((Manager)u);
     	
-    //	System.out.println(c+"service ");
+    	c.setDateCreation(new Date());
     	em.persist(c);
     }
     
