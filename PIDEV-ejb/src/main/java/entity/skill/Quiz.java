@@ -3,6 +3,7 @@ package entity.skill;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class Quiz implements Serializable {
 	@Column(name = "title")
 	private String title;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Skill skill;
 	
 	@ManyToMany
