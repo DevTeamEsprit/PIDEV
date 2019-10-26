@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,8 +45,21 @@ public class Utilisateur implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date datNais;
 	private boolean Actif;
+	@Column(columnDefinition = "LONGTEXT")
 	private String image;
+	@Enumerated(EnumType.STRING)
+	private Sexe sexe;
 	
+	public Sexe getSexe() {
+		return sexe;
+	}
+
+
+
+	public void setSexe(Sexe sexe) {
+		this.sexe = sexe;
+	}
+
 	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
 	private List<Publication> lstPub;
 
@@ -65,6 +81,7 @@ public class Utilisateur implements Serializable{
 
 	@OneToOne(cascade= {CascadeType.PERSIST,CascadeType.REMOVE} , fetch=FetchType.LAZY)
 	private Contrat contrat;
+	
 	
 	public Utilisateur(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
 			String password, Date datNais) {

@@ -42,11 +42,6 @@
 						</div>
 					</div>
 				</h:form>
-
-
-
-
-
 				 
 					<div class="card card-widget">
 				 		<h:form>
@@ -57,7 +52,7 @@
 					<div class="card-header">
 						<div class="user-block">
 							<img class="img-circle"
-								src="../resources/dist/img/user1-128x128.jpg" alt="User Image" />
+								src="data:image/png;base64,#{entry.key.user.image}" alt="User Image" />
 							<span class="username"><a href="#">#{entry.key.user.nom}
 									#{entry.key.user.prenom}</a></span> <span class="description">Shared
 								publicly - <h:outputText id="date"
@@ -88,15 +83,14 @@
 							<button type="button" class="btn btn-default btn-sm">
 								<i class="fa fa-thumbs-o-up"></i> Like
 							</button>
-							<span class="float-right text-muted">127 likes -
+							<span class="float-right text-muted"> 0 likes -
 								#{entry.key.lstComm.size()} comments</span>
 						</div>
 						<div class="card-footer card-comments">
 							<ui:repeat value="#{entry.key.lstComm}" var="com">
 								<div class="card-comment">
 									<!-- User image -->
-									<img class="img-circle img-sm"
-										src="../dist/img/user3-128x128.jpg" alt="User Image" />
+									<img class="img-circle img-sm" src="data:image/png;base64,#{com.user.image}" alt="User Image" />  
 
 									<div class="comment-text">
 										<span class="username">#{com.user.nom}
@@ -123,7 +117,7 @@
 						<div class="card-footer">
 
 							<img class="img-fluid img-circle img-sm"
-								src="../dist/img/user4-128x128.jpg" alt="Alt Text" />
+								src="../resources/dist/img/user4-128x128.jpg" alt="Alt Text" />
 							<!-- .img-push is used to add margin to elements next to floating images -->
 							<div class="img-push">
 								<h:inputText value="#{entry.value.description}" type="text"

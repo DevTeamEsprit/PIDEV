@@ -45,7 +45,7 @@ public class CommentaireBean implements Serializable {
 	public void addComm(Publication pub) {
 		commentaire.setDateCreation(new Date());
 		commentaire.setPub(pub);
-	//	System.out.println(commentaire);
+	 
 		 
 	 
 	}

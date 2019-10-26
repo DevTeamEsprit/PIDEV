@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import entity.Contrat;
 import entity.Employe;
  
 import entity.Utilisateur;
@@ -36,6 +37,7 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 
 	@Override
 	public void addUser(Utilisateur user) {
+	  System.out.println(user);
 		em.persist(user);
 		
 	}
@@ -71,11 +73,14 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 		 return em.find(Employe.class,idemploye);
 		
 	}
+	
 	public Manager findManager(long id) {
 		TypedQuery<Manager> query = em.createQuery("select e from Manager e  where e.id=:id", Manager.class);
 		     query.setParameter("id", id);
 		return query.getSingleResult();
  
 	}
+	
+	 
 
 }

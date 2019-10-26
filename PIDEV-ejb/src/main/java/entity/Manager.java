@@ -11,9 +11,11 @@ import javax.persistence.*;
 @DiscriminatorValue(value="manager")
 public class Manager extends Utilisateur implements Serializable{
 
-	@OneToMany(mappedBy = "manager")
+	@OneToMany(mappedBy = "manager", cascade=CascadeType.PERSIST)
 	public List<Employe> employes;
 
+	
+	
 	public Manager() {
 		super();
 	}
