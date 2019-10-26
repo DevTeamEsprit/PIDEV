@@ -2,17 +2,26 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import entity.skill.UserQuestionQuizResponse;
 
  
 
@@ -20,8 +29,11 @@ import javax.persistence.TemporalType;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="type")
 public class Utilisateur implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id ;
 	private String nom;
 	private String prenom;
@@ -33,10 +45,43 @@ public class Utilisateur implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date datNais;
 	private boolean Actif;
+	@Column(columnDefinition = "LONGTEXT")
 	private String image;
+	@Enumerated(EnumType.STRING)
+	private Sexe sexe;
 	
-	@OneToOne
+	public Sexe getSexe() {
+		return sexe;
+	}
+
+
+
+	public void setSexe(Sexe sexe) {
+		this.sexe = sexe;
+	}
+
+	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
+	private List<Publication> lstPub;
+
+	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
+	private List<Commentaire> lstcom;
+	
+	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
+	private List<UserQuestionQuizResponse> qqResponses;
+	
+	public List<Commentaire> getLstcom() {
+		return lstcom;
+	}
+
+
+
+	public void setLstcom(List<Commentaire> lstcom) {
+		this.lstcom = lstcom;
+	}
+
+	@OneToOne(cascade= {CascadeType.PERSIST,CascadeType.REMOVE} , fetch=FetchType.LAZY)
 	private Contrat contrat;
+	
 	
 	public Utilisateur(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
 			String password, Date datNais) {
@@ -50,6 +95,30 @@ public class Utilisateur implements Serializable{
 		this.email = email;
 		this.password = password;
 		this.datNais = datNais;
+	}
+
+
+
+	public List<Publication> getLstPub() {
+		return lstPub;
+	}
+
+
+
+	public void setLstPub(List<Publication> lstPub) {
+		this.lstPub = lstPub;
+	}
+
+
+
+	public Contrat getContrat() {
+		return contrat;
+	}
+
+
+
+	public void setContrat(Contrat contrat) {
+		this.contrat = contrat;
 	}
 
 
