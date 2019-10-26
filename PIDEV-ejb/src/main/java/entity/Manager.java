@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Manager extends Utilisateur implements Serializable{
 
 	@OneToMany(mappedBy = "manager", cascade=CascadeType.PERSIST)
-	public List<Employe> employes;
+	public List<Employe> employes = new ArrayList<Employe>();
 
 	
 	

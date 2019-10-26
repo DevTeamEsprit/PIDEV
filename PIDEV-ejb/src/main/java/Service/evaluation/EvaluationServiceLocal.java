@@ -17,6 +17,13 @@ public interface EvaluationServiceLocal {
 	public List<Employe> findEmployesByEval(int evalId);
 	public boolean isAnnualExists(long manid);
 	public void SwitchState(int id);
+	public void activateEvaluation(int id);
 	public List<Employe> getEmployeesOfManager(long manid);
-	public Evaluation getLastEvaluation();
+	public Evaluation getLastEvaluation(long manid);
+	public List<EvaluationSheet> findEvaluationSheetbyEval(int evalid);
+	public Goal LastGoalByEval(int evalid);
+	public void addGoal(Goal g);
+	public void addGoalEmploye(GoalByEmploye gp);
+	public List<EvaluationSheet> EvalsByEmploye(long empid);
+	public List<GoalByEmploye> getGoalsOfEvals(int evaluationsheetid);
 }

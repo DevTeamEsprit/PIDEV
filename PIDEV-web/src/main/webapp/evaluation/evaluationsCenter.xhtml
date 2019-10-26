@@ -5,9 +5,10 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"> 
       <h:body>
+      
       <ul>
     <ui:repeat value="#{evaluationBean.evals}" var="eval">
-        <li>
+        <li >
         <h:form>
             <h:commandButton value="Evaluation of #{eval.date}" action="#{evaluationBean.showEval}">
             <f:setPropertyActionListener target="#{evaluationBean.date}" value="#{eval.date}" />
