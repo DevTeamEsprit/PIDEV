@@ -1,5 +1,8 @@
 package entity.skill;
 
-public class UserQuiz {
+import javax.persistence.Entity;
+
+@Entity
+public class UserQuiz  {
 
 }
