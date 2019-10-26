@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>tickets</title>
+</h:head>
+<h:body>
+
+	<h:form>
+		<h:panelGrid columns="3">
+			<h:inputText value="#{timesheetBean.ticket.name}" />
+			<h:inputText value="#{timesheetBean.ticket.description}" />
+			<h:inputText value="#{timesheetBean.ticket.status}" />
+			<h:inputText value="#{timesheetBean.startDateString}" />
+			<h:inputText value="#{timesheetBean.endDateString}" />
+
+			<h:commandButton action="#{timesheetBean.doCreateTicket()}"
+				value="Add Ticket" />
+
+		</h:panelGrid>
+	</h:form>
+
+	<h3>Liste des tickets</h3>
+
+	<h:form>
+		<h:dataTable value="#{timesheetBean.tickets}" var="ticket" border="3">
+			<h:column>
+				<f:facet name="header">ID</f:facet>
+				<h:outputText value="#{ticket.id}" />
+
+			</h:column>
+			<h:column>
+				<f:facet name="header">Name</f:facet>
+				<h:outputText value="#{ticket.name}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Description</f:facet>
+				<h:outputText value="#{ticket.description}" />
+			</h:column>
+				<h:column>
+				<f:facet name="header">Status</f:facet>
+				<h:outputText value="#{ticket.status}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">StartDate</f:facet>
+				<h:outputText value="#{ticket.startDate}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">endDate</f:facet>
+				<h:outputText value="#{ticket.endDate}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Action</f:facet>
+				<h:commandButton action="#{timesheetBean.doDeleteTicket(ticket.id)}"
+					value="Delete Ticket" />
+				<h:commandButton
+					action="#{timesheetUpdateBean.goUpdateTicket(ticket)}"
+					value="Update Ticket" />
+				<h:commandButton
+					action="#{timesheetDetailsBean.goDetailsTicket(ticket)}"
+					value="Details Ticket" />
+
+			</h:column>
+		</h:dataTable>
+
+	</h:form>
+	<!-- -<h:form>
+		<h:commandLink action="/entreprises?faces-redirect=true" value="entreprise" />
+	</h:form>  -->
+
+</h:body>
+</html>

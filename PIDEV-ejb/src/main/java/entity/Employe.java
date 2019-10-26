@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -9,7 +10,15 @@ import javax.persistence.*;
 @DiscriminatorValue(value="employe")
 public class Employe extends Utilisateur implements Serializable {
 
-	
+	@OneToMany(mappedBy = "employe")
+	private List<Ticket> tickets;
+
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
 	public Employe() {
 		super();
 	}
