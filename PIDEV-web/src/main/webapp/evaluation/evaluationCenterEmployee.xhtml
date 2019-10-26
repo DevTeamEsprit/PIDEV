@@ -8,7 +8,14 @@
       <h2>List of your evaluations</h2>
       <ol>
        <ui:repeat value="#{evaluationBeanEmploye.evaluationsheets}" var="item">
-       <li><h:outputText value="#{item.evalsheetTitle}"/></li>
+       <li>
+        <h:form>
+        <h:commandButton value="#{item.evalsheetTitle}" action="#{evaluationBeanEmploye.showEvalSheet}">
+            <f:setPropertyActionListener target="#{evaluationBeanEmploye.evalsheetid}" value="#{item.id}" />
+            </h:commandButton>
+            </h:form>
+      </li>
+      <hr />
        </ui:repeat>
           </ol>
      
