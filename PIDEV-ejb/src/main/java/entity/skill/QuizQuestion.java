@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -19,18 +20,18 @@ public class QuizQuestion implements Serializable {
 	private int id;
 	private String content;
 	
-	@ManyToMany(mappedBy="questions")
-	private List<Quiz> quizzes;
+	@ManyToOne
+	private Quiz quiz;
+	
 	
 	@OneToMany(mappedBy="question")
 	private List<QuestionResponse> responses;
 
 	public QuizQuestion() {}
-	public QuizQuestion(int id, String content, List<Quiz> quizzes, List<QuestionResponse> responses) {
+	public QuizQuestion(int id, String content, List<QuestionResponse> responses) {
 		super();
 		this.id = id;
 		this.content = content;
-		this.quizzes = quizzes;
 		this.responses = responses;
 	}
 
@@ -48,14 +49,6 @@ public class QuizQuestion implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public List<Quiz> getQuizzes() {
-		return quizzes;
-	}
-
-	public void setQuizzes(List<Quiz> quizzes) {
-		this.quizzes = quizzes;
 	}
 
 	public List<QuestionResponse> getResponses() {

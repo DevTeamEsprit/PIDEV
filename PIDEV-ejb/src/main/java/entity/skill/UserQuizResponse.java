@@ -12,8 +12,9 @@ import javax.persistence.ManyToOne;
 import entity.Utilisateur;
 
 @Entity
-public class UserQuiz implements Serializable  {
- 
+public class UserQuizResponse implements Serializable {
+
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -23,37 +24,58 @@ public class UserQuiz implements Serializable  {
 	@ManyToOne
 	@JoinColumn(name="quiz_id", referencedColumnName="id", insertable = false, updatable = false)
 	private Quiz quiz;
-	private int score;
-	public UserQuiz(int id, Utilisateur user, Quiz quiz, int score) {
+	@ManyToOne
+	@JoinColumn(name="response_id", referencedColumnName="id", insertable = false, updatable = false)
+	private QuestionResponse response;
+	private boolean isChecked;
+	
+	public UserQuizResponse(int id, Utilisateur user, Quiz quiz, QuestionResponse response, boolean isChecked) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.quiz = quiz;
-		this.score = score;
+		this.response = response;
+		this.isChecked = isChecked;
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public Utilisateur getUser() {
 		return user;
 	}
+
 	public void setUser(Utilisateur user) {
 		this.user = user;
 	}
+
 	public Quiz getQuiz() {
 		return quiz;
 	}
+
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
 	}
-	public int getScore() {
-		return score;
+
+	public QuestionResponse getResponse() {
+		return response;
 	}
-	public void setScore(int score) {
-		this.score = score;
+
+	public void setResponse(QuestionResponse response) {
+		this.response = response;
+	}
+
+	public boolean isChecked() {
+		return isChecked;
+	}
+
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
 	}
 	
 	

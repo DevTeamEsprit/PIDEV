@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Quiz implements Serializable {
@@ -27,9 +28,10 @@ public class Quiz implements Serializable {
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Skill skill;
 	
-	@ManyToMany
+	@OneToMany(mappedBy="quiz")
 	private List<QuizQuestion> questions;
 
+	@OneToMany(mappedBy="quiz")
 	public int getId() {
 		return id;
 	}

@@ -12,8 +12,7 @@ import javax.persistence.ManyToOne;
 import entity.Utilisateur;
 
 @Entity
-public class UserQuiz implements Serializable  {
- 
+public class UserFeedback implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -23,13 +22,13 @@ public class UserQuiz implements Serializable  {
 	@ManyToOne
 	@JoinColumn(name="quiz_id", referencedColumnName="id", insertable = false, updatable = false)
 	private Quiz quiz;
-	private int score;
-	public UserQuiz(int id, Utilisateur user, Quiz quiz, int score) {
+	private String feedback;
+	public UserFeedback(int id, Utilisateur user, Quiz quiz, String feedback) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.quiz = quiz;
-		this.score = score;
+		this.feedback = feedback;
 	}
 	public int getId() {
 		return id;
@@ -49,12 +48,11 @@ public class UserQuiz implements Serializable  {
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
 	}
-	public int getScore() {
-		return score;
+	public String getFeedback() {
+		return feedback;
 	}
-	public void setScore(int score) {
-		this.score = score;
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
 	}
-	
-	
+
 }
