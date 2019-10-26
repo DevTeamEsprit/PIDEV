@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Date;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -21,6 +22,7 @@ import org.primefaces.model.UploadedFile;
 
 import entity.Contrat;
 import entity.Employe;
+import entity.TypeContrat;
 import io.undertow.util.FileUtils;
 import service.ServiceManager;
 
@@ -30,11 +32,23 @@ public class UtilisateurBean implements Serializable{
 
 	@Inject
 	private ServiceManager serviceManager;
-	private Contrat contrat;
+	private Contrat contrat = new Contrat();
 	private Employe emp = new Employe();
 	
+private String salaire;
+    public String getSalaire() {
+	return salaire;
+}
 
-    private UploadedFile file;
+
+
+
+public void setSalaire(String salaire) {
+	this.salaire = salaire;
+}
+
+
+	private UploadedFile file;
 
 
 
@@ -82,24 +96,24 @@ public class UtilisateurBean implements Serializable{
 
 
 	public void ajouterEmploye() {
-		System.out.println("lehnaaa nchala nemchii "+emp.toString());
 		 
-		 
-		this.upload();
 	}
 	
 	 
 	 public void upload()  {
 	        if(file != null) {
-	            System.out.println("Succesful"+ file.getFileName() + " is uploaded.");
+	         
 	            
-	        
+ 
 	            byte[] fileContent = file.getContents();
 	            String encodedString = Base64.getEncoder().encodeToString(fileContent);
-	           //  System.out.println(encodedString);
-	             
-	        //     this.emp.setImage(encodedString);
+	          
+	            emp.setContrat(contrat); 
+	            this.emp.setImage(encodedString);
+	         
 	             this.serviceManager.addUser(emp);
+	             emp=new Employe();
+	             contrat=new Contrat();
 	        }else {
 	        	System.out.println("ta7chee");
             	 

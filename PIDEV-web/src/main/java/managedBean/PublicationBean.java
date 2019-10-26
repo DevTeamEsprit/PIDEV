@@ -97,6 +97,7 @@ public class PublicationBean implements Serializable{
 		this.mapPub=this.convertListBeforeJava8(lstPublications);
 		
 	}
+	
 	public void addComm(Commentaire com) {
 		commentaire.setDateCreation(new Date());
 		this.serviceManager.addCom(com);
