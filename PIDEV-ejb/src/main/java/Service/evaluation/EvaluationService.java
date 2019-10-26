@@ -163,8 +163,12 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 
 	@Override
 	public List<GoalByEmploye> getGoalsOfEvals(int evaluationsheetid) {
-		// TODO Auto-generated method stub
-		return null;
+		Query q = em.createQuery("select g from GoalByEmploye g where g.evaluationSheet.id=:id )",GoalByEmploye.class);
+		q.setParameter("id", evaluationsheetid);
+		if(!q.getResultList().isEmpty())
+			return q.getResultList();
+			
+			return null;
 	}
 
 	@Override
@@ -172,6 +176,13 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 		 Evaluation e= em.find(Evaluation.class, id);
 		 e.setStatus(true);
 		
+	}
+
+	@Override
+	public EvaluationSheet getEvSheetById(int id) {
+		// TODO Auto-generated method stub
+		return em.find(EvaluationSheet.class, id);
+				
 	}
 
 	

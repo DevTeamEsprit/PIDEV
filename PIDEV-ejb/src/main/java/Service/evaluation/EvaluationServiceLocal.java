@@ -27,4 +27,5 @@ public interface EvaluationServiceLocal {
 	public void addGoalEmploye(GoalByEmploye gp);
 	public List<EvaluationSheet> EvalsByEmploye(long empid);
 	public List<GoalByEmploye> getGoalsOfEvals(int evaluationsheetid);
+	public EvaluationSheet getEvSheetById(int id);
 }
