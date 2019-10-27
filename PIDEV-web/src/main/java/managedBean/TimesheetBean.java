@@ -9,7 +9,10 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import Service.Timesheet.ProjectServiceLocal;
 import Service.Timesheet.TicketServiceLocal;
+import entity.Project;
+import entity.StatusTicket;
 import entity.Ticket;
 
 @ManagedBean
@@ -18,9 +21,14 @@ public class TimesheetBean {
 
 	@EJB
 	private TicketServiceLocal ticketServiceLocal;
+	@EJB
+	private ProjectServiceLocal projectServiceLocal;
+	
 
 	private List<Ticket> tickets;
+	private List<Project> projects;
 	private Ticket ticket;
+	private Project project;
 	private Ticket updateTicket;
 	private Ticket detailsTicket;
 	private String startDateString = "";
@@ -33,6 +41,8 @@ public class TimesheetBean {
 	public void init() {
 		tickets = ticketServiceLocal.findAll();
 		ticket = new Ticket();
+		projects = projectServiceLocal.findAll();
+		
 	}
 
 	public String doDeleteTicket(int id ) {
@@ -55,6 +65,7 @@ public class TimesheetBean {
 		}
 		ticket.setStartDate(startDate);
 		ticket.setEndDate(endDate);
+		ticket.setStatus(StatusTicket.ToDo);
 		ticketServiceLocal.create(ticket);
 		ticket = new Ticket();
 		return navigateTo;
@@ -100,6 +111,23 @@ public class TimesheetBean {
 	public void setUpdateTicket(Ticket updateTicket) {
 		this.updateTicket = updateTicket;
 	}
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+	
 
 
 }
