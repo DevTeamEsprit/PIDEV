@@ -1,21 +1,19 @@
 package entity.skill;
 
-
 import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import entity.Utilisateur;
 
 @Entity
-public class UserQuiz implements Serializable  {
- 
+public class UserSkill implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -23,15 +21,15 @@ public class UserQuiz implements Serializable  {
 	@JoinColumn(name="user_id", referencedColumnName="id", insertable = false, updatable = false)
 	private Utilisateur user;
 	@ManyToOne
-	@JoinColumn(name="quiz_id", referencedColumnName="id", insertable = false, updatable = false)
-	private Quiz quiz;
-	private int score;
-	public UserQuiz(int id, Utilisateur user, Quiz quiz, int score) {
+	@JoinColumn(name="skill_id", referencedColumnName="id", insertable = false, updatable = false)
+	private Skill skill;
+	private int level;
+	public UserSkill(int id, Utilisateur user, Skill skill, int level) {
 		super();
 		this.id = id;
 		this.user = user;
-		this.quiz = quiz;
-		this.score = score;
+		this.skill = skill;
+		this.level = level;
 	}
 	public int getId() {
 		return id;
@@ -45,17 +43,18 @@ public class UserQuiz implements Serializable  {
 	public void setUser(Utilisateur user) {
 		this.user = user;
 	}
-	public Quiz getQuiz() {
-		return quiz;
+	public Skill getSkill() {
+		return skill;
 	}
-	public void setQuiz(Quiz quiz) {
-		this.quiz = quiz;
+	public void setSkill(Skill skill) {
+		this.skill = skill;
 	}
-	public int getScore() {
-		return score;
+	public int getLevel() {
+		return level;
 	}
-	public void setScore(int score) {
-		this.score = score;
+	public void setLevel(int level) {
+		this.level = level;
 	}
+	
 	
 }

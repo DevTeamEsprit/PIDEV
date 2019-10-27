@@ -1,3 +1,4 @@
+
 package entity;
 
 import java.io.Serializable;
@@ -38,14 +39,9 @@ public class Evaluation implements Serializable{
 		this.manager = manager;
 		this.status = status;
 	}
-	@OneToMany(mappedBy="evaluation" , cascade = { CascadeType.PERSIST,CascadeType.REMOVE})
+	
+	@OneToMany(mappedBy = "evaluation",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private List<Goal> goals = new ArrayList<Goal>();
-	public List<Goal> getGoals() {
-		return goals;
-	}
-	public void setGoals(List<Goal> goals) {
-		this.goals = goals;
-	}
 	public Manager getManager() {
 		return manager;
 	}

@@ -1,3 +1,4 @@
+
 package Service.evaluation;
 
 import java.util.Date;
@@ -44,9 +45,12 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 	@Override
 	public List<Evaluation> findByManager(long manid) {
 		// TODO Auto-generated method stub
-		Query q = em.createQuery("select e from Evaluation e where e.manager.id =:id order by e.date asc");
+		Query q = em.createQuery("select e from Evaluation e where e.manager.id =:id ");
 		q.setParameter("id", manid);
-		return q.getResultList();
+		if(!q.getResultList().isEmpty())
+			return q.getResultList();
+			
+			return null;
 	}
 
 	@Override
@@ -61,12 +65,13 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 
 	@Override
 	public List<Employe> findEmployesByEval(int evalId) {
-		Query q = em.createQuery("select e from EvaluationSheet e  where e.evaluation.id =:id");
+		Query q = em.createQuery("select e from Employe e where e.id  in (select g.employe.id from GoalByEmploye g  join g.goal go join go.evaluation e where e.id=:id)");
 		q.setParameter("id", evalId);
-		if(q.getResultList().isEmpty())
-		return null;
+		if(!q.getResultList().isEmpty())
 		
 		return  q.getResultList();
+
+		return null;
 	}
 
 	@Override
@@ -93,15 +98,93 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 	public List<Employe> getEmployeesOfManager(long manid) {
 		Query q = em.createQuery("select e from Employe e  where e.manager.id =:id");
 		q.setParameter("id", manid);
-		return q.getResultList();
+		if(!q.getResultList().isEmpty())
+			return q.getResultList();
+			
+			return null;
 	}
 
 	@Override
-	public Evaluation getLastEvaluation() {
+	public Evaluation getLastEvaluation(long manid) {
+		 Query q = em.createQuery("select e from Evaluation e where e.manager.id=:id order by e.id desc",Evaluation.class);
+		q.setParameter("id", manid);
+		List<Evaluation> evals = q.getResultList();
+		if(!q.getResultList().isEmpty())
+			return evals.get(0);
+			
+			return null;
 		
-		//return  em.createQuery("select e from Employe e  where e.manager.id =:id");
+	}
+
+	@Override
+	public List<EvaluationSheet> findEvaluationSheetbyEval(int evalid) {
+		Query q = em.createQuery("select e from EvaluationSheet e where e.id in (select ge.evaluationSheet.id from GoalByEmploye ge  join ge.goal g join g.evaluation e where e.id=:id )",EvaluationSheet.class);
+		q.setParameter("id", evalid);
+		if(!q.getResultList().isEmpty())
+			return q.getResultList();
+			
+			return null;
+	}
+
+	@Override
+	public Goal LastGoalByEval(int evalid) {
+		 Query q = em.createQuery("select e from Goal e where e.evaluation.id=:id order by e.id desc",Goal.class);
+			q.setParameter("id", evalid);
+			List<Goal> goals = q.getResultList();
+			
+			if(!goals.isEmpty())
+			return goals.get(0);
+			
+			return null;
+	}
+
+	@Override
+	public void addGoal(Goal g) {
+		em.persist(g);
+		
+	}
+
+	@Override
+	public void addGoalEmploye(GoalByEmploye gp) {
+		em.persist(gp);
+		
+	}
+
+	@Override
+	public List<EvaluationSheet> EvalsByEmploye(long empid) {
+		Query q = em.createQuery("select e from EvaluationSheet e where e.id in (select ge.evaluationSheet.id from GoalByEmploye ge join ge.goal g join g.evaluation ev  where ge.employe.id=:id and ev.status=:status)",EvaluationSheet.class);
+		q.setParameter("id", empid);
+		q.setParameter("status", true);
+		if(!q.getResultList().isEmpty())
+		return q.getResultList();
+		
 		return null;
 	}
+
+	@Override
+	public List<GoalByEmploye> getGoalsOfEvals(int evaluationsheetid) {
+		Query q = em.createQuery("select g from GoalByEmploye g where g.evaluationSheet.id=:id )",GoalByEmploye.class);
+		q.setParameter("id", evaluationsheetid);
+		if(!q.getResultList().isEmpty())
+			return q.getResultList();
+			
+			return null;
+	}
+
+	@Override
+	public void activateEvaluation(int id) {
+		 Evaluation e= em.find(Evaluation.class, id);
+		 e.setStatus(true);
+		
+	}
+
+	@Override
+	public EvaluationSheet getEvSheetById(int id) {
+		// TODO Auto-generated method stub
+		return em.find(EvaluationSheet.class, id);
+				
+	}
+
 	
 
 

@@ -16,12 +16,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import entity.skill.UserQuestionQuizResponse;
 
  
 
@@ -66,8 +66,7 @@ public class Utilisateur implements Serializable{
 	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
 	private List<Commentaire> lstcom;
 	
-	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
-	private List<UserQuestionQuizResponse> qqResponses;
+	
 	
 	public List<Commentaire> getLstcom() {
 		return lstcom;
@@ -168,6 +167,7 @@ public class Utilisateur implements Serializable{
 
 
 
+	@OneToMany
 	public long getId() {
 		return id;
 	}
