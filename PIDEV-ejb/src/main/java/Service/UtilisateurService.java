@@ -21,7 +21,7 @@ import entity.Manager;
  */
 @Stateless
 @LocalBean
-public class UtilisateurService implements UtilisateurServiceLocal {
+public class UtilisateurService  {
 
     /**
      * Default constructor. 
@@ -35,19 +35,36 @@ public class UtilisateurService implements UtilisateurServiceLocal {
         // TODO Auto-generated constructor stub
     }
 
-	@Override
+	public Utilisateur doLogin(String login , String password) { 
+			
+			TypedQuery<Utilisateur> query = em.createQuery("Select u From Utilisateur u where u.email=:l and u.password=:p",Utilisateur.class);
+			query.setParameter("l", login);
+			query.setParameter("p", password);
+
+			Utilisateur user = null ; 
+				
+			try {
+				user = query.getSingleResult();
+			}catch (Exception e)
+			{System.out.println("Errer:" + e ) ;}
+	
+			return user ;
+		 
+	}
+	
+	
 	public void addUser(Utilisateur user) {
 	  System.out.println(user);
 		em.persist(user);
 		
 	}
 
-	@Override
+	 
 	public void updateEmploye(Employe employe) {
 		em.merge(employe);
 	}
 
-	@Override
+	 
 	public void blockEmploye(long  idemploye){
 		Employe emp=em.find(Employe.class,idemploye);
 		emp.setActif(false);
@@ -56,7 +73,7 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 		
 	}
 
-	@Override
+	 
 	public List<Employe> consulterEmploye() {
 			TypedQuery<Employe> query = em.createQuery("select e from Employe e ", Employe.class);
 		
@@ -67,6 +84,17 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 			}
 		return null;
 	}
+	
+	public List<Utilisateur> getUsers() {
+		TypedQuery<Utilisateur> query = em.createQuery("select u from Utilisateur u ", Utilisateur.class);
+	
+	try {
+		return query.getResultList();
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	return null;
+}
 
  
 	public Utilisateur getUser(long idemploye) {
@@ -81,6 +109,4 @@ public class UtilisateurService implements UtilisateurServiceLocal {
  
 	}
 	
-	 
-
 }

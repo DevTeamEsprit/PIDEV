@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<h:form>
+		<ui:repeat var="contact" value="#{contactsBean.contacts}">
+			<div class="user-panel mt-3 pb-3 mb-3 d-flex aside-contact">
+				<div class="image">
+					<img src="data:image/png;base64,#{contact.image}"
+						class="img-circle elevation-2" alt="User Image" />
+				</div>
+				<div class="info">
+					<h:commandLink action="#{contactsBean.goToChat(contact)}"
+						value="#{contact.prenom} #{contact.nom}" class="d-block" />
+				</div>
+			</div>
+		</ui:repeat>
+	</h:form>
+</ui:composition>

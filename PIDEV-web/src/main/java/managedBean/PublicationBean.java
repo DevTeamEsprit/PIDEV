@@ -1,5 +1,6 @@
 package managedBean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,7 @@ import javax.inject.Named;
 import Service.CommentaireService;
 import Service.PublicationService;
 import Service.UtilisateurService;
+import dto.PublicationCommentaireDto;
 import entity.Commentaire;
 import entity.Employe;
 import entity.Manager;
@@ -25,32 +27,39 @@ import entity.Publication;
 import entity.Utilisateur;
 import service.ServiceManager;
 
-@Named
+@ManagedBean
 @ViewScoped
-public class PublicationBean implements Serializable{
+public class PublicationBean implements Serializable {
+
+	@ManagedProperty(value = "#{loginbean}")
+	private Loginbean lb;
 
 	private Publication publication = new Publication();
-	 
+
 	private Utilisateur user;
-		
+
 	private List<Publication> lstPublications;
-	Map<Publication, Commentaire> mapPub = new HashMap<>();
-	
-	private Commentaire commentaire = new Commentaire();
-	
+	private List<PublicationCommentaireDto> list = new ArrayList<>();
+
 	@Inject
 	private ServiceManager serviceManager;
-	
+
+	public Loginbean getLb() {
+		return lb;
+	}
+
+	public void setLb(Loginbean lb) {
+		this.lb = lb;
+	}
 
 	@PostConstruct
-	public void init() {	
-	 
-		user = serviceManager.getUser();
+	public void init() throws IOException {
+		if (this.lb.getUser() == null) {
+			this.serviceManager.goToPage("../login.jsf");
+		}
 		this.getPubs();
 	}
-	
-	
-	
+
 	public Publication getPublication() {
 		return publication;
 	}
@@ -63,56 +72,49 @@ public class PublicationBean implements Serializable{
 		return lstPublications;
 	}
 
-
 	public void setLstPublications(List<Publication> lstPublications) {
 		this.lstPublications = lstPublications;
 	}
 
-	
 	public void addPub() {
+		publication.setUser(lb.getUser());
 		publication.setDateCreation(new Date());
 		serviceManager.addPub(publication);
-		publication  = new Publication();
+		publication = new Publication();
 		this.getPubs();
 	}
-	
-	
-	public Map<Publication, Commentaire> getMapPub() {
-		return mapPub;
-	}
-
-
-
-	public void setMapPub(Map<Publication, Commentaire> mapPub) {
-		this.mapPub = mapPub;
-	}
-
-
 
 	private void getPubs() {
 		this.lstPublications = serviceManager.getPubs();
-		if(this.lstPublications == null) {
-			this.lstPublications =  new ArrayList<>();
+		if (this.lstPublications == null) {
+			this.lstPublications = new ArrayList<>();
 		}
-		this.mapPub=this.convertListBeforeJava8(lstPublications);
-		
+		this.list = this.convertListBeforeJava8();
+
 	}
-	
+
 	public void addComm(Commentaire com) {
-		commentaire.setDateCreation(new Date());
+		com.setUser(lb.getUser());
+		com.setDateCreation(new Date());
 		this.serviceManager.addCom(com);
 		this.getPubs();
- 
- 
+
 	}
-	
-	
-	public Map<Publication, Commentaire> convertListBeforeJava8(List<Publication> list) {
-		Map<Publication, Commentaire> map = new HashMap<>();
-	    for (Publication pub : list) {
-	        map.put(pub,new Commentaire(pub));
-	    }
-	    return map;
+
+	public List<PublicationCommentaireDto> convertListBeforeJava8() {
+		List<PublicationCommentaireDto> list = new ArrayList<>();
+		for (Publication pub : this.lstPublications) {
+			list.add(new PublicationCommentaireDto(pub, new Commentaire(pub)));
+		}
+		return list;
 	}
-	 
+
+	public List<PublicationCommentaireDto> getList() {
+		return list;
+	}
+
+	public void setList(List<PublicationCommentaireDto> list) {
+		this.list = list;
+	}
+
 }
