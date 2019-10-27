@@ -1,7 +1,9 @@
+
 package managedBean;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,12 +35,42 @@ public class EvaluationBean {
        private String EvalTitle;
        private Manager manager;
        private boolean status;
+       private GoalType goaltype;
+       private String goalext;
+       private List<Goal> goals;
+       private List<Employe> employes;
        public boolean isStatus() {
 		return status;
 	}
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	
+
+	public GoalType getGoaltype() {
+		return goaltype;
+	}
+
+	public void setGoaltype(GoalType goaltype) {
+		this.goaltype = goaltype;
+	}
+
+	public String getGoalext() {
+		return goalext;
+	}
+
+	public void setGoalext(String goalext) {
+		this.goalext = goalext;
+	}
+
+	public List<Goal> getGoals() {
+		return goals;
+	}
+
+	public void setGoals(List<Goal> goals) {
+		this.goals = goals;
 	}
 
 	public List<Evaluation> evals;
@@ -97,6 +129,11 @@ public class EvaluationBean {
     public void init() {
         evals = evaluationService.findByManager(1);
         manager = utilisateurService.findManager(1);
+        
+        for(Evaluation e : evals) {
+        	if((new Date()).compareTo(e.getDate())==0)
+           evaluationService.activateEvaluation(e.getId());
+        }
        }
 
 	public String addEval() throws ParseException {
@@ -113,13 +150,9 @@ public class EvaluationBean {
 				else {
 					
 				evaluationService.createEvaluation(e);
-				if(evalType.ordinal()==2) {
-					for(Employe emp : evaluationService.getEmployeesOfManager(1)) {
-						EvaluationSheetId pk = new EvaluationSheetId(emp.getId(), evalId, "", "", false);
-						EvaluationSheet ev = new EvaluationSheet(pk);
-						evaluationService.createEvaluationSheet(ev);
-					}
-					}
+				Evaluation LastEval = evaluationService.getLastEvaluation(1);
+				evalId = LastEval.getId();
+				goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(e.getDate());
 				this.setStatus(e.isStatus());
@@ -128,7 +161,7 @@ public class EvaluationBean {
 				}
 				}
 				else
-					FacesContext.getCurrentInstance().addMessage("form:btn-addeval", new FacesMessage("Please select a valid date!(after tomorrow)"));
+					FacesContext.getCurrentInstance().addMessage("form:btn-addeval", new FacesMessage("Please select a valid date!(after today)"));
 			}
 			
 		} catch (NullPointerException e2) {
@@ -141,17 +174,22 @@ public class EvaluationBean {
 		return "";
 	}
 	
+	public List<Employe> getEmployes() {
+		return employes;
+	}
+
+	public void setEmployes(List<Employe> employes) {
+		this.employes = employes;
+	}
+
 	public String showEval() {
-		
+		goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
+		employes = evaluationService.findEmployesByEval(evalId);
 		this.setEvalTitle("Evaluation of "+date+"(by "+manager.getNom()+" "+manager.getPrenom()+")");
 		return "evaluationDetails.xhtml?faces-redirect=true";
 	}
 	
      public void SwitchEvaluation() {
-    	 
-    	if(evaluationService.findEmployesByEval(evalId)==null) {
-    		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("No employee affected!"));
-    	}
     	
         if(evaluationService.findGoalsByEval(evalId)==null) {
         	FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("No goal affected!"));
@@ -160,9 +198,51 @@ public class EvaluationBean {
         	evaluationService.SwitchState(evalId);
         	status = evaluationService.findEval(evalId).isStatus();
         	if(status)
-        		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation switched off"));
-        	else
         		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation triggered"));
+        	else
+        		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation switched off"));
+        		
         }
+     }
+     
+     public String addGoal() {
+    	 if(!goalext.equalsIgnoreCase("") && goaltype!=null) {
+    		 Goal Lastgoal = evaluationService.LastGoalByEval(evalId);
+    		 evaluationService.addGoal(new Goal(0, goaltype, goalext, evaluationService.findEval(evalId)));
+    		 if(Lastgoal!=null) {
+    			 List<Employe> employesbyman = new ArrayList<Employe>();
+    			 for(Employe e : evaluationService.getEmployeesOfManager(1)) {
+    				 employesbyman.add(e);
+    			 }
+    			 int k = 0;
+    			 for(EvaluationSheet i : evaluationService.findEvaluationSheetbyEval(evalId)) {
+    				 System.out.println("Feuille d'evaluation trouvee");
+    				 GoalByEmployeId pk = new GoalByEmployeId(employesbyman.get(k).getId(), evaluationService.LastGoalByEval(evalId).getId(), 0,0);
+    				 GoalByEmploye gemp = new GoalByEmploye(pk);
+    				 gemp.setEvaluationSheet(i);
+    				 evaluationService.addGoalEmploye(gemp);
+    				 k++;
+    			 }
+    			 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Goal added!"));
+        		 return "evaluationDetails.xhtml?faces-redirect=true";
+    		 }
+    		 else {
+    			
+    			 for(Employe e : evaluationService.getEmployeesOfManager(1)) {
+    				 EvaluationSheet ev = new EvaluationSheet(0, false,evaluationService.findEval(evalId).getType().name()+" evaluation of "+ evaluationService.findEval(evalId).getDate(), "");
+    				 GoalByEmployeId pk = new GoalByEmployeId(e.getId(), evaluationService.LastGoalByEval(evalId).getId(), 0,0);
+    				 ev.addGoalEmploye(new GoalByEmploye(pk));
+    				 evaluationService.createEvaluationSheet(ev);
+    				 
+    			 }
+    			 
+    			 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Goal added!"));
+        		 return "evaluationDetails.xhtml?faces-redirect=true";
+    		 }
+    		
+    	 }    
+    	 else
+    		 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Fill correctly!"));
+    	 return "evaluationDetails.xhtml?faces-redirect=true";
      }
 }

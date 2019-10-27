@@ -57,6 +57,7 @@ public class Skill implements Serializable {
 		this.category = category;
 	}
 
+	@OneToMany(mappedBy="skill")
 	public int getId() {
 		return id;
 	}

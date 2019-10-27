@@ -1,3 +1,4 @@
+
 package entity;
 
 import java.io.Serializable;
@@ -8,18 +9,37 @@ import javax.persistence.*;
 public class Goal implements Serializable{
       @Id
       @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int ID_Goal;
+	private int id;
 	private GoalType type;
 	private String text;
-	private boolean state;
+	
+	
+	public Goal(int id, GoalType type, String text, Evaluation evaluation) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.text = text;
+		this.evaluation = evaluation;
+	}
+	public Goal() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	@ManyToOne
 	private Evaluation evaluation;
-	public int getID_Goal() {
-		return ID_Goal;
+	public Evaluation getEvaluation() {
+		return evaluation;
 	}
-	public void setID_Goal(int iD_Goal) {
-		ID_Goal = iD_Goal;
+	public void setEvaluation(Evaluation evaluation) {
+		this.evaluation = evaluation;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public GoalType getType() {
 		return type;
 	}
@@ -32,17 +52,6 @@ public class Goal implements Serializable{
 	public void setText(String text) {
 		this.text = text;
 	}
-	public boolean isState() {
-		return state;
-	}
-	public void setState(boolean state) {
-		this.state = state;
-	}
-	public Evaluation getEvaluation() {
-		return evaluation;
-	}
-	public void setEvaluation(Evaluation evaluation) {
-		this.evaluation = evaluation;
-	}
+	
 	
 }

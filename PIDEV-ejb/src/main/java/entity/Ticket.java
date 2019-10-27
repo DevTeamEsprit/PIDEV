@@ -2,11 +2,16 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Ticket implements Serializable {
@@ -15,17 +20,34 @@ public class Ticket implements Serializable {
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private int id;
 	private String name;
-	private int description;
+	private String description;
+	@Enumerated(EnumType.STRING)
+	private StatusTicket status;
 	private Date startDate;
 	private Date endDate;
+	@ManyToOne
+	private Project project; 
+	@ManyToOne
+	private Employe employe; 
 	
-	public Ticket(int id, String name, int description, Date startDate, Date endDate) {
+
+	public Ticket(int id, String name, String description, StatusTicket status, Date startDate, Date endDate,
+			Project project, Employe employe) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.status = status;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.project = project;
+		this.employe = employe;
+	}
+	public Employe getEmploye() {
+		return employe;
+	}
+	public void setEmploye(Employe employe) {
+		this.employe = employe;
 	}
 	public Ticket() {
 		super();
@@ -42,10 +64,10 @@ public class Ticket implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getDescription() {
+	public String getDescription() {
 		return description;
 	}
-	public void setDescription(int description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 	public Date getStartDate() {
@@ -60,6 +82,19 @@ public class Ticket implements Serializable {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	public Project getProject() {
+		return project;
+	}
+	public void setProject(Project project) {
+		this.project = project;
+	}
+	public StatusTicket getStatus() {
+		return status;
+	}
+	public void setStatus(StatusTicket status) {
+		this.status = status;
+	}
+	 
 	
 	
 	

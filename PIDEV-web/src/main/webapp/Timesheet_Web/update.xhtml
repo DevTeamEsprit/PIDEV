@@ -1,0 +1,58 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j" template="/template/index.xhtml">
+	<ui:param name="page_name" value="index" />
+	<ui:define name="content2">
+
+			<h:form styleClass="form">
+				<div style="color: red">#{timesheetUpdateBean.error}</div>
+
+				<div style="width: 60%">
+					<div class="form-group">
+						<label>Name</label>
+						<h:inputText styleClass="form-control"
+							value="#{timesheetUpdateBean.ticket.name}" />
+					</div>
+					<div class="form-group">
+						<label>Description</label>
+						<h:inputText styleClass="form-control"
+							value="#{timesheetUpdateBean.ticket.description}" />
+
+					</div>
+					<div class="form-group">
+						<label>Start Date</label>
+						<h:inputText styleClass="form-control"
+							value="#{timesheetUpdateBean.startDateString}" />
+
+					</div>
+					<div class="form-group">
+						<label>End Date</label>
+						<h:inputText styleClass="form-control"
+							value="#{timesheetUpdateBean.endDateString}" />
+
+					</div>
+
+					<h:commandButton styleClass="btn btn-success"
+						action="#{timesheetUpdateBean.doUpdateTicket()}"
+						value="Update Ticket" />
+				</div>
+
+			</h:form>
+
+
+			</h:panelGrid>
+			</h:form>
+
+
+		</h:body>
+		</html>
+
+	</ui:define>
+
+</ui:composition>

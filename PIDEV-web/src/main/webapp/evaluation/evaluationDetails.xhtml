@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -8,10 +9,36 @@
       <h2><h:outputText value="#{evaluationBean.evalTitle}"></h:outputText>  </h2>
       </h:head>
       <h:body>
+      <h3>List of goals</h3>
+      <ol>
+       <ui:repeat value="#{evaluationBean.goals}" var="item">
+       <li><h:outputText value="#{item.text} (#{item.type})"/></li>
+       </ui:repeat>
+          </ol>
+          <h3>List of employees</h3>
+           <ol>
+       <ui:repeat value="#{evaluationBean.employes}" var="item">
+       <li><h:outputText value="#{item.nom} #{item.prenom}"/></li>
+       </ui:repeat>
+          </ol>
       <h:form id="form1">
-      <h:commandButton id="btn-eval" value="Switch state" action="#{evaluationBean.SwitchEvaluation}"></h:commandButton>
+      
+      <h:panelGrid columns="2">
+      <h:outputText>Goal Text</h:outputText><h:inputText value="#{evaluationBean.goalext}"></h:inputText>
+      <h:outputText>Goal type</h:outputText><h:selectOneMenu value="#{evaluationBean.goaltype}">
+<f:selectItem itemLabel ="Select the type"/>
+<f:selectItems value="#{goalTypes.goals}"/>
+</h:selectOneMenu>
+<h:commandButton id="btn-goal" value="Add goal" action="#{evaluationBean.addGoal}"></h:commandButton>
+<h:message for="btn-goal"/>
+      <h:commandButton id="btn-eval" value="Switch state of the evaluation" action="#{evaluationBean.SwitchEvaluation}"></h:commandButton>
       <h:message for="btn-eval"/>
+      </h:panelGrid>
+      
       </h:form>
+       <ul>
        
+       </ul>
       </h:body>
+
 </html>

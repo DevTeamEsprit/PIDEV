@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -5,9 +6,10 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"> 
       <h:body>
+      <h2>List of  evaluations</h2>
       <ul>
     <ui:repeat value="#{evaluationBean.evals}" var="eval">
-        <li>
+        <li >
         <h:form>
             <h:commandButton value="Evaluation of #{eval.date}" action="#{evaluationBean.showEval}">
             <f:setPropertyActionListener target="#{evaluationBean.date}" value="#{eval.date}" />
@@ -24,4 +26,5 @@
 <h:link outcome="evaluationAdd" value="Add an evaluation"></h:link>
 </h:form>
       </h:body>
+
 </html>

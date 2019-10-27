@@ -1,0 +1,26 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j" template="/template/index.xhtml">
+	<ui:param name="page_name" value="index" />
+
+	<ui:define name="content2">
+		<h5>Ticket</h5>
+		<h2>Name : #{timesheetDetailsBean.detailsTicket.name}</h2>
+		<div>Description : #{timesheetDetailsBean.detailsTicket.description}</div>
+		<div>Status : #{timesheetDetailsBean.detailsTicket.status.toString()}
+		</div>
+		<h:form>
+			<h:commandButton action="#{timesheetDetailsBean.doUpdateStatus('progress')}" styleClass="btn btn-primary" value="Progress">
+			</h:commandButton>
+			
+			<h:commandButton action="#{timesheetDetailsBean.doUpdateStatus('done')}" styleClass="btn btn-success" value="Done">
+			</h:commandButton>
+		</h:form>
+	</ui:define>
+</ui:composition>

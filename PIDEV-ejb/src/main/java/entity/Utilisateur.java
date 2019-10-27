@@ -21,7 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import entity.skill.UserQuestionQuizResponse;
+ 
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -68,8 +68,7 @@ public class Utilisateur implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
 	private List<Commentaire> lstcom;
 
-	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
-	private List<UserQuestionQuizResponse> qqResponses;
+ 
 
 	public List<Commentaire> getLstcom() {
 		return lstcom;
@@ -239,4 +238,12 @@ public class Utilisateur implements Serializable {
 				+ ", tel=" + tel + ", email=" + email + ", password=" + password + ", datNais=" + datNais + "]";
 	}
 
+ 
+ 
+ 
+ 
+	
+	
+	
 }
+ 
