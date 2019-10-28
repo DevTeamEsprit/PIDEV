@@ -39,6 +39,7 @@ public class CommentaireService {
     public void delete(long id_com) {
     	em.remove(em.find(Commentaire.class,id_com));
     }
+    
      
 
 }

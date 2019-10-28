@@ -1,35 +1,34 @@
 package managedBean;
 
-import java.io.File;
+ 
 import java.io.IOException;
 
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+ 
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
+ 
+ 
 import java.util.List;
-import java.util.Map;
+ 
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
+ 
 import javax.faces.bean.ManagedBean;
-
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
+ 
 import javax.inject.Inject;
 
 import org.primefaces.model.UploadedFile;
 
+import dto.PublicationCommentaireDto;
 import entity.Commentaire;
 import entity.Contrat;
 import entity.Employe;
 import entity.Publication;
-import entity.TypeContrat;
-import entity.Utilisateur;
-import io.undertow.util.FileUtils;
+ 
+ 
 import service.ServiceManager;
 
 @ManagedBean(name = "utilisateurbean")
@@ -42,8 +41,21 @@ public class UtilisateurBean implements Serializable {
 	private Employe emp = new Employe();
 	private List<Employe> lstEmploye;
 	private String dated, datef;
+	 
+ 
 	private Employe selectedEmploye;
-	private Map<Publication, Commentaire> mapPublicationsselected = new HashMap<>();
+ 
+	
+	@ManagedProperty(value = "#{loginbean}")
+	private Loginbean lb;
+	
+	public Loginbean getLb() {
+		return lb;
+	}
+
+	public void setLb(Loginbean lb) {
+		this.lb = lb;
+	}
 
 	public Employe getSelectedEmploye() {
 		return selectedEmploye;
@@ -62,9 +74,13 @@ public class UtilisateurBean implements Serializable {
 	}
 
 	@PostConstruct
-	public void init() {
+	public void init() throws IOException {
+		if (this.lb.getUser() == null) {
+			this.serviceManager.goToPage("../login.jsf");
+		}
+		
 		this.listerEmployes();
-		System.out.println(this.lstEmploye.size());
+		
 	}
 
 	public String getDated() {
@@ -104,10 +120,12 @@ public class UtilisateurBean implements Serializable {
 	}
 
 	public Contrat getContrat() {
-		System.out.println("sdvn");
+	 
 		return contrat;
 	}
 
+ 
+ 
 	public void setContrat(Contrat contrat) {
 		this.contrat = contrat;
 	}
@@ -146,20 +164,25 @@ public class UtilisateurBean implements Serializable {
 		}
 
 	}
-
-	public Map<Publication, Commentaire> getMapPublicationsselected() {
-		return mapPublicationsselected;
+	public List<PublicationCommentaireDto> convertListBeforeJava8(List<Publication> l) {
+		List<PublicationCommentaireDto> list = new ArrayList<>();
+		for (Publication pub : l) {
+			list.add(new PublicationCommentaireDto(pub, new Commentaire(pub)));
+		}
+		return list;
 	}
 
-	public void setMapPublicationsselected(Map<Publication, Commentaire> mapPublicationsselected) {
-		this.mapPublicationsselected = mapPublicationsselected;
-	}
+
+ 
 
 	public String goProfile(Employe u) {
 		this.selectedEmploye = u;
-		this.mapPublicationsselected = this.serviceManager.getPubsUser(u);
-		// System.out.println(u);
+		 
+ 	
 		return "Profile?faces-redirect=true";
 	}
+	
+ 
 
 }
+ 

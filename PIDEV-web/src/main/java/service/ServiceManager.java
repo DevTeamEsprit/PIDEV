@@ -1,3 +1,4 @@
+
 package service;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import Service.CommentaireService;
 import Service.MessageService;
 import Service.PublicationService;
 import Service.UtilisateurService;
+import dto.PublicationCommentaireDto;
 import entity.Commentaire;
 import entity.Contrat;
 import entity.Employe;
@@ -49,12 +51,8 @@ public class ServiceManager implements Serializable {
 		return this.publicationService.listerPub();
 	}
 
-	public Map<Publication, Commentaire> getPubsUser(Employe emp) {
-		Map<Publication, Commentaire> map = new HashMap<>();
-		for (Publication pub : this.publicationService.getuserPub(emp)) {
-			map.put(pub, new Commentaire(pub));
-		}
-		return map;
+	public List<Publication> getPubsUser(Employe emp) {
+		return this.publicationService.getuserPub(emp);
 	}
 
 	public void addPub(Publication publication) {
@@ -65,9 +63,11 @@ public class ServiceManager implements Serializable {
 		this.commentaireService.addComm(c);
 	}
 
+	
 	public void deleteCom(long id_com) {
 		this.commentaireService.delete(id_com);
 	}
+	
 
 	public Utilisateur getUser(Long iduser) {
 		return this.utilisateurService.getUser(iduser);
@@ -97,4 +97,4 @@ public class ServiceManager implements Serializable {
 		return users;
 	}
 }
- 
+  
