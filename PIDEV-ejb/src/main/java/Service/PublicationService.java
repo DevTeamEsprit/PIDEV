@@ -47,7 +47,7 @@ public class PublicationService {
     }
     
     public List<Publication> listerPub(){
-		TypedQuery<Publication> query = em.createQuery("select p from Publication p ORDER BY p.id ", 
+		TypedQuery<Publication> query = em.createQuery("select p from Publication p ORDER BY p.id DESC", 
 				Publication.class);
 		
 		try {

@@ -130,4 +130,8 @@ public class PublicationBean implements Serializable {
 		this.getPubs();
 	}
  
+	public void deltePublication(Publication p) {
+		this.serviceManager.deletePub(p.getId());
+		this.getPubs();
+	}
 }

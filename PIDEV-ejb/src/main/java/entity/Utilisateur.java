@@ -47,6 +47,16 @@ public class Utilisateur implements Serializable {
 	private String image;
 	@Enumerated(EnumType.STRING)
 	private Sexe sexe;
+	private boolean firstLogin;
+
+	
+	public boolean isFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
 
 	@OneToMany(mappedBy = "sender")
 	private List<Message> messagesSent;

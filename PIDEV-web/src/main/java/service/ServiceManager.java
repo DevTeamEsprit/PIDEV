@@ -96,5 +96,11 @@ public class ServiceManager implements Serializable {
 
 		return users;
 	}
+
+
+	public void deletePub(long idPub) {
+		this.publicationService.deletePublication(idPub);
+		
+	}
 }
   
