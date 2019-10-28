@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/templateNewChat.xhtml">
+	<ui:param name="page_name" value="index" />
+	<ui:define name="pageTitle">Direct Chat</ui:define>
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- DIRECT CHAT PRIMARY -->
+				<div class="card card-primary card-outline direct-chat direct-chat-primary">
+					<div class="card-header">
+						<h3 class="card-title">#{chatBean.userChat.prenom} #{chatBean.userChat.nom}</h3>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body">
+						<!-- Conversations are loaded here -->
+						<div id="direct-chat-messages" class="direct-chat-messages scrollbar-chat"></div>
+						<!--/.direct-chat-messages-->
+					</div>
+					<!-- /.card-body -->
+					<div class="card-footer">
+						<form name="formChat" id="formChat" method="post">
+							<div class="input-group">
+							<input type="text"  name="id_user" value="#{loginbean.user.id}" style="display: none;"/>	
+							<input type="text"  name="id_receiver" value="#{chatBean.userChat.id}" style="display: none;"/>	
+								<input type="text" name="message" id="message" placeholder="Type Message ..." class="form-control" />
+								<span class="input-group-append">
+									<button type="button" id="btn-send-message" class="btn btn-primary">Send</button>
+								</span>
+							</div>
+						</form>
+					</div>
+					<!-- /.card-footer-->
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

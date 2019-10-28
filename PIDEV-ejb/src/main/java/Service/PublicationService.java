@@ -34,11 +34,6 @@ public class PublicationService {
     
     
     public void addPublicaion(Publication p ) {
-    	Utilisateur u =em.find(Utilisateur.class,1L);
-    	if(u instanceof Employe)
-    		p.setUser((Employe)u);
-    	else
-    		p.setUser((Manager)u);
     	em.persist(p);
     }
     
@@ -51,7 +46,7 @@ public class PublicationService {
     }
     
     public List<Publication> listerPub(){
-		TypedQuery<Publication> query = em.createQuery("select p from Publication p ORDER BY p.dateCreation  DESC", 
+		TypedQuery<Publication> query = em.createQuery("select p from Publication p ORDER BY p.id DESC", 
 				Publication.class);
 		
 		try {
@@ -63,13 +58,14 @@ public class PublicationService {
 		return null;
     }
     
-    public Utilisateur getuserPub(long id) {
-    	TypedQuery<Publication> query = em.createQuery("select p.user from Publication p where id=5", 
+    public List<Publication> getuserPub(Utilisateur u) {
+    	TypedQuery<Publication> query = em.createQuery("select p from Publication p where p.user.id=:id", 
 				Publication.class);
+    	query.setParameter("id", u.getId());
 		
 		try {
 			System.out.println(query.getResultList().size());
-			return query.getSingleResult().getUser();
+			return query.getResultList();
 		}catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

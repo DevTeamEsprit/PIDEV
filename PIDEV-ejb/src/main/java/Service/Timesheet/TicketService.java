@@ -82,7 +82,7 @@ public class TicketService implements TicketServiceRemote, TicketServiceLocal {
 	@Override
 	public List<Ticket> getTicketsByProjectByStaus(int idProject, StatusTicket status) {
 		// TODO Auto-generated method stub
-		return null;
+		return em.createQuery("from Ticket t where t.project.id="+idProject+" and t.status='"+status.toString()+"'", Ticket.class).getResultList();
 	}
 
 	/*@Override
