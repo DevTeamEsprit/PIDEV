@@ -12,18 +12,26 @@ import javax.persistence.ManyToOne;
 import entity.Utilisateur;
 
 @Entity
-public class UserQuiz implements Serializable  {
- 
+public class UserQuiz implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	@JoinColumn(name="user_id", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private Utilisateur user;
 	@ManyToOne
-	@JoinColumn(name="quiz_id", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name = "quiz_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private Quiz quiz;
 	private int score;
+
+	public UserQuiz()
+	{
+		
+	}
+	
 	public UserQuiz(int id, Utilisateur user, Quiz quiz, int score) {
 		super();
 		this.id = id;
@@ -31,30 +39,44 @@ public class UserQuiz implements Serializable  {
 		this.quiz = quiz;
 		this.score = score;
 	}
+
+	public UserQuiz(Utilisateur user, Quiz quiz, int score) {
+		super();
+		this.user = user;
+		this.quiz = quiz;
+		this.score = score;
+	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public Utilisateur getUser() {
 		return user;
 	}
+
 	public void setUser(Utilisateur user) {
 		this.user = user;
 	}
+
 	public Quiz getQuiz() {
 		return quiz;
 	}
+
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
 	}
+
 	public int getScore() {
 		return score;
 	}
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
-	
+
 }

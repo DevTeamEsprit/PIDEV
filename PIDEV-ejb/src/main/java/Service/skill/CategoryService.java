@@ -50,4 +50,25 @@ public class CategoryService implements CategoryServiceRemote {
 		return null;
 	}
 
+	@Override
+	public List<Category> ListAllCategories() {
+		TypedQuery<Category> query = em.createQuery("Select c from Category c ", Category.class);
+		try {
+			return query.getResultList();
+		}
+
+		catch (Exception e) {
+			System.out.print("error");
+		}
+		return null;
+	}
+	
+	@Override
+	public Category getCategoryById(int categoryId)
+	{
+		Category category = em.find(Category.class, categoryId);
+		
+		return category;
+	}
+
 }

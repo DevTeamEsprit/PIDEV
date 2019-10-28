@@ -21,7 +21,6 @@ public class Skill implements Serializable {
 	private int id;
 	private String name;
 	private String description;
-	//private int level;
 	@ManyToOne(cascade= {CascadeType.PERSIST})
 	private Category category;
 	@OneToMany(mappedBy="skill")
@@ -44,6 +43,7 @@ public class Skill implements Serializable {
 		this.category = category;
 		this.quizzes = quizzes;
 	}
+	
 
 	public Skill() {
 		super();
@@ -52,6 +52,12 @@ public class Skill implements Serializable {
 	public Skill(int id, String name, String description,  Category category ) {
 		super();
 		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.category = category;
+	}
+
+	public Skill(String name, Category category, String description) {
 		this.name = name;
 		this.description = description;
 		this.category = category;

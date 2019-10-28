@@ -15,7 +15,7 @@ public class Loginbean implements Serializable{
 	
 	private String login;
 	private String password;
-	private Utilisateur e = new Utilisateur();
+	private Utilisateur user = new Utilisateur();
 
 	@EJB
 	UtilisateurService utilisateurService;
@@ -34,5 +34,13 @@ public class Loginbean implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Utilisateur getUser() {
+		return user;
+	}
+
+	public void setUser(Utilisateur user) {
+		this.user = user;
 	}
 }

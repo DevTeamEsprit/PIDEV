@@ -24,6 +24,12 @@ public class UserSkill implements Serializable {
 	@JoinColumn(name="skill_id", referencedColumnName="id", insertable = false, updatable = false)
 	private Skill skill;
 	private int level;
+	
+	public UserSkill()
+	{
+		
+	}
+	
 	public UserSkill(int id, Utilisateur user, Skill skill, int level) {
 		super();
 		this.id = id;
@@ -31,6 +37,14 @@ public class UserSkill implements Serializable {
 		this.skill = skill;
 		this.level = level;
 	}
+	public UserSkill(Utilisateur user, Skill skill, int level) {
+		super();
+		this.id = id;
+		this.user = user;
+		this.skill = skill;
+		this.level = level;
+	}
+	
 	public int getId() {
 		return id;
 	}

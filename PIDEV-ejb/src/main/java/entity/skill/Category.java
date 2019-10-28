@@ -54,6 +54,6 @@ public class Category implements Serializable {
 	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
 	}
-	
+		
 	
 }

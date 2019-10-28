@@ -17,21 +17,24 @@ import javax.persistence.OneToMany;
 public class Quiz implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(name = "title")
 	private String title;
-	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Skill skill;
-	
-	@OneToMany(mappedBy="quiz")
+
+	@OneToMany(mappedBy = "quiz")
 	private List<QuizQuestion> questions;
 
-	@OneToMany(mappedBy="quiz")
+	@Column(name = "required_min_level", columnDefinition = "int default 1")
+	private int requiredMinLevel;
+
+	@OneToMany(mappedBy = "quiz")
 	public int getId() {
 		return id;
 	}
@@ -64,9 +67,12 @@ public class Quiz implements Serializable {
 		this.questions = questions;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public int getRequiredMinLevel() {
+		return requiredMinLevel;
 	}
-	
-	
+
+	public void setRequiredMinLevel(int requiredMinLevel) {
+		this.requiredMinLevel = requiredMinLevel;
+	}
+
 }
