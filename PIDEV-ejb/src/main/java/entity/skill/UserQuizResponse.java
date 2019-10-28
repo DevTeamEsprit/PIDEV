@@ -17,7 +17,7 @@ public class UserQuizResponse implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	@ManyToOne
 	@JoinColumn(name="user_id", referencedColumnName="id", insertable = true, updatable = true)
 	private Utilisateur user;
@@ -40,11 +40,11 @@ public class UserQuizResponse implements Serializable {
 		this.isChecked = isChecked;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

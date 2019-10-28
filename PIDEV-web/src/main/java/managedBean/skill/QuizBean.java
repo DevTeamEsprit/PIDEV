@@ -1,7 +1,9 @@
 package managedBean.skill;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -40,6 +42,8 @@ public class QuizBean {
 	long selectedSkillId;
 	long selectedQuizId;
 
+	private Map<QuizQuestion, List<Long>> questionAnswersMap = new HashMap<QuizQuestion, List<Long>>();
+	
 	boolean canStartQuiz = false;
 
 	Category selectedCategory;
@@ -52,6 +56,28 @@ public class QuizBean {
 	// private Loginbean lb;
 
 	List<Category> categories;
+	public Long[] getRespIds() {
+		System.out.println("!!");
+		
+		for(Long resp: respIds)
+		{
+			System.out.println(resp);
+		}
+		
+		return respIds;
+	}
+
+	public void setRespIds(Long[] respIds) {
+		System.out.println("??");
+		
+		for(Long resp: respIds)
+		{
+			System.out.println(resp);
+		}
+		
+		this.respIds = respIds;
+	}
+
 	List<Skill> skills;
 
 	@PostConstruct
@@ -208,6 +234,14 @@ public class QuizBean {
 		QuizQuestion quizQuestion = quizQuestions.get(userQuiz.getCurrentQuestionIndex());
 
 		return quizQuestion;
+	}
+
+	public Map<QuizQuestion, List<Long>> getQuestionAnswersMap() {
+		return questionAnswersMap;
+	}
+
+	public void setQuestionAnswersMap(Map<QuizQuestion, List<Long>> questionAnswersMap) {
+		this.questionAnswersMap = questionAnswersMap;
 	}
 
 	public void updateUserQuestionResponse(long responseId, boolean toChecked) {
