@@ -44,8 +44,8 @@ public class QuizService implements QuizServiceRemote {
 	@Override
 	public List<QuizQuestion> listQuestions(Quiz quiz) {
 
-		TypedQuery<QuizQuestion> query = em.createQuery("Select q from QuizQuestion where q.quiz=:quiz",
-				QuizQuestion.class);
+		TypedQuery<QuizQuestion> query = em.createQuery("SELECT Q FROM " + QuizQuestion.class.getName() + " Q WHERE Q.quiz = :quiz",
+				QuizQuestion.class).setParameter("quiz", quiz);
 		try {
 			return query.getResultList();
 		}
@@ -60,6 +60,7 @@ public class QuizService implements QuizServiceRemote {
 	public UserQuiz getOrCreateUserQuiz(long userId, long quizId) {
 		List<UserQuiz> userQuizs = em
 				.createQuery("SELECT UQ FROM " + UserQuiz.class.getName() + " UQ"
+						+ " JOIN FETCH UQ.quiz Q JOIN FETCH Q.questions QS"
 						+ " WHERE UQ.user.id = :userId AND UQ.quiz.id = :quizId", UserQuiz.class)
 				.setParameter("userId", userId).setParameter("quizId", quizId).getResultList();
 
@@ -84,7 +85,6 @@ public class QuizService implements QuizServiceRemote {
 			}
 
 			userQuiz = new UserQuiz(user, quiz, 1);
-			userQuiz.setCurrentQuestionIndex(1);
 			
 			em.persist(userQuiz);
 

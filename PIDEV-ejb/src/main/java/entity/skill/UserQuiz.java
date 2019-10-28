@@ -30,7 +30,7 @@ public class UserQuiz implements Serializable {
 	private Quiz quiz;
 	private int score;
 
-	@Column(name = "curr_question_index", columnDefinition="int default 1")
+	@Column(name = "curr_question_index")
 	private int currentQuestionIndex;
 	
 	public UserQuiz()

@@ -18,7 +18,7 @@ public class QuestionResponse implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 
 	private boolean isCorrect;
 	private String content;
@@ -29,7 +29,7 @@ public class QuestionResponse implements Serializable {
 	public QuestionResponse() {
 	}
 
-	public QuestionResponse(int id, boolean isCorrect, String content, QuizQuestion question) {
+	public QuestionResponse(long id, boolean isCorrect, String content, QuizQuestion question) {
 		super();
 		this.id = id;
 		this.isCorrect = isCorrect;
@@ -38,11 +38,11 @@ public class QuestionResponse implements Serializable {
 	}
 
 	@OneToMany(mappedBy="response")
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

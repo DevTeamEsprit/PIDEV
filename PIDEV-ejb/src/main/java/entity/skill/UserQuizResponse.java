@@ -22,18 +22,20 @@ public class UserQuizResponse implements Serializable {
 	@JoinColumn(name="user_id", referencedColumnName="id", insertable = false, updatable = false)
 	private Utilisateur user;
 	@ManyToOne
-	@JoinColumn(name="quiz_id", referencedColumnName="id", insertable = false, updatable = false)
-	private Quiz quiz;
-	@ManyToOne
 	@JoinColumn(name="response_id", referencedColumnName="id", insertable = false, updatable = false)
 	private QuestionResponse response;
 	private boolean isChecked;
-	
-	public UserQuizResponse(int id, Utilisateur user, Quiz quiz, QuestionResponse response, boolean isChecked) {
+	public UserQuizResponse() {}
+	public UserQuizResponse(int id, Utilisateur user, QuestionResponse response, boolean isChecked) {
 		super();
 		this.id = id;
 		this.user = user;
-		this.quiz = quiz;
+		this.response = response;
+		this.isChecked = isChecked;
+	}
+	public UserQuizResponse( Utilisateur user, QuestionResponse response, boolean isChecked) {
+		super();
+		this.user = user;
 		this.response = response;
 		this.isChecked = isChecked;
 	}
@@ -52,14 +54,6 @@ public class UserQuizResponse implements Serializable {
 
 	public void setUser(Utilisateur user) {
 		this.user = user;
-	}
-
-	public Quiz getQuiz() {
-		return quiz;
-	}
-
-	public void setQuiz(Quiz quiz) {
-		this.quiz = quiz;
 	}
 
 	public QuestionResponse getResponse() {

@@ -1,5 +1,6 @@
 package managedBean.skill;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,13 +10,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import Service.skill.CategoryService;
+import Service.skill.QuestionService;
 import Service.skill.QuizService;
 import Service.skill.SkillService;
 import entity.Utilisateur;
 import entity.skill.Category;
+import entity.skill.QuestionResponse;
 import entity.skill.Quiz;
+import entity.skill.QuizQuestion;
 import entity.skill.Skill;
 import entity.skill.UserQuiz;
+import entity.skill.UserQuizResponse;
 import entity.skill.UserSkill;
 
 @ManagedBean(name = "quizBean", eager = true)
@@ -28,6 +33,8 @@ public class QuizBean {
 	SkillService skillService;
 	@EJB
 	QuizService quizService;
+	@EJB
+	QuestionService questionService;
 
 	long selectedCategoryId;
 	long selectedSkillId;
@@ -38,6 +45,9 @@ public class QuizBean {
 	Category selectedCategory;
 	Skill selectedSkill;
 	UserQuiz userQuiz;
+	QuizQuestion currentQuizQuestion;
+	List<QuestionResponse> questionResponses;
+	List<Long> selectedResponseIds;
 
 	// @ManagedProperty(value = "#{loginBean}")
 	// private Loginbean lb;
@@ -50,7 +60,7 @@ public class QuizBean {
 		categories = categoryService.ListAllCategories();
 
 		canStartQuiz = false;
-		
+
 		if (selectedCategoryId > 0)
 			skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 	}
@@ -112,6 +122,58 @@ public class QuizBean {
 		userQuiz = quizService.getOrCreateUserQuiz(user.getId(), quizId);
 
 		return navTo;
+	}
+
+	public String nextQuestion() {
+		System.out.println("nextQuestion called!");
+		return "";
+	}
+
+	public String previousQuestion() {
+		System.out.println("previousQuestion called!");
+		return "";
+	}
+
+	public QuizQuestion getCurrentQuizQuestion() {
+		if (userQuiz == null)
+			return null;
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return null;
+
+		return quizQuestions.get(userQuiz.getCurrentQuestionIndex());
+	}
+
+	public List<QuestionResponse> getQuestionResponses() {
+		QuizQuestion quizQuestion = getCurrentQuizQuestion();
+
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		List<QuestionResponse> questionResponses = questionService.listResponses(quizQuestion);
+
+		// Init or check for user-response rows in database
+		for (QuestionResponse questionResponse : questionResponses)
+			questionService.getOrCreateUserQuestionResponse(user.getId(), questionResponse.getId());
+
+		return questionResponses;
+	}
+
+	public void updateUserQuestionResponse(long responseId, boolean toChecked) {
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		UserQuizResponse userQuizResponse = questionService.getOrCreateUserQuestionResponse(user.getId(), responseId);
+
+		if (userQuizResponse == null) {
+			System.out.println("Got non-valid user quiz response with responseId: " + responseId);
+			return;
+		}
+
+		userQuizResponse.setChecked(toChecked);
+		questionService.updateUserQuizResponse(userQuizResponse);
 	}
 
 	/*
@@ -204,6 +266,14 @@ public class QuizBean {
 
 	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
+	}
+
+	public List<Long> getSelectedResponseIds() {
+		return selectedResponseIds;
+	}
+
+	public void setSelectedResponseIds(List<Long> selectedResponseIds) {
+		this.selectedResponseIds = selectedResponseIds;
 	}
 
 	public UserQuiz getUserQuiz() {
