@@ -84,6 +84,9 @@ public class QuizService implements QuizServiceRemote {
 			}
 
 			userQuiz = new UserQuiz(user, quiz, 1);
+			userQuiz.setCurrentQuestionIndex(1);
+			
+			em.persist(userQuiz);
 
 		} else {
 			userQuiz = userQuizs.get(0);

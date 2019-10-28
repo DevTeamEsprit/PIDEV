@@ -29,9 +29,9 @@ public class QuizBean {
 	@EJB
 	QuizService quizService;
 
-	int selectedCategoryId;
-	int selectedSkillId;
-	int selectedQuizId;
+	long selectedCategoryId;
+	long selectedSkillId;
+	long selectedQuizId;
 
 	boolean canStartQuiz = false;
 
@@ -39,8 +39,8 @@ public class QuizBean {
 	Skill selectedSkill;
 	UserQuiz userQuiz;
 
-	//@ManagedProperty(value = "#{loginBean}")
-	//private Loginbean lb;
+	// @ManagedProperty(value = "#{loginBean}")
+	// private Loginbean lb;
 
 	List<Category> categories;
 	List<Skill> skills;
@@ -49,6 +49,8 @@ public class QuizBean {
 	private void init() {
 		categories = categoryService.ListAllCategories();
 
+		canStartQuiz = false;
+		
 		if (selectedCategoryId > 0)
 			skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 	}
@@ -65,6 +67,15 @@ public class QuizBean {
 
 		skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 		skills.stream().forEach(e -> System.out.println(e.getName()));
+
+		if (skills == null || skills.size() == 0) {
+			canStartQuiz = false;
+			return;
+		}
+
+		selectedSkillId = skills.get(0).getId();
+
+		refreshQuiz(abe);
 	}
 
 	public void refreshQuiz(AjaxBehaviorEvent abe) {
@@ -73,7 +84,7 @@ public class QuizBean {
 
 		System.out.println("refreshQuiz is called!");
 		System.out.println("canStartQuiz: " + canStartQuiz);
-		
+
 		if (quiz == null) {
 			// Disable the quiz starting button
 			return;
@@ -94,8 +105,9 @@ public class QuizBean {
 		// What quiz to select?
 		long quizId = quiz.getId();
 
-		Utilisateur user = new Utilisateur(); user.setId(1);//lb.getUser();
-		
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
 		// Check if UserQuiz exists, create one if not, and get it
 		userQuiz = quizService.getOrCreateUserQuiz(user.getId(), quizId);
 
@@ -115,18 +127,18 @@ public class QuizBean {
 		if (selectedCategoryId == 0 || selectedSkillId == 0)
 			return null;
 
-		Utilisateur user = new Utilisateur(); user.setId(1);//lb.getUser();
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
 
 		// Before knowing the quiz, what's the level of the user with the selected
 		// skill?
 		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
-		
-		if(userSkill == null)
-		{
+
+		if (userSkill == null) {
 			System.out.println("Check your user's existence for id: " + user.getId());
 			return null;
 		}
-		
+
 		int lookForLevel = userSkill.getLevel() + 1;
 
 		Quiz quiz = quizService.getQuizOfSkillWithLevel(selectedSkillId, lookForLevel);
@@ -138,19 +150,19 @@ public class QuizBean {
 	 * Getters & Setters
 	 */
 
-	public int getSelectedCategoryId() {
+	public long getSelectedCategoryId() {
 		return selectedCategoryId;
 	}
 
-	public void setSelectedCategoryId(int selectedCategoryId) {
+	public void setSelectedCategoryId(long selectedCategoryId) {
 		this.selectedCategoryId = selectedCategoryId;
 	}
 
-	public int getSelectedSkillId() {
+	public long getSelectedSkillId() {
 		return selectedSkillId;
 	}
 
-	public void setSelectedSkillId(int selectedSkillId) {
+	public void setSelectedSkillId(long selectedSkillId) {
 		this.selectedSkillId = selectedSkillId;
 	}
 
@@ -192,6 +204,14 @@ public class QuizBean {
 
 	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
+	}
+
+	public UserQuiz getUserQuiz() {
+		return userQuiz;
+	}
+
+	public void setUserQuiz(UserQuiz userQuiz) {
+		this.userQuiz = userQuiz;
 	}
 
 }

@@ -113,6 +113,7 @@ public class SkillService implements SkillServiceRemote {
 
 			// 0 for actual relation level, to start with quiz 1, and so...
 			userSkill = new UserSkill(user, skill, 0);
+			em.persist(userSkill);
 
 		} else {
 			userSkill = userSkills.get(0);

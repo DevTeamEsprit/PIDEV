@@ -20,10 +20,10 @@ public class UserSkill implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = true, updatable = true)
 	private Utilisateur user;
 	@ManyToOne
-	@JoinColumn(name = "skill_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "skill_id", referencedColumnName = "id", insertable = true, updatable = true)
 	private Skill skill;
 	private int level;
 

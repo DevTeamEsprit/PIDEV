@@ -3,6 +3,7 @@ package entity.skill;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,18 +23,21 @@ public class UserQuiz implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = true, updatable = true)
 	private Utilisateur user;
 	@ManyToOne
-	@JoinColumn(name = "quiz_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "quiz_id", referencedColumnName = "id", insertable = true, updatable = true)
 	private Quiz quiz;
 	private int score;
 
+	@Column(name = "curr_question_index", columnDefinition="int default 1")
+	private int currentQuestionIndex;
+	
 	public UserQuiz()
 	{
 		
 	}
-	
+
 	public UserQuiz(long id, Utilisateur user, Quiz quiz, int score) {
 		super();
 		this.id = id;
@@ -79,5 +83,13 @@ public class UserQuiz implements Serializable {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+	
+	public int getCurrentQuestionIndex() {
+		return currentQuestionIndex;
+	}
+
+	public void setCurrentQuestionIndex(int currentQuestionIndex) {
+		this.currentQuestionIndex = currentQuestionIndex;
 	}
 }

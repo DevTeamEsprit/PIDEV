@@ -24,7 +24,7 @@
 
 						<h:selectOneMenu class="browser-default custom-select"
 							value="#{quizBean.selectedCategoryId}">
-							<f:ajax listener="#{quizBean.changeSkill}" render="skill-select" />
+							<f:ajax listener="#{quizBean.changeSkill}" render="skill-select start-quiz-btn" />
 							<f:selectItems value="#{quizBean.categories}" var="category"
 								itemValue="#{category.id}" itemLabel="#{category.name}" />
 						</h:selectOneMenu>
@@ -45,7 +45,7 @@
 						class="btn btn-info btn-block my-4"
 							action="#{quizBean.goToQuiz}" type="submit"
 							value="Start the Quiz!" id="start-quiz-btn" 
-							disabled="#{quizBean.canStartQuiz}"/>
+							disabled="#{!quizBean.canStartQuiz}"/>
 
 					</h:form>
 				</div>
