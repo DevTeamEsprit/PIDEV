@@ -9,7 +9,7 @@
 	<ui:define name="pageTitle">Accueil</ui:define>
 	<ui:define name="content">
 		<div class="row">
-			<br></br>
+
 			<div class="col-md-9">
 
 				<!-- Box ajout publicaiton -->
@@ -40,7 +40,7 @@
 					</div>
 				</h:form>
 
-				<h:form id="publicationsForm">
+				<h:form   id="form">
 					<ui:repeat value="#{publicationBean.list}" var="entry">
 						<div class="card card-widget">
 							<div class="card-header">
@@ -58,19 +58,17 @@
 									</span>
 								</div>
 								<div class="card-tools">
-									<h:commandLink 
+									<p:commandLink
 										rendered="#{entry.publication.user.id == loginbean.user.id}"
-										class="btn btn-tool btn-tool-edit"
-										title="Modifier">
+										class="btn btn-tool btn-tool-edit" title="Modifier">
 										<i class="fas fa-edit"></i>
-									</h:commandLink>
-									<h:commandLink 
+									</p:commandLink>
+									<h:commandLink
 										rendered="#{entry.publication.user.id == loginbean.user.id}"
-										class="btn btn-tool btn-tool-delete"
-										title="Supprimer">
+										class="btn btn-tool btn-tool-delete" title="Supprimer">
 										<i class="fas fa-trash"></i>
 									</h:commandLink>
-									
+
 								</div>
 							</div>
 							<!-- /.card-header -->
@@ -94,6 +92,19 @@
 										<div class="comment-text">
 											<span class="username"> #{com.user.nom}
 												#{com.user.prenom} <span class="text-muted float-right">
+													<h:commandLink
+														rendered="#{com.user.id == loginbean.user.id}"
+														class="btn btn-tool btn-tool-edit" title="Modifier">
+														<i class="fas fa-edit"></i>
+													</h:commandLink> 
+													<h:commandLink 
+														action="#{publicationBean.deleteComentaire(com)}"
+														onclick="return confirm('Are you sure?')" update="@form"
+														rendered="#{com.user.id == loginbean.user.id}"
+														class="btn btn-tool btn-tool-delete" title="Supprimer">
+														<i class="fas fa-trash"></i>
+														  
+													</h:commandLink> 
 													<h:outputText id="date"
 														converterMessage="#{i18n['converter-message']}"
 														value="#{com.dateCreation}">

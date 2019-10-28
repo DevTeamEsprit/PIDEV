@@ -46,11 +46,11 @@ public class PublicationService {
     }
     
     public List<Publication> listerPub(){
-		TypedQuery<Publication> query = em.createQuery("select p from Publication p ORDER BY p.id DESC", 
+		TypedQuery<Publication> query = em.createQuery("select p from Publication p ORDER BY p.id ", 
 				Publication.class);
 		
 		try {
-			System.out.println(query.getResultList().size());
+		
 			return query.getResultList();
 		}catch (Exception e) {
 			System.err.println(e.getMessage());

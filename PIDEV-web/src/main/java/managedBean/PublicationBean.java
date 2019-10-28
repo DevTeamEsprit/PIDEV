@@ -39,8 +39,10 @@ public class PublicationBean implements Serializable {
 	private Utilisateur user;
 
 	private List<Publication> lstPublications;
+
 	private List<PublicationCommentaireDto> list = new ArrayList<>();
 
+	
 	@Inject
 	private ServiceManager serviceManager;
 
@@ -58,6 +60,9 @@ public class PublicationBean implements Serializable {
 			this.serviceManager.goToPage("../login.jsf");
 		}
 		this.getPubs();
+	 
+		 
+		
 	}
 
 	public Publication getPublication() {
@@ -89,9 +94,10 @@ public class PublicationBean implements Serializable {
 		if (this.lstPublications == null) {
 			this.lstPublications = new ArrayList<>();
 		}
-		this.list = this.convertListBeforeJava8();
+		this.list = this.convertListBeforeJava8(this.lstPublications);
 
 	}
+	
 
 	public void addComm(Commentaire com) {
 		com.setUser(lb.getUser());
@@ -101,13 +107,14 @@ public class PublicationBean implements Serializable {
 
 	}
 
-	public List<PublicationCommentaireDto> convertListBeforeJava8() {
+	public List<PublicationCommentaireDto> convertListBeforeJava8(List<Publication> l) {
 		List<PublicationCommentaireDto> list = new ArrayList<>();
-		for (Publication pub : this.lstPublications) {
+		for (Publication pub : l) {
 			list.add(new PublicationCommentaireDto(pub, new Commentaire(pub)));
 		}
 		return list;
 	}
+
 
 	public List<PublicationCommentaireDto> getList() {
 		return list;
@@ -116,5 +123,9 @@ public class PublicationBean implements Serializable {
 	public void setList(List<PublicationCommentaireDto> list) {
 		this.list = list;
 	}
-
+	
+	public void deleteComentaire(Commentaire com) {
+		this.serviceManager.deleteCom(com.getId());
+		this.getPubs();
+	}
 }

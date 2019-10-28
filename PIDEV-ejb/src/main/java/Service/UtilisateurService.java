@@ -54,7 +54,7 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 
 	@Override
 	public void addUser(Utilisateur user) {
-		System.out.println(user);
+		 
 		em.persist(user);
 
 	}
