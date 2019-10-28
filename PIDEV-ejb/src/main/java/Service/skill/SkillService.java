@@ -19,9 +19,9 @@ public class SkillService implements SkillServiceRemote {
 	EntityManager em;
 
 	@Override
-	public int addSkill(Skill skill) {
+	public Skill addSkill(Skill skill) {
 		em.persist(skill);
-		return skill.getId();
+		return skill;
 
 	}
 
@@ -72,7 +72,7 @@ public class SkillService implements SkillServiceRemote {
 	}
 
 	@Override
-	public List<Skill> getSkillsByCategoryId(int categoryId) {
+	public List<Skill> getSkillsByCategoryId(long categoryId) {
 		List<Skill> skills = em.createQuery("SELECT S FROM " + Skill.class.getName() + " S"
 				+ " WHERE S.category.id = :categoryId", Skill.class)
 				.setParameter("categoryId", categoryId)
@@ -82,7 +82,7 @@ public class SkillService implements SkillServiceRemote {
 	}
 
 	@Override
-	public UserSkill getOrCreateUserSkill(int userId, int skillId)
+	public UserSkill getOrCreateUserSkill(long userId, long skillId)
 	{		
 		List<UserSkill> userSkills = em
 				.createQuery("SELECT US FROM " + UserSkill.class.getName() + " US"

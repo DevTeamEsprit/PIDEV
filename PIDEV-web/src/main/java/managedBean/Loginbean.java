@@ -27,9 +27,14 @@ public class Loginbean implements Serializable {
 	ServiceManager serviceManager;
 
 	@PostConstruct
-	public void init() throws IOException {
+	public void init() {
 		if (this.user != null) {
-			this.serviceManager.goToPage("Accueil.jsf");
+			try {
+				this.serviceManager.goToPage("Accueil.jsf");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

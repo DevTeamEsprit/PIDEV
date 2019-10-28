@@ -18,7 +18,7 @@ public class Skill implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private String name;
 	private String description;
 	@ManyToOne(cascade= {CascadeType.PERSIST})
@@ -35,7 +35,7 @@ public class Skill implements Serializable {
 		this.quizzes = quizzes;
 	}
 
-	public Skill(int id, String name, String description,  Category category, List<Quiz> quizzes) {
+	public Skill(long id, String name, String description,  Category category, List<Quiz> quizzes) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -49,7 +49,7 @@ public class Skill implements Serializable {
 		super();
 	}
 	
-	public Skill(int id, String name, String description,  Category category ) {
+	public Skill(long id, String name, String description,  Category category ) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -64,10 +64,10 @@ public class Skill implements Serializable {
 	}
 
 	@OneToMany(mappedBy="skill")
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

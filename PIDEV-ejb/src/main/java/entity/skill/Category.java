@@ -16,24 +16,24 @@ public class Category implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private String name;
 	private String description;
 	@OneToMany(mappedBy="category")
 	private List<Skill> skills;
 	
 	public Category() {}
-	public Category(int id, String name, String description, List<Skill> skills) {
+	public Category(long id, String name, String description, List<Skill> skills) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.skills = skills;
 	}
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

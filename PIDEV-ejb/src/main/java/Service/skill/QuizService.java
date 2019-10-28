@@ -57,7 +57,7 @@ public class QuizService implements QuizServiceRemote {
 	}
 
 	@Override
-	public UserQuiz getOrCreateUserQuiz(int userId, int quizId) {
+	public UserQuiz getOrCreateUserQuiz(long userId, long quizId) {
 		List<UserQuiz> userQuizs = em
 				.createQuery("SELECT UQ FROM " + UserQuiz.class.getName() + " UQ"
 						+ " WHERE UQ.user.id = :userId AND UQ.quiz.id = :quizId", UserQuiz.class)
@@ -93,7 +93,7 @@ public class QuizService implements QuizServiceRemote {
 	}
 
 	@Override
-	public Quiz getQuizOfSkillWithLevel(int skillId, int quizLevel)
+	public Quiz getQuizOfSkillWithLevel(long skillId, int quizLevel)
 	{
 		Quiz quiz;
 		

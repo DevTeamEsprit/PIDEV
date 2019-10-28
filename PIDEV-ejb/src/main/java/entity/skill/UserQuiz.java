@@ -20,7 +20,7 @@ public class UserQuiz implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private Utilisateur user;
@@ -34,7 +34,7 @@ public class UserQuiz implements Serializable {
 		
 	}
 	
-	public UserQuiz(int id, Utilisateur user, Quiz quiz, int score) {
+	public UserQuiz(long id, Utilisateur user, Quiz quiz, int score) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -49,11 +49,11 @@ public class UserQuiz implements Serializable {
 		this.score = score;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

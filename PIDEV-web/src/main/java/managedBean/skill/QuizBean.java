@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
@@ -18,7 +17,6 @@ import entity.skill.Quiz;
 import entity.skill.Skill;
 import entity.skill.UserQuiz;
 import entity.skill.UserSkill;
-import managedBean.Loginbean;
 
 @ManagedBean(name = "quizBean", eager = true)
 @SessionScoped
@@ -41,8 +39,8 @@ public class QuizBean {
 	Skill selectedSkill;
 	UserQuiz userQuiz;
 
-	@ManagedProperty(value = "#{loginBean}")
-	private Loginbean lb;
+	//@ManagedProperty(value = "#{loginBean}")
+	//private Loginbean lb;
 
 	List<Category> categories;
 	List<Skill> skills;
@@ -73,6 +71,9 @@ public class QuizBean {
 		Quiz quiz = getSelectionQuiz();
 		canStartQuiz = quiz != null;
 
+		System.out.println("refreshQuiz is called!");
+		System.out.println("canStartQuiz: " + canStartQuiz);
+		
 		if (quiz == null) {
 			// Disable the quiz starting button
 			return;
@@ -91,12 +92,12 @@ public class QuizBean {
 			return null; // Revise this...
 
 		// What quiz to select?
-		int quizId = quiz.getId();
+		long quizId = quiz.getId();
 
-		Utilisateur user = lb.getUser();
-
+		Utilisateur user = new Utilisateur(); user.setId(1);//lb.getUser();
+		
 		// Check if UserQuiz exists, create one if not, and get it
-		userQuiz = quizService.getOrCreateUserQuiz((int) user.getId(), quizId);
+		userQuiz = quizService.getOrCreateUserQuiz(user.getId(), quizId);
 
 		return navTo;
 	}
@@ -114,11 +115,18 @@ public class QuizBean {
 		if (selectedCategoryId == 0 || selectedSkillId == 0)
 			return null;
 
-		Utilisateur user = lb.getUser();
+		Utilisateur user = new Utilisateur(); user.setId(1);//lb.getUser();
 
 		// Before knowing the quiz, what's the level of the user with the selected
 		// skill?
-		UserSkill userSkill = skillService.getOrCreateUserSkill((int) user.getId(), selectedSkillId);
+		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
+		
+		if(userSkill == null)
+		{
+			System.out.println("Check your user's existence for id: " + user.getId());
+			return null;
+		}
+		
 		int lookForLevel = userSkill.getLevel() + 1;
 
 		Quiz quiz = quizService.getQuizOfSkillWithLevel(selectedSkillId, lookForLevel);

@@ -18,10 +18,10 @@ public class CategoryService implements CategoryServiceRemote {
 	EntityManager em;
 
 	@Override
-	public int addCategory(Category category) {
+	public Category addCategory(Category category) {
 
 		em.persist(category);
-		return category.getId();
+		return category;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class CategoryService implements CategoryServiceRemote {
 	}
 	
 	@Override
-	public Category getCategoryById(int categoryId)
+	public Category getCategoryById(long categoryId)
 	{
 		Category category = em.find(Category.class, categoryId);
 		

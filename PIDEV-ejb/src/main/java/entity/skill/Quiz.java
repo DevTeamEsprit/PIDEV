@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -18,10 +17,10 @@ public class Quiz implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static final int maxQuizLevel = 5;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 
 	@Column(name = "title")
 	private String title;
@@ -36,11 +35,11 @@ public class Quiz implements Serializable {
 	private int requiredMinLevel;
 
 	@OneToMany(mappedBy = "quiz")
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
