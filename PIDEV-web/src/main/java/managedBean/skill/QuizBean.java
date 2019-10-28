@@ -34,14 +34,16 @@ public class QuizBean {
 	int selectedCategoryId;
 	int selectedSkillId;
 	int selectedQuizId;
-	
+
+	boolean canStartQuiz = false;
+
 	Category selectedCategory;
 	Skill selectedSkill;
 	UserQuiz userQuiz;
 
 	@ManagedProperty(value = "#{loginBean}")
 	private Loginbean lb;
-	
+
 	List<Category> categories;
 	List<Skill> skills;
 
@@ -60,44 +62,68 @@ public class QuizBean {
 	 */
 	public void changeSkill(AjaxBehaviorEvent abe) {
 		System.out.println("Changing skill! Category: " + selectedCategoryId + ".");
-		
+
 		selectedCategory = categoryService.getCategoryById(selectedCategoryId);
-		
+
 		skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 		skills.stream().forEach(e -> System.out.println(e.getName()));
 	}
-	
-	public void refreshQuiz(AjaxBehaviorEvent abe)
-	{
-		
+
+	public void refreshQuiz(AjaxBehaviorEvent abe) {
+		Quiz quiz = getSelectionQuiz();
+		canStartQuiz = quiz != null;
+
+		if (quiz == null) {
+			// Disable the quiz starting button
+			return;
+		}
+
+		// Enable quiz button
+		// Show current level
 	}
-	
+
 	public String goToQuiz() {
-		String navTo = "";
+		String navTo = "/skill/quiz_attempt?faces-redirect=true";
 
-		if (selectedCategoryId == 0 || selectedSkillId == 0)
-			return null;
-		navTo = "/skill/quiz_attempt?faces-redirect=true";
+		Quiz quiz = getSelectionQuiz();
 
-		// How to get connected user ID?
-		Utilisateur user = lb.getUser();
-		
-		// Before knowing the quiz, what's the level of the user with the selected skill?
-		UserSkill userSkill = skillService.getOrCreateUserSkill((int)user.getId(), selectedSkillId);
-		int lookForLevel = userSkill.getLevel() + 1;
-		
-		Quiz quiz = quizService.getQuizOfSkillWithLevel(selectedSkillId, lookForLevel);
-		
-		if(quiz == null)
+		if (quiz == null)
 			return null; // Revise this...
-		
+
 		// What quiz to select?
 		int quizId = quiz.getId();
-		
+
+		Utilisateur user = lb.getUser();
+
 		// Check if UserQuiz exists, create one if not, and get it
-		userQuiz = quizService.getOrCreateUserQuiz((int)user.getId(), quizId);
-		
+		userQuiz = quizService.getOrCreateUserQuiz((int) user.getId(), quizId);
+
 		return navTo;
+	}
+
+	/*
+	 * Private Methods
+	 */
+
+	/***
+	 * Returns the quiz using selected category and skill ids.
+	 * 
+	 * @return selection quiz.
+	 */
+	private Quiz getSelectionQuiz() {
+		if (selectedCategoryId == 0 || selectedSkillId == 0)
+			return null;
+
+		Utilisateur user = lb.getUser();
+
+		// Before knowing the quiz, what's the level of the user with the selected
+		// skill?
+		UserSkill userSkill = skillService.getOrCreateUserSkill((int) user.getId(), selectedSkillId);
+		int lookForLevel = userSkill.getLevel() + 1;
+
+		Quiz quiz = quizService.getQuizOfSkillWithLevel(selectedSkillId, lookForLevel);
+
+		return quiz;
 	}
 
 	/*
@@ -118,6 +144,14 @@ public class QuizBean {
 
 	public void setSelectedSkillId(int selectedSkillId) {
 		this.selectedSkillId = selectedSkillId;
+	}
+
+	public boolean isCanStartQuiz() {
+		return canStartQuiz;
+	}
+
+	public void setCanStartQuiz(boolean canStartQuiz) {
+		this.canStartQuiz = canStartQuiz;
 	}
 
 	public Category getSelectedCategory() {
