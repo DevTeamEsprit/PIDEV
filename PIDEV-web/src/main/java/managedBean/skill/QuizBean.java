@@ -66,7 +66,13 @@ public class QuizBean {
 		skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 		skills.stream().forEach(e -> System.out.println(e.getName()));
 	}
-
+	
+	public void refreshQuiz(AjaxBehaviorEvent abe)
+	{
+		
+		
+	}
+	
 	public String goToQuiz() {
 		String navTo = "";
 
