@@ -92,4 +92,29 @@ public class QuizService implements QuizServiceRemote {
 		return userQuiz;
 	}
 
+	@Override
+	public Quiz getQuizOfSkillWithLevel(int skillId, int quizLevel)
+	{
+		Quiz quiz;
+		
+		// Check if requested quiz level is not above max quiz level
+		boolean notAbove = quizLevel <= Quiz.getMaxquizlevel();
+		
+		if(!notAbove)
+			return null;
+		
+		List<Quiz> quizs = em.createQuery("SELECT Q FROM " +  Quiz.class.getName() + " Q"
+				+ " WHERE Q.skill.id = :skillId AND Q.requiredMinLevel = :quizLevel", Quiz.class)
+				.setParameter("skillId", skillId)
+				.setParameter("quizLevel", quizLevel)
+				.getResultList();
+		
+		// Is there any???
+		if(quizs == null || quizs.size() == 0)
+			return null;
+		
+		quiz = quizs.get(0);
+		
+		return quiz;
+	}
 }

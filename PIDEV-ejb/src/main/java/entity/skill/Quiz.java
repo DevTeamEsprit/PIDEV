@@ -17,7 +17,8 @@ import javax.persistence.OneToMany;
 public class Quiz implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final int maxQuizLevel = 5;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -73,6 +74,10 @@ public class Quiz implements Serializable {
 
 	public void setRequiredMinLevel(int requiredMinLevel) {
 		this.requiredMinLevel = requiredMinLevel;
+	}
+
+	public static int getMaxquizlevel() {
+		return maxQuizLevel;
 	}
 
 }

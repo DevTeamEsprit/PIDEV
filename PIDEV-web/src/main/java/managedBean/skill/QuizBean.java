@@ -79,9 +79,15 @@ public class QuizBean {
 		
 		// Before knowing the quiz, what's the level of the user with the selected skill?
 		UserSkill userSkill = skillService.getOrCreateUserSkill((int)user.getId(), selectedSkillId);
+		int lookForLevel = userSkill.getLevel() + 1;
+		
+		Quiz quiz = quizService.getQuizOfSkillWithLevel(selectedSkillId, lookForLevel);
+		
+		if(quiz == null)
+			return null; // Revise this...
 		
 		// What quiz to select?
-		int quizId = 0;
+		int quizId = quiz.getId();
 		
 		// Check if UserQuiz exists, create one if not, and get it
 		userQuiz = quizService.getOrCreateUserQuiz((int)user.getId(), quizId);
