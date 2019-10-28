@@ -153,15 +153,15 @@ public class UtilisateurBean implements Serializable {
 			String encodedString = Base64.getEncoder().encodeToString(fileContent);
 
 			emp.setContrat(contrat);
+			
+			emp.setPassword(this.serviceManager.MD5(emp.getCin()));
 			this.emp.setImage(encodedString);
 
 			this.serviceManager.addUser(emp);
 			emp = new Employe();
 			contrat = new Contrat();
 			this.listerEmployes();
-		} else {
-
-		}
+		}  
 
 	}
 	public List<PublicationCommentaireDto> convertListBeforeJava8(List<Publication> l) {
