@@ -19,4 +19,5 @@ public interface QuizServiceRemote {
 	
 	public UserQuiz getOrCreateUserQuiz(long userId, long quizId);
 	public Quiz getQuizOfSkillWithLevel(long skillId, int quizLevel);
+	void updateUserQuiz(UserQuiz userQuiz);
 }

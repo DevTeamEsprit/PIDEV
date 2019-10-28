@@ -19,10 +19,10 @@ public class UserQuizResponse implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	@JoinColumn(name="user_id", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name="user_id", referencedColumnName="id", insertable = true, updatable = true)
 	private Utilisateur user;
 	@ManyToOne
-	@JoinColumn(name="response_id", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name="response_id", referencedColumnName="id", insertable = true, updatable = true)
 	private QuestionResponse response;
 	private boolean isChecked;
 	public UserQuizResponse() {}
@@ -64,11 +64,11 @@ public class UserQuizResponse implements Serializable {
 		this.response = response;
 	}
 
-	public boolean isChecked() {
+	public boolean getIsChecked() {
 		return isChecked;
 	}
 
-	public void setChecked(boolean isChecked) {
+	public void setIsChecked(boolean isChecked) {
 		this.isChecked = isChecked;
 	}
 	

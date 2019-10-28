@@ -91,7 +91,9 @@ public class QuestionService  implements QuestionServiceRemote{
 	@Override
 	public void updateUserQuizResponse(UserQuizResponse userQuizResponse)
 	{
-		em.persist(userQuizResponse);
+		//em.merge(userQuizResponse);
+		em.persist(em.contains(userQuizResponse) ? userQuizResponse : em.merge(userQuizResponse));
+		//em.persist(userQuizResponse);
 	}
 	
 }

@@ -52,39 +52,42 @@
 											</div>
 										</div>
 
-										<div class="quiz" id="quiz" data-toggle="buttons">
 
-											<c:forEach var="response"
-												items="#{quizBean.questionResponses}" varStatus="loop">
-												<label class="element-animation1 btn btn- btn-block"><span
-													class="btn-label"><i
-														class="glyphicon glyphicon-chevron-right"></i></span> <input
-													type="radio" name="q_answer" value="1"
-													style="margin-right: 20px" /> ${loop.index}:
-													#{response.content}</label>
+										<h:form id="form">
+											<ui:repeat value="#{quizBean.userQuestionResponses}"
+												var="uqr" varStatus="i">
+												<label class="element-animation1 btn btn- btn-block">
+													<h:selectBooleanCheckbox style="margin-right: 1px" id="a">
+														<span class="btn-label"><i
+															class="glyphicon glyphicon-chevron-right"></i></span>
+														<f:attribute name="value" value="#{uqr.isChecked}" />
+														<f:ajax event="click"
+															listener="#{quizBean.updateUserQuestionResponse(uqr.response.id,uqr.isChecked)}" />
+													</h:selectBooleanCheckbox> ${i.index}: #{uqr.response.content}
+												</label>
+												<h:outputLabel value="#{boxElement.val}" for="a" />
+											</ui:repeat>
 
-											</c:forEach>
+											<h:commandButton class="btn btn-info btn-block my-4"
+												action="#{quizBean.previousQuestion}" type="submit"
+												value="Previous question" id="prev-q-btn"
+												disabled="#{!quizBean.hasPreviousQuestion}" />
 
-											<p:selectManyCheckbox value="#{quizBean.selectedResponseIds}"
-												converter="javax.faces.Long">
-												<f:selectItems value="#{quizBean.questionResponses}"
-													var="elem" itemLabel="#{elem.content}"
-													itemValue="#{elem.id}" />
+											<c:choose>
+												<c:when test="#{quizBean.hasNextQuestion}">
+													<h:commandButton class="btn btn-info btn-block my-4"
+														action="#{quizBean.nextQuestion}" type="submit"
+														value="Next question" id="next-q-btn" />
+												</c:when>
+												<c:otherwise>
+													<h:commandButton class="btn btn-info btn-block my-4"
+														action="#{quizBean.showQuizResult}" type="submit"
+														value="Finish!" id="show-results-btn" />
+												</c:otherwise>
+											</c:choose>
 
-											</p:selectManyCheckbox>
+										</h:form>
 
-
-										</div>
-
-										<br></br> <br></br> <br></br>
-
-										<h:commandButton class="btn btn-info btn-block my-4"
-											action="#{quizBean.previousQuestion}" type="submit"
-											value="Previous question" id="prev-q-btn" disabled="true" />
-
-										<h:commandButton class="btn btn-info btn-block my-4"
-											action="#{quizBean.nextQuestion}" type="submit"
-											value="Next question" id="next-q-btn" />
 
 									</div>
 									<div class="modal-footer text-muted">

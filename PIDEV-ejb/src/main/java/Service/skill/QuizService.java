@@ -120,4 +120,10 @@ public class QuizService implements QuizServiceRemote {
 		
 		return quiz;
 	}
+	
+	@Override
+	public void updateUserQuiz(UserQuiz userQuiz)
+	{
+		em.persist(em.contains(userQuiz) ? userQuiz : em.merge(userQuiz));
+	}
 }

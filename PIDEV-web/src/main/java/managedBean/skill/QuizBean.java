@@ -46,8 +46,7 @@ public class QuizBean {
 	Skill selectedSkill;
 	UserQuiz userQuiz;
 	QuizQuestion currentQuizQuestion;
-	List<QuestionResponse> questionResponses;
-	List<Long> selectedResponseIds;
+	List<UserQuizResponse> userQuestionResponses;
 
 	// @ManagedProperty(value = "#{loginBean}")
 	// private Loginbean lb;
@@ -124,13 +123,76 @@ public class QuizBean {
 		return navTo;
 	}
 
+	public boolean getHasPreviousQuestion() {
+		if (userQuiz == null)
+			return false;
+
+		return userQuiz.getCurrentQuestionIndex() > 0;
+	}
+
+	public boolean getHasNextQuestion() {
+		if (userQuiz == null)
+			return false;
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return false;
+
+		return userQuiz.getCurrentQuestionIndex() < (quizQuestions.size() - 1);
+	}
+
 	public String nextQuestion() {
 		System.out.println("nextQuestion called!");
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return null;
+
+		int targetQuestionIndex = Math.max(0,
+				Math.min(quizQuestions.size() - 1, userQuiz.getCurrentQuestionIndex() + 1));
+		System.out.println(targetQuestionIndex);
+
+		boolean finished = targetQuestionIndex == userQuiz.getCurrentQuestionIndex();
+
+		if (finished) {
+			System.out.println("finished");
+			return "path/to/result/page";
+		}
+
+		userQuiz.setCurrentQuestionIndex(targetQuestionIndex);
+		quizService.updateUserQuiz(userQuiz);
+
+		// QuizQuestion quizQuestion =
+		// quizQuestions.get(userQuiz.getCurrentQuestionIndex());
+
 		return "";
+	}
+	
+	public void showQuizResult()
+	{
+		System.out.println("SHOWING QUIZ RESULT!");
 	}
 
 	public String previousQuestion() {
 		System.out.println("previousQuestion called!");
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return null;
+
+		if (userQuiz.getCurrentQuestionIndex() <= 0) {
+			userQuiz.setCurrentQuestionIndex(0);
+			quizService.updateUserQuiz(userQuiz);
+			return "";
+		}
+
+		int targetQuestionIndex = userQuiz.getCurrentQuestionIndex() - 1;
+		userQuiz.setCurrentQuestionIndex(targetQuestionIndex);
+		quizService.updateUserQuiz(userQuiz);
+
 		return "";
 	}
 
@@ -143,27 +205,17 @@ public class QuizBean {
 		if (quizQuestions == null)
 			return null;
 
-		return quizQuestions.get(userQuiz.getCurrentQuestionIndex());
-	}
+		QuizQuestion quizQuestion = quizQuestions.get(userQuiz.getCurrentQuestionIndex());
 
-	public List<QuestionResponse> getQuestionResponses() {
-		QuizQuestion quizQuestion = getCurrentQuizQuestion();
-
-		Utilisateur user = new Utilisateur();
-		user.setId(1);// lb.getUser();
-
-		List<QuestionResponse> questionResponses = questionService.listResponses(quizQuestion);
-
-		// Init or check for user-response rows in database
-		for (QuestionResponse questionResponse : questionResponses)
-			questionService.getOrCreateUserQuestionResponse(user.getId(), questionResponse.getId());
-
-		return questionResponses;
+		return quizQuestion;
 	}
 
 	public void updateUserQuestionResponse(long responseId, boolean toChecked) {
+
 		Utilisateur user = new Utilisateur();
 		user.setId(1);// lb.getUser();
+
+		System.out.println("updateUserQuestionResponse called!!!");
 
 		UserQuizResponse userQuizResponse = questionService.getOrCreateUserQuestionResponse(user.getId(), responseId);
 
@@ -172,7 +224,9 @@ public class QuizBean {
 			return;
 		}
 
-		userQuizResponse.setChecked(toChecked);
+		System.out.println("INPUT: " + responseId + "|" + toChecked);
+
+		userQuizResponse.setIsChecked(toChecked);
 		questionService.updateUserQuizResponse(userQuizResponse);
 	}
 
@@ -268,12 +322,27 @@ public class QuizBean {
 		this.skills = skills;
 	}
 
-	public List<Long> getSelectedResponseIds() {
-		return selectedResponseIds;
+	public List<UserQuizResponse> getUserQuestionResponses() {
+
+		userQuestionResponses = new ArrayList<UserQuizResponse>();
+
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		List<QuestionResponse> questionResponses = questionService.listResponses(getCurrentQuizQuestion());
+
+		// Init or check for user-response rows in database
+		for (QuestionResponse questionResponse : questionResponses) {
+			UserQuizResponse uqr = questionService.getOrCreateUserQuestionResponse(user.getId(),
+					questionResponse.getId());
+			userQuestionResponses.add(uqr);
+		}
+
+		return userQuestionResponses;
 	}
 
-	public void setSelectedResponseIds(List<Long> selectedResponseIds) {
-		this.selectedResponseIds = selectedResponseIds;
+	public void setUserQuestionResponses(List<UserQuizResponse> userQuestionResponses) {
+		this.userQuestionResponses = userQuestionResponses;
 	}
 
 	public UserQuiz getUserQuiz() {
