@@ -52,35 +52,13 @@
 											</div>
 										</div>
 
-										<div class="quiz" id="quiz" data-toggle="buttons">
 
-											<c:forEach var="response"
-												items="#{quizBean.questionResponses}" varStatus="loop">
-												<label class="element-animation1 btn btn- btn-block"><span
-													class="btn-label"><i
-														class="glyphicon glyphicon-chevron-right"></i></span> <input
-													type="radio" name="q_answer" value="1"
-													style="margin-right: 20px" /> ${loop.index}:
-													#{response.content}</label>
-
-											</c:forEach>
-
-											<p:selectManyCheckbox value="#{quizBean.selectedResponseIds}"
-												converter="javax.faces.Long">
-												<f:selectItems value="#{quizBean.questionResponses}"
-													var="elem" itemLabel="#{elem.content}"
-													itemValue="#{elem.id}" />
-
-											</p:selectManyCheckbox>
-
-
-										</div>
+										// JSF
+										<h:selectManyCheckbox value="#{quizBean.selectedResponseIds}">
+											<f:selectItems value="#{quizBean.questionResponses}" var="resp" itemLabel="#{resp.content}" itemValue="#{reps.id}"></f:selectItems>
+										</h:selectManyCheckbox>
 
 										<br></br> <br></br> <br></br>
-
-										<h:commandButton class="btn btn-info btn-block my-4"
-											action="#{quizBean.previousQuestion}" type="submit"
-											value="Previous question" id="prev-q-btn" disabled="true" />
 
 										<h:commandButton class="btn btn-info btn-block my-4"
 											action="#{quizBean.nextQuestion}" type="submit"
