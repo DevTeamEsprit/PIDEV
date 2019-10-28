@@ -1,3 +1,4 @@
+
 package managedBean;
 
 import java.io.IOException;
@@ -61,3 +62,4 @@ public class Profilebean implements Serializable {
 		 return "Profile?faces-redirect=true";
 	 }
 }
+ 

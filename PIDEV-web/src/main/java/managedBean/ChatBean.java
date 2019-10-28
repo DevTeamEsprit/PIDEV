@@ -54,3 +54,4 @@ public class ChatBean implements Serializable {
 		this.userChat = userChat;
 	}
 }
+ 

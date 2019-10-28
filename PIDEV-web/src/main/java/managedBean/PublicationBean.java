@@ -1,3 +1,4 @@
+
 package managedBean;
 
 import java.io.IOException;
@@ -128,4 +129,5 @@ public class PublicationBean implements Serializable {
 		this.serviceManager.deleteCom(com.getId());
 		this.getPubs();
 	}
+ 
 }
