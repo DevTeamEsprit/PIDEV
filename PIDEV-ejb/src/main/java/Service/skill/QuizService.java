@@ -1,11 +1,14 @@
 package Service.skill;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import entity.Utilisateur;
@@ -13,6 +16,7 @@ import entity.skill.Quiz;
 import entity.skill.QuizQuestion;
 import entity.skill.Skill;
 import entity.skill.UserQuiz;
+import entity.skill.UserQuizResponse;
 
 @Stateless
 @LocalBean
@@ -125,5 +129,33 @@ public class QuizService implements QuizServiceRemote {
 	public void updateUserQuiz(UserQuiz userQuiz)
 	{
 		em.persist(em.contains(userQuiz) ? userQuiz : em.merge(userQuiz));
+	}
+	
+	@Override
+	public Map<QuizQuestion, List<UserQuizResponse>> getUserQuizQuestionResponseMap(long userId, long quizId)
+	{
+		Map<QuizQuestion, List<UserQuizResponse>> map = new HashMap<QuizQuestion, List<UserQuizResponse>>();
+		
+		// Get all questions relevant to this quiz
+		List<QuizQuestion> quizQuestions = em.createQuery("SELECT QQ FROM " + QuizQuestion.class.getName() + " QQ"
+				+ " WHERE QQ.quiz.id = :quizId", QuizQuestion.class)
+				.setParameter("quizId", quizId)
+				.getResultList();
+
+		for(QuizQuestion quizQuestion : quizQuestions)
+		{
+			System.out.println("Fetching Responses for quiz question with id: " + quizQuestion.getId());
+			
+			String queryStr = "SELECT UQR FROM " + UserQuizResponse.class.getName() + " UQR"
+					+ " WHERE UQR.response.question.id = :questionId";
+			
+			List<UserQuizResponse> responses = em.createQuery(queryStr, UserQuizResponse.class)
+					.setParameter("questionId", quizQuestion.getId())
+					.getResultList();
+			
+			map.put(quizQuestion, responses);
+		}
+		
+	    return map;
 	}
 }

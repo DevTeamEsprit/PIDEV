@@ -10,7 +10,7 @@
 	<ui:param name="quiz_selection" value="index" />
 
 	<ui:define name="title">            
-			Quiz | #{quizBean.selectedCategory.name}
+			Quiz | #{quizBean.userQuiz.quiz.title}
         </ui:define>
 
 	<ui:define name="content2">
@@ -63,7 +63,7 @@
 														<f:attribute name="value" value="#{uqr.isChecked}" />
 														<f:ajax event="click"
 															listener="#{quizBean.updateUserQuestionResponse(uqr.response.id,uqr.isChecked)}" />
-													</h:selectBooleanCheckbox> ${i.index}: #{uqr.response.content}
+													</h:selectBooleanCheckbox> ${i.index + 1}: #{uqr.response.content}
 												</label>
 												<h:outputLabel value="#{boxElement.val}" for="a" />
 											</ui:repeat>

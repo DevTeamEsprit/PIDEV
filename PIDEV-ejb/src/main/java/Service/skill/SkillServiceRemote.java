@@ -18,4 +18,5 @@ public interface SkillServiceRemote {
 	public List<Quiz> listQuizzes(Skill skill);
 	public List<Skill> getSkillsByCategoryId(long categoryId);
 	public UserSkill getOrCreateUserSkill(long userId, long skillId);
+	public void updateUserSkill(UserSkill userSkill);
 }

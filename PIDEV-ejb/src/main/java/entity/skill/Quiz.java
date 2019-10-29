@@ -25,6 +25,9 @@ public class Quiz implements Serializable {
 	@Column(name = "title")
 	private String title;
 
+	@Column(name = "description", columnDefinition = "text default A very cool quiz")
+	private String description;
+
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Skill skill;
 
@@ -33,6 +36,9 @@ public class Quiz implements Serializable {
 
 	@Column(name = "required_min_level", columnDefinition = "int default 1")
 	private int requiredMinLevel;
+
+	@Column(name = "min_correct_questions_percentage", columnDefinition = "int default 60")
+	private int minCorrectQuestionsPercentage; // 0 -> 100
 
 	@OneToMany(mappedBy = "quiz")
 	public long getId() {
@@ -77,6 +83,14 @@ public class Quiz implements Serializable {
 
 	public static int getMaxquizlevel() {
 		return maxQuizLevel;
+	}
+
+	public int getMinCorrectQuestionsPercentage() {
+		return minCorrectQuestionsPercentage;
+	}
+
+	public void setMinCorrectQuestionsPercentage(int minCorrectQuestionsPercentage) {
+		this.minCorrectQuestionsPercentage = minCorrectQuestionsPercentage;
 	}
 
 }

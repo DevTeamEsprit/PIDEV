@@ -2,6 +2,7 @@ package managedBean.skill;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -41,13 +42,15 @@ public class QuizBean {
 	long selectedQuizId;
 
 	boolean canStartQuiz = false;
+	float correctAnswersPercentage = 0f;
 
-	Category selectedCategory;
-	Skill selectedSkill;
 	UserQuiz userQuiz;
 	QuizQuestion currentQuizQuestion;
 	List<UserQuizResponse> userQuestionResponses;
+	Map<QuizQuestion, List<UserQuizResponse>> quizQToUserResponseMap;
 
+	// Google Calendar Related
+	
 	// @ManagedProperty(value = "#{loginBean}")
 	// private Loginbean lb;
 
@@ -72,7 +75,10 @@ public class QuizBean {
 	public void changeSkill(AjaxBehaviorEvent abe) {
 		System.out.println("Changing skill! Category: " + selectedCategoryId + ".");
 
-		selectedCategory = categoryService.getCategoryById(selectedCategoryId);
+		Category selectedCategory = categoryService.getCategoryById(selectedCategoryId);
+
+		if (selectedCategory == null)
+			return;
 
 		skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 		skills.stream().forEach(e -> System.out.println(e.getName()));
@@ -169,10 +175,62 @@ public class QuizBean {
 
 		return "";
 	}
-	
-	public void showQuizResult()
-	{
+
+	public String showQuizResult() {
 		System.out.println("SHOWING QUIZ RESULT!");
+
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		quizQToUserResponseMap = quizService.getUserQuizQuestionResponseMap(user.getId(), userQuiz.getQuiz().getId());
+
+		if (quizQToUserResponseMap == null)
+			return null;
+
+		float correctQuestionsCount = 0;
+		float questionsCount = quizQToUserResponseMap.keySet().size();
+
+		for (QuizQuestion key : quizQToUserResponseMap.keySet()) {
+
+			boolean questionAnsweredCorrectly = true;
+
+			for (UserQuizResponse uqr : quizQToUserResponseMap.get(key)) {
+				// We at least found a wrong answer
+				if (uqr.getIsChecked() != uqr.getResponse().getIsCorrect()) {
+					questionAnsweredCorrectly = false;
+					break;
+				}
+			}
+
+			if (questionAnsweredCorrectly)
+				correctQuestionsCount++;
+		}
+
+		correctAnswersPercentage = (int) (correctQuestionsCount / questionsCount) * 100;
+		
+		userQuiz.setScore((int)correctAnswersPercentage);
+
+		// Check if this percentage is enough to pass the quiz.
+		if (correctAnswersPercentage >= userQuiz.getQuiz().getMinCorrectQuestionsPercentage()) {
+			// Now, depending on the user type, we update skill level...
+			
+			// Meaning an employee
+			if (userQuiz.getUser().isActif() == true) {
+				
+				UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
+				userSkill.setLevel(Math.max(userSkill.getLevel() + 1, userQuiz.getQuiz().getRequiredMinLevel() + 1));
+				skillService.updateUserSkill(userSkill);
+				
+			} else // Else, a candidate
+			{
+				// Use calendar to schedule an meet-up
+				
+			}
+
+		}
+
+		String navTo = "/skill/quiz_result?faces-redirect=true";
+		return navTo;
 	}
 
 	public String previousQuestion() {
@@ -290,22 +348,6 @@ public class QuizBean {
 		this.canStartQuiz = canStartQuiz;
 	}
 
-	public Category getSelectedCategory() {
-		return selectedCategory;
-	}
-
-	public void setSelectedCategory(Category selectedCategory) {
-		this.selectedCategory = selectedCategory;
-	}
-
-	public Skill getSelectedSkill() {
-		return selectedSkill;
-	}
-
-	public void setSelectedSkill(Skill selectedSkill) {
-		this.selectedSkill = selectedSkill;
-	}
-
 	public List<Category> getCategories() {
 		return categories;
 	}
@@ -353,4 +395,19 @@ public class QuizBean {
 		this.userQuiz = userQuiz;
 	}
 
+	public Map<QuizQuestion, List<UserQuizResponse>> getQuizQToUserResponseMap() {
+		return quizQToUserResponseMap;
+	}
+
+	public void setQuizQToUserResponseMap(Map<QuizQuestion, List<UserQuizResponse>> quizQToUserResponseMap) {
+		this.quizQToUserResponseMap = quizQToUserResponseMap;
+	}
+
+	public float getCorrectAnswersPercentage() {
+		return correctAnswersPercentage;
+	}
+
+	public void setCorrectAnswersPercentage(float correctAnswersPercentage) {
+		this.correctAnswersPercentage = correctAnswersPercentage;
+	}
 }
