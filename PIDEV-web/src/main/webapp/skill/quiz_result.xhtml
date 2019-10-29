@@ -43,7 +43,7 @@
 													<i style="color: #{quizBean.correctAnswersPercentage >= 100 ? 'rgba(255,204,0)' : 'rgba(30,30,30,0.3)'}" class="fa fa-star"></i>
 												</div>
 												
-												<div> You answered #{quizBean.correctAnswersPercentage * 100}% correctly.</div>
+												<div> You answered #{quizBean.correctAnswersPercentage}% correctly.</div>
 												<div> Required #{quizBean.userQuiz.quiz.minCorrectQuestionsPercentage}% at least.</div>
 												
 											</button>
@@ -52,7 +52,7 @@
 
 									<div id="collapseOne" class="collapse"
 										aria-labelledby="headingOne" data-parent="#accordion">
-										<div class="card-body">Description</div>
+										<div class="card-body">Description: #{quizBean.userQuiz.quiz.description}</div>
 									</div>
 								</div>
 							</div>
@@ -96,7 +96,13 @@
 														<h5 class="mb-0"></h5>
 												<div class="card-body">
 												#{resp.response.content}
-												#{resp.response.isCorrect eq resp.isChecked}
+												<br/>
+												<c:if test="#{resp.response.isCorrect eq resp.isChecked}">
+													<h5>Great Job!</h5>
+												</c:if>
+												<c:if test="#{resp.response.isCorrect != resp.isChecked}">
+													This has to be #{resp.response.isCorrect ? 'checked' : 'unchecked'}
+												</c:if>
 												</div>
 													</div>
 												</div>

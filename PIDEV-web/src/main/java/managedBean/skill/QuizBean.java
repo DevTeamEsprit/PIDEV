@@ -42,6 +42,7 @@ public class QuizBean {
 	long selectedQuizId;
 
 	boolean canStartQuiz = false;
+	String startQuizMsg = "";
 	float correctAnswersPercentage = 0f;
 
 	UserQuiz userQuiz;
@@ -49,6 +50,7 @@ public class QuizBean {
 	List<UserQuizResponse> userQuestionResponses;
 	Map<QuizQuestion, List<UserQuizResponse>> quizQToUserResponseMap;
 
+	
 	// Google Calendar Related
 	
 	// @ManagedProperty(value = "#{loginBean}")
@@ -85,9 +87,16 @@ public class QuizBean {
 
 		if (skills == null || skills.size() == 0) {
 			canStartQuiz = false;
+			
 			return;
 		}
+		
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
 
+		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
+		startQuizMsg = "Your current level is: " + userSkill.getLevel();
+		
 		selectedSkillId = skills.get(0).getId();
 
 		refreshQuiz(abe);
@@ -100,11 +109,18 @@ public class QuizBean {
 		System.out.println("refreshQuiz is called!");
 		System.out.println("canStartQuiz: " + canStartQuiz);
 
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
+		startQuizMsg = "Your current level is: " + userSkill.getLevel();
+
 		if (quiz == null) {
 			// Disable the quiz starting button
 			return;
 		}
-
+		
+		startQuizMsg = "";
 		// Enable quiz button
 		// Show current level
 	}
@@ -218,7 +234,7 @@ public class QuizBean {
 			if (userQuiz.getUser().isActif() == true) {
 				
 				UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
-				userSkill.setLevel(Math.max(userSkill.getLevel() + 1, userQuiz.getQuiz().getRequiredMinLevel() + 1));
+				userSkill.setLevel(Math.max(userSkill.getLevel() + 1, userQuiz.getQuiz().getRequiredMinLevel()));
 				skillService.updateUserSkill(userSkill);
 				
 			} else // Else, a candidate
@@ -348,6 +364,16 @@ public class QuizBean {
 		this.canStartQuiz = canStartQuiz;
 	}
 
+	public String getStartQuizMsg()
+	{
+		return startQuizMsg;
+	}
+	
+	public void setStartQuizMsg(String startQuizMsg)
+	{
+		this.startQuizMsg = startQuizMsg;
+	}
+	
 	public List<Category> getCategories() {
 		return categories;
 	}

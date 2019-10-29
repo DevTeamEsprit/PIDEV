@@ -63,7 +63,7 @@ public class Skill implements Serializable {
 		this.category = category;
 	}
 
-	@OneToMany(mappedBy="skill")
+	// @OneToMany(mappedBy="skill")
 	public long getId() {
 		return id;
 	}

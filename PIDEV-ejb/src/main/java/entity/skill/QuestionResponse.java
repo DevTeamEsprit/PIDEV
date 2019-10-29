@@ -37,7 +37,7 @@ public class QuestionResponse implements Serializable {
 		this.question = question;
 	}
 
-	@OneToMany(mappedBy="response")
+	// @OneToMany(mappedBy="response")
 	public long getId() {
 		return id;
 	}

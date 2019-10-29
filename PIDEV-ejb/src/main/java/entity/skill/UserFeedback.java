@@ -23,6 +23,10 @@ public class UserFeedback implements Serializable {
 	@JoinColumn(name="quiz_id", referencedColumnName="id", insertable = false, updatable = false)
 	private Quiz quiz;
 	private String feedback;
+	public UserFeedback()
+	{
+		
+	}
 	public UserFeedback(int id, Utilisateur user, Quiz quiz, String feedback) {
 		super();
 		this.id = id;

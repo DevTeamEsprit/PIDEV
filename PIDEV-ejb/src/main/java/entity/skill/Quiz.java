@@ -40,7 +40,7 @@ public class Quiz implements Serializable {
 	@Column(name = "min_correct_questions_percentage", columnDefinition = "int default 60")
 	private int minCorrectQuestionsPercentage; // 0 -> 100
 
-	@OneToMany(mappedBy = "quiz")
+	// @OneToMany(mappedBy = "quiz")
 	public long getId() {
 		return id;
 	}
@@ -55,6 +55,14 @@ public class Quiz implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Skill getSkill() {
