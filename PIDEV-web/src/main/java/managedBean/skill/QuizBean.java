@@ -90,14 +90,13 @@ public class QuizBean {
 			
 			return;
 		}
-		
+		selectedSkillId = skills.get(0).getId();
+
 		Utilisateur user = new Utilisateur();
 		user.setId(1);// lb.getUser();
 
 		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
 		startQuizMsg = "Your current level is: " + userSkill.getLevel();
-		
-		selectedSkillId = skills.get(0).getId();
 
 		refreshQuiz(abe);
 	}
@@ -125,6 +124,12 @@ public class QuizBean {
 		// Show current level
 	}
 
+	public String goToQuizSelection()
+	{
+		System.out.println("goToQuizSelection called!");
+		return "/skill/quiz_selection?faces-redirect=true";
+	}
+	
 	public String goToQuiz() {
 		String navTo = "/skill/quiz_attempt?faces-redirect=true";
 
@@ -329,6 +334,8 @@ public class QuizBean {
 			return null;
 		}
 
+		startQuizMsg = "Your current level is: " + userSkill.getLevel();
+		
 		int lookForLevel = userSkill.getLevel() + 1;
 
 		Quiz quiz = quizService.getQuizOfSkillWithLevel(selectedSkillId, lookForLevel);

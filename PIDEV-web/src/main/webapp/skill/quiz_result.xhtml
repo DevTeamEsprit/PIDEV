@@ -43,9 +43,7 @@
 													<i style="color: #{quizBean.correctAnswersPercentage >= 100 ? 'rgba(255,204,0)' : 'rgba(30,30,30,0.3)'}" class="fa fa-star"></i>
 												</div>
 												
-												<div> You answered #{quizBean.correctAnswersPercentage}% correctly.</div>
-												<div> Required #{quizBean.userQuiz.quiz.minCorrectQuestionsPercentage}% at least.</div>
-												
+
 											</button>
 										</h5>
 									</div>
@@ -128,12 +126,22 @@
 							</div>
 						</div>
 						<div class="col-md-4">
-							<h6>Write your idea about the car</h6>
-							<p>Your review will give better insights of car</p>
-
-							<button type="button" class="btn btn-success">Write
-								Reviews</button>
-
+						<h:form>
+							<h6> You answered #{quizBean.correctAnswersPercentage}% correctly.</h6>
+							<p> Required #{quizBean.userQuiz.quiz.minCorrectQuestionsPercentage}% at least.</p>
+									
+									<c:if test="#{quizBean.correctAnswersPercentage le quizBean.userQuiz.quiz.minCorrectQuestionsPercentage}">
+																<h:commandButton class="btn btn-warning btn-block my-4"
+												action="#{quizBean.goToQuiz}" 
+												value="Retry?" id="retry"
+												/>
+									</c:if>
+									
+							<h:commandButton class="btn btn-success btn-block my-4"
+							action="#{quizBean.goToQuizSelection}" 
+							value="Choose another Quiz" id="start-quiz-btn"
+							 />
+									</h:form>			
 						</div>
 					</div>
 				</div>
