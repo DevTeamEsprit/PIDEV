@@ -117,5 +117,8 @@ public class ServiceManager implements Serializable {
 		    }
 		    return password;
 	}
+	public void updatpassword(Utilisateur user) {
+		this.utilisateurService.updatepass((Employe)user);
+	}
 }
   

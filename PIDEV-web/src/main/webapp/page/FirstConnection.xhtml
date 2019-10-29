@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	template="/template/templateNew.xhtml">
+	<ui:define name="pageTitle">Gestion Employés</ui:define>
+	<ui:define name="content">
+		<div class="row">
+
+			<div class="col-md-12">
+				<h:form role="form">
+					<div class="card card-primary">
+					<div class="card-hedear">
+					<div class="card card-danger">
+                    <div class="card-header">
+                      <h4 class="card-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                          Mot de passe par défaut !!!
+                        </a>
+                      </h4>
+                     
+                    </div>
+                  
+                  </div>
+                   <h4 class="card-title">
+                    Bienvenu Mr #{loginbean.user.prenom} #{loginbean.user.nom} 
+                   </h4>
+					</div>
+						<div class="card-body">
+
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label>Nom</label>
+									<h:inputText value="#{loginbean.user.nom}" class="form-control"
+										disabled="true" />
+								</div>
+								<div class="form-group col-md-6">
+									<label>Prenom</label>
+									<h:inputText value="#{loginbean.user.prenom}"
+										class="form-control" disabled="true" />
+								</div>
+
+							</div>
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label>Cin</label>
+									<h:inputText value="#{loginbean.user.cin}" class="form-control"
+										disabled="true" />
+								</div>
+								<div class="form-group col-md-6">
+									<label>Adresse</label>
+									<h:inputText value="#{loginbean.user.adresse}"
+										class="form-control" disabled="true" />
+								</div>
+
+							</div>
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label>Numéro téléphone</label>
+									<h:inputText value="#{loginbean.user.tel}" class="form-control"
+										disabled="true" />
+								</div>
+								<div class="form-group col-md-6">
+									<label for="exampleInputEmail1">Mot de passe</label>
+									<h:inputSecret value="#{utilisateurbean.newpassword}"
+										class="form-control" />
+								</div>
+
+							</div>
+						</div>
+						<!-- /.card-body -->
+
+						<div class="card-footer">
+							<h:commandButton value="Change mot de passe" action="#{utilisateurbean.updatepass()}"
+								class="btn btn-primary float-right" />
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>

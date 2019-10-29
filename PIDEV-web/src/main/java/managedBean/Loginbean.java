@@ -38,6 +38,7 @@ public class Loginbean implements Serializable {
 		}
 	}
 
+ 
 	public String getLogin() {
 		return login;
 	}
@@ -64,9 +65,13 @@ public class Loginbean implements Serializable {
 
 	public String Connecter() {
 
-		user = this.serviceManager.doLogin(login, password);
+		user = this.serviceManager.doLogin(login, this.serviceManager.MD5(password));
 		if (user != null) {
-			navigateto = "/page/Accueil?faces-redirect=true";
+			if(!user.isFirstLogin())
+				navigateto = "/page/FirstConnection?faces-redirect=true";
+			else
+				navigateto = "/page/Accueil?faces-redirect=true";
+						 
 		}
 		return navigateto;
 
@@ -74,8 +79,10 @@ public class Loginbean implements Serializable {
 
 	public String doLogout() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "/Login?face-redirect=true";
+		return "../Login?face-redirect=true";
 
 	}
+	
+
 }
  

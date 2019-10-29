@@ -33,6 +33,9 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 		// TODO Auto-generated constructor stub
 	}
 
+	public void updatepass(Employe user) {
+		em.merge(user);
+	}
 	public Utilisateur doLogin(String login, String password) {
 
 		TypedQuery<Utilisateur> query = em.createQuery("Select u From Utilisateur u where u.email=:l and u.password=:p",

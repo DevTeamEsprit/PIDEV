@@ -14,7 +14,8 @@
 			<div class="row">
 				<div class="col-md-3">
 
-					<!-- Profile Image -->
+  
+															<!-- Profile Image -->
 					<div class="card card-primary card-outline">
 						<div class="card-body box-profile">
 							<div class="text-center">
@@ -24,66 +25,62 @@
 							</div>
 
 							<h3 class="profile-username text-center">
-								#{loginbean.user.prenom} #{loginbean.user.nom}</h3>
+								#{loginbean.user.prenom}
+								#{loginbean.user.nom}</h3>
 
-							<p class="text-muted text-center">Software Engineer</p>
 
-							<ul class="list-group list-group-unbordered mb-3">
-								<li class="list-group-item"><b>Followers</b> <a
-									class="float-right">1,322</a></li>
-								<li class="list-group-item"><b>Following</b> <a
-									class="float-right">543</a></li>
-								<li class="list-group-item"><b>Friends</b> <a
-									class="float-right">13,287</a></li>
+
+							<ul class="list-group list-group-unbordered">
+								<li class="list-group-item"><i
+									class="fa fa-map-marker mr-1"></i><b>Adresse</b> <a
+									class="pull-right">#{loginbean.user.adresse}</a></li>
+								<li class="list-group-item"><i class="fa fa-phone mr-1"></i><b>Némuro
+										tel</b> <a class="pull-right">#{loginbean.user.tel}</a></li>
+								<li class="list-group-item"><i class="fa fa-book mr-1"></i><b>Email</b>
+									<a class="pull-right">#{loginbean.user.email}</a></li>
 							</ul>
-
-							<a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
 						</div>
-						<!-- /.card-body -->
+					 
 					</div>
 					<!-- /.card -->
-
-					<!-- About Me Box -->
+					
+					
+					 
+					<!-- /.card -->
+ 				<!-- About Me Box -->
 					<div class="card card-primary">
 						<div class="card-header">
-							<h3 class="card-title">About Me</h3>
+							<h3 class="card-title">Contrat</h3>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
-							<strong><i class="fa fa-book mr-1"></i> Education</strong>
+							<strong><i class="fa fa-book mr-1"></i> Type Contrat</strong>
 
-							<p class="text-muted">B.S. in Computer Science from the
-								University of Tennessee at Knoxville</p>
-
-							<hr></hr>
-
-							<strong><i class="fa fa-map-marker mr-1"></i> Location</strong>
-
-							<p class="text-muted">Malibu, California</p>
+							<p class="text-muted">#{loginbean.user.contrat.typeContrat}</p>
 
 							<hr></hr>
 
-							<strong><i class="fa fa-pencil mr-1"></i> Skills</strong>
+							<strong><i class="fa fa-calendar mr-1"></i> Date de
+								debut</strong>
 
-							<p class="text-muted">
-								<span class="tag tag-danger">UI Design</span> <span
-									class="tag tag-success">Coding</span> <span
-									class="tag tag-info">Javascript</span> <span
-									class="tag tag-warning">PHP</span> <span
-									class="tag tag-primary">Node.js</span>
-							</p>
+							<p class="text-muted">#{loginbean.user.contrat.dateDebut}</p>
 
+							<hr></hr>
+
+							<strong><i class="fa fa-calendar mr-1"></i> Date de fin</strong>
 
 
-							<strong><i class="fa fa-file-text-o mr-1"></i> Notes</strong>
+							<p class="text-muted">#{loginbean.user.contrat.dateFin}</p>
 
-							<p class="text-muted">Lorem ipsum dolor sit amet, consectetur
-								adipiscing elit. Etiam fermentum enim neque.</p>
+
 						</div>
 						<!-- /.card-body -->
 					</div>
 					<!-- /.card -->
+					
+					
 				</div>
+				
 				<!-- /.col -->
 				<div class="col-md-9">
 					<div class="card">

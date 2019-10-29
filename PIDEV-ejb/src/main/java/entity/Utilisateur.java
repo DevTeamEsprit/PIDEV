@@ -50,6 +50,14 @@ public class Utilisateur implements Serializable {
 	private boolean firstLogin;
 
 	
+	public List<DemandeFormation> getLstdemande() {
+		return lstdemande;
+	}
+
+	public void setLstdemande(List<DemandeFormation> lstdemande) {
+		this.lstdemande = lstdemande;
+	}
+
 	public boolean isFirstLogin() {
 		return firstLogin;
 	}
@@ -78,6 +86,8 @@ public class Utilisateur implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
 	private List<Commentaire> lstcom;
 
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
+	private List<DemandeFormation> lstdemande;
  
 
 	public List<Commentaire> getLstcom() {
