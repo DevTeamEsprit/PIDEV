@@ -5,26 +5,23 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
 	xmlns:c="http://java.sun.com/jstl/core"
-	template="/template/index.xhtml">
-	<ui:param name="page_name" value="index" />
-	<ui:define name="content2">
-		<br></br>
-
-
+	template="/template/templateNew.xhtml">
+	<ui:define name="pageTitle">Accueil</ui:define>
+	<ui:define name="content">
 		<div class="row">
-			<br></br>
+
 			<div class="col-md-9">
 
 				<!-- Box ajout publicaiton -->
-			 
+
 				<h:form>
 					<div class="card card-primary">
 						<div class="card-header">
 							<div class="user-block">
 								<img class="img-circle"
-									src="../resources/dist/img/user1-128x128.jpg" alt="User Image" />
-								<span class="username"><a href="#">créer une
-										publication</a></span>
+									src="data:image/png;base64,#{loginbean.user.image}"
+									alt="User Image" /> <span class="username"><a href="#">créer
+										une publication</a></span>
 							</div>
 						</div>
 
@@ -42,106 +39,112 @@
 						</div>
 					</div>
 				</h:form>
-				 
-					<div class="card card-widget">
-				 		<h:form>
-			<ui:repeat value="#{publicationBean.mapPub.entrySet().toArray()}"
-				var="entry">
 
-				<div class="card card-widget">
-					<div class="card-header">
-						<div class="user-block">
-							<img class="img-circle"
-								src="data:image/png;base64,#{entry.key.user.image}" alt="User Image" />
-							<span class="username"><a href="#">#{entry.key.user.nom}
-									#{entry.key.user.prenom}</a></span> <span class="description">Shared
-								publicly - <h:outputText id="date"
-									converterMessage="#{i18n['converter-message']}"
-									value="#{entry.key.dateCreation}">
-									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-								</h:outputText>
-							</span>
-						</div>
-						<div class="card-tools">
-							<button type="button" class="btn btn-tool" data-toggle="tooltip"
-								title="Mark as read">
-								<i class="fa fa-circle-o"></i>
-							</button>
-							<button type="button" class="btn btn-tool" data-widget="collapse">
-								<i class="fa fa-minus"></i>
-							</button>
-							<button type="button" class="btn btn-tool" data-widget="remove">
-								<i class="fa fa-times"></i>
-							</button>
-						</div>
-						<!-- /.card-header -->
-						<div class="card-body">
+				<h:form   id="form">
+					<ui:repeat value="#{publicationBean.list}" var="entry">
+						<div class="card card-widget">
+							<div class="card-header">
+								<div class="user-block">
+									<img class="img-circle"
+										src="data:image/png;base64,#{entry.publication.user.image}"
+										alt="User Image" /> <span class="username"> <a
+										href="#">#{entry.publication.user.nom}
+											#{entry.publication.user.prenom}</a>
+									</span> <span class="description"> Shared publicly - <h:outputText
+											id="date" converterMessage="#{i18n['converter-message']}"
+											value="#{entry.publication.dateCreation}">
+											<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+										</h:outputText>
+									</span>
+								</div>
+								<div class="card-tools">
+									<p:commandLink
+										rendered="#{entry.publication.user.id == loginbean.user.id}"
+										class="btn btn-tool btn-tool-edit" title="Modifier">
+										<i class="fas fa-edit"></i>
+									</p:commandLink>
+									<h:commandLink
+										rendered="#{entry.publication.user.id == loginbean.user.id}"
+										class="btn btn-tool btn-tool-delete" title="Supprimer">
+										<i class="fas fa-trash"></i>
+									</h:commandLink>
 
-							<p>
-								<h:outputText value="#{entry.key.description}"></h:outputText>
-							</p>
-							<button type="button" class="btn btn-default btn-sm">
-								<i class="fa fa-thumbs-o-up"></i> Like
-							</button>
-							<span class="float-right text-muted"> 0 likes -
-								#{entry.key.lstComm.size()} comments</span>
-						</div>
-						<div class="card-footer card-comments">
-							<ui:repeat value="#{entry.key.lstComm}" var="com">
-								<div class="card-comment">
-									<!-- User image -->
-									<img class="img-circle img-sm" src="data:image/png;base64,#{com.user.image}" alt="User Image" />  
-
-									<div class="comment-text">
-										<span class="username">#{com.user.nom}
-											#{com.user.prenom} <span class="text-muted float-right">
-												<span class="description"> <h:outputText id="date"
+								</div>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<!-- post text -->
+								<p>#{entry.publication.description}</p>
+								<button type="button" class="btn btn-default btn-sm">
+									<i class="far fa-thumbs-up"></i> Like
+								</button>
+								<span class="float-right text-muted">45 likes -
+									#{entry.publication.lstComm.size()} comments</span>
+							</div>
+							<!-- /.card-body -->
+							<div class="card-footer card-comments">
+								<ui:repeat value="#{entry.publication.lstComm}" var="com">
+									<div class="card-comment">
+										<!-- User image -->
+										<img class="img-circle img-sm"
+											src="data:image/png;base64,#{com.user.image}"
+											alt="User Image" />
+										<div class="comment-text">
+											<span class="username"> #{com.user.nom}
+												#{com.user.prenom} <span class="text-muted float-right">
+													<h:commandLink
+														rendered="#{com.user.id == loginbean.user.id}"
+														class="btn btn-tool btn-tool-edit" title="Modifier">
+														<i class="fas fa-edit"></i>
+													</h:commandLink> 
+													<h:commandLink 
+														action="#{publicationBean.deleteComentaire(com)}"
+														onclick="return confirm('Are you sure?')" update="@form"
+														rendered="#{com.user.id == loginbean.user.id}"
+														class="btn btn-tool btn-tool-delete" title="Supprimer">
+														<i class="fas fa-trash"></i>
+														  
+													</h:commandLink> 
+													<h:outputText id="date"
 														converterMessage="#{i18n['converter-message']}"
 														value="#{com.dateCreation}">
 														<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 													</h:outputText>
 											</span>
-
-										</span>
-										</span>
-										<!-- /.username -->
-										#{com.description} .
+											</span> #{com.description}
+										</div>
+										<!-- /.comment-text -->
 									</div>
-									<!-- /.comment-text -->
-								</div>
-								<!-- /.card-comment -->
-							</ui:repeat>
-						</div>
-
-						<!-- /.card-footer -->
-						<div class="card-footer">
-
-							<img class="img-fluid img-circle img-sm"
-								src="../resources/dist/img/user4-128x128.jpg" alt="Alt Text" />
-							<!-- .img-push is used to add margin to elements next to floating images -->
-							<div class="img-push">
-								<h:inputText value="#{entry.value.description}" type="text"
-									class="form-control form-control-sm"
-									placeholder="Press enter to post comment" />
-								<h:commandButton
-									action="#{publicationBean.addComm(entry.value)}" />
+									<!-- /.card-comment -->
+								</ui:repeat>
 							</div>
+							<!-- /.card-footer -->
+							<div class="card-footer">
+								<img class="img-fluid img-circle img-sm"
+									src="data:image/png;base64,#{loginbean.user.image}"
+									alt="Alt Text" />
+								<!-- .img-push is used to add margin to elements next to floating images -->
+								<div class="img-push">
+									<div class="input-group">
+										<h:inputText value="#{entry.commentaire.description}"
+											type="text" class="form-control"
+											placeholder="Enter a comment"
+											onkeydown="if (event.keyCode === 13) { return false; }" />
+										<span class="input-group-append"> <p:commandButton
+												value="Commenter"
+												action="#{publicationBean.addComm(entry.commentaire)}"
+												update="@form" class="btn btn-primary" />
+										</span>
+									</div>
+								</div>
+							</div>
+							<!-- /.card-footer -->
 						</div>
-					</div>
-				</div>
-
-			</ui:repeat>
-		</h:form>
-	
-						
-					 
-					 
-						 
-					</div>
-					<!-- /.card -->			 
+					</ui:repeat>
+				</h:form>
 			</div>
-			 
-
+			<!-- /.card -->
 		</div>
 	</ui:define>
+
 </ui:composition>

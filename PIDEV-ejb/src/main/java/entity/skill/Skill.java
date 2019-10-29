@@ -18,10 +18,9 @@ public class Skill implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private String name;
 	private String description;
-	//private int level;
 	@ManyToOne(cascade= {CascadeType.PERSIST})
 	private Category category;
 	@OneToMany(mappedBy="skill")
@@ -36,7 +35,7 @@ public class Skill implements Serializable {
 		this.quizzes = quizzes;
 	}
 
-	public Skill(int id, String name, String description,  Category category, List<Quiz> quizzes) {
+	public Skill(long id, String name, String description,  Category category, List<Quiz> quizzes) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -44,12 +43,13 @@ public class Skill implements Serializable {
 		this.category = category;
 		this.quizzes = quizzes;
 	}
+	
 
 	public Skill() {
 		super();
 	}
 	
-	public Skill(int id, String name, String description,  Category category ) {
+	public Skill(long id, String name, String description,  Category category ) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -57,11 +57,17 @@ public class Skill implements Serializable {
 		this.category = category;
 	}
 
-	@OneToMany(mappedBy="skill")
-	public int getId() {
+	public Skill(String name, Category category, String description) {
+		this.name = name;
+		this.description = description;
+		this.category = category;
+	}
+
+	// @OneToMany(mappedBy="skill")
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

@@ -17,32 +17,34 @@ public class UserQuizResponse implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	@ManyToOne
-	@JoinColumn(name="user_id", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name="user_id", referencedColumnName="id", insertable = true, updatable = true)
 	private Utilisateur user;
 	@ManyToOne
-	@JoinColumn(name="quiz_id", referencedColumnName="id", insertable = false, updatable = false)
-	private Quiz quiz;
-	@ManyToOne
-	@JoinColumn(name="response_id", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name="response_id", referencedColumnName="id", insertable = true, updatable = true)
 	private QuestionResponse response;
 	private boolean isChecked;
-	
-	public UserQuizResponse(int id, Utilisateur user, Quiz quiz, QuestionResponse response, boolean isChecked) {
+	public UserQuizResponse() {}
+	public UserQuizResponse(int id, Utilisateur user, QuestionResponse response, boolean isChecked) {
 		super();
 		this.id = id;
 		this.user = user;
-		this.quiz = quiz;
+		this.response = response;
+		this.isChecked = isChecked;
+	}
+	public UserQuizResponse( Utilisateur user, QuestionResponse response, boolean isChecked) {
+		super();
+		this.user = user;
 		this.response = response;
 		this.isChecked = isChecked;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -54,14 +56,6 @@ public class UserQuizResponse implements Serializable {
 		this.user = user;
 	}
 
-	public Quiz getQuiz() {
-		return quiz;
-	}
-
-	public void setQuiz(Quiz quiz) {
-		this.quiz = quiz;
-	}
-
 	public QuestionResponse getResponse() {
 		return response;
 	}
@@ -70,11 +64,11 @@ public class UserQuizResponse implements Serializable {
 		this.response = response;
 	}
 
-	public boolean isChecked() {
+	public boolean getIsChecked() {
 		return isChecked;
 	}
 
-	public void setChecked(boolean isChecked) {
+	public void setIsChecked(boolean isChecked) {
 		this.isChecked = isChecked;
 	}
 	

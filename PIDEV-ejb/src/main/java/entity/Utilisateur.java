@@ -16,72 +16,71 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
  
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type")
-public class Utilisateur implements Serializable{
-	
+@DiscriminatorColumn(name = "type")
+public class Utilisateur implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id ;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	private String nom;
 	private String prenom;
 	private String cin;
-	private String adresse ; 
+	private String adresse;
 	private String tel;
 	private String email;
 	private String password;
 	@Temporal(TemporalType.DATE)
 	private Date datNais;
 	private boolean Actif;
-	@Column(columnDefinition = "LONGTEXT")
+	@Column(columnDefinition = "MEDIUMTEXT")
 	private String image;
 	@Enumerated(EnumType.STRING)
 	private Sexe sexe;
-	
+
+	@OneToMany(mappedBy = "sender")
+	private List<Message> messagesSent;
+
+	@OneToMany(mappedBy = "receiver")
+	private List<Message> messagesReceived;
+
 	public Sexe getSexe() {
 		return sexe;
 	}
-
-
 
 	public void setSexe(Sexe sexe) {
 		this.sexe = sexe;
 	}
 
-	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
 	private List<Publication> lstPub;
 
-	@OneToMany(mappedBy="user" , cascade= {CascadeType.REMOVE} )
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
 	private List<Commentaire> lstcom;
-	
-	
-	
+
+ 
+
 	public List<Commentaire> getLstcom() {
 		return lstcom;
 	}
-
-
 
 	public void setLstcom(List<Commentaire> lstcom) {
 		this.lstcom = lstcom;
 	}
 
-	@OneToOne(cascade= {CascadeType.PERSIST,CascadeType.REMOVE} , fetch=FetchType.LAZY)
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.EAGER)
 	private Contrat contrat;
-	
-	
+
 	public Utilisateur(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
 			String password, Date datNais) {
 		super();
@@ -96,61 +95,41 @@ public class Utilisateur implements Serializable{
 		this.datNais = datNais;
 	}
 
-
-
 	public List<Publication> getLstPub() {
 		return lstPub;
 	}
-
-
 
 	public void setLstPub(List<Publication> lstPub) {
 		this.lstPub = lstPub;
 	}
 
-
-
 	public Contrat getContrat() {
 		return contrat;
 	}
-
-
 
 	public void setContrat(Contrat contrat) {
 		this.contrat = contrat;
 	}
 
-
-
 	public String getImage() {
 		return image;
 	}
-
-
 
 	public void setImage(String image) {
 		this.image = image;
 	}
 
-
-
 	public boolean isActif() {
 		return Actif;
 	}
-
-
 
 	public void setActif(boolean actif) {
 		Actif = actif;
 	}
 
-
-
 	public Utilisateur() {
 		super();
 	}
-
-
 
 	public Utilisateur(String nom, String prenom, String cin, String adresse, String tel, String email, String password,
 			Date datNais) {
@@ -165,128 +144,106 @@ public class Utilisateur implements Serializable{
 		this.datNais = datNais;
 	}
 
-
-
-	@OneToMany
 	public long getId() {
 		return id;
 	}
-
-
 
 	public void setId(long id) {
 		this.id = id;
 	}
 
-
-
 	public String getNom() {
 		return nom;
 	}
-
-
 
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
-
-
 	public String getPrenom() {
 		return prenom;
 	}
-
-
 
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
-
-
 	public String getCin() {
 		return cin;
 	}
-
-
 
 	public void setCin(String cin) {
 		this.cin = cin;
 	}
 
-
-
 	public String getAdresse() {
 		return adresse;
 	}
-
-
 
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
 
-
-
 	public String getTel() {
 		return tel;
 	}
-
-
 
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
 
-
-
 	public String getEmail() {
 		return email;
 	}
-
-
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-
-
 	public String getPassword() {
 		return password;
 	}
-
-
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-
-
 	public Date getDatNais() {
 		return datNais;
 	}
-
-
 
 	public void setDatNais(Date datNais) {
 		this.datNais = datNais;
 	}
 
+	public List<Message> getMessagesSent() {
+		return messagesSent;
+	}
 
+	public void setMessagesSent(List<Message> messagesSent) {
+		this.messagesSent = messagesSent;
+	}
+
+	public List<Message> getMessagesReceived() {
+		return messagesReceived;
+	}
+
+	public void setMessagesReceived(List<Message> messagesReceived) {
+		this.messagesReceived = messagesReceived;
+	}
 
 	@Override
 	public String toString() {
 		return "Utilisateur [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", cin=" + cin + ", adresse=" + adresse
 				+ ", tel=" + tel + ", email=" + email + ", password=" + password + ", datNais=" + datNais + "]";
 	}
-	
-	
-	
-	
-	
+
+ 
+ 
+ 
+ 
 	
 	
 	
 }
+ 

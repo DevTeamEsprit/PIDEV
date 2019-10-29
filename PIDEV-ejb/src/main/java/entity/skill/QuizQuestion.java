@@ -2,6 +2,8 @@ package entity.skill;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +22,7 @@ public class QuizQuestion implements Serializable {
 	private int id;
 	private String content;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Quiz quiz;
 	
 	
@@ -57,6 +59,12 @@ public class QuizQuestion implements Serializable {
 
 	public void setResponses(List<QuestionResponse> responses) {
 		this.responses = responses;
+	}
+	public Quiz getQuiz() {
+		return quiz;
+	}
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
 	}
 	
 	
