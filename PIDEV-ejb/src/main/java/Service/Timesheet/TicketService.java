@@ -81,15 +81,23 @@ public class TicketService implements TicketServiceRemote, TicketServiceLocal {
 
 	@Override
 	public List<Ticket> getTicketsByProjectByStaus(int idProject, StatusTicket status) {
-		// TODO Auto-generated method stub
+	
 		return em.createQuery("from Ticket t where t.project.id="+idProject+" and t.status='"+status.toString()+"'", Ticket.class).getResultList();
 	}
+	@Override
+	public List<Ticket> getTicketsByEmployee(int idEmployee) {
+		
+		return em.createQuery("from Ticket where employe.id="+idEmployee, Ticket.class).getResultList();
+	}
+	@Override
+	public List<Ticket> getTicketsByEmployeeByStaus(int idEmployee, StatusTicket status) {
+		return em.createQuery("from Ticket t where t.employe.id="+idEmployee+" and t.status='"+status.toString()+"'", Ticket.class).getResultList();
+	}
+	
+	
+	
 
-	/*@Override
-	public List<Ticket> getTicketsByProjectByStaus(int idProject, StatusTicket status) {
-		// TODO Auto-generated method stub
-		return (List<Ticket>) em.find(Ticket.class, idProject, status);
-	}*/
+
 	
 
 

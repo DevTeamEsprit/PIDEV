@@ -22,6 +22,8 @@ public interface TicketServiceLocal {
 	List<Ticket> findAll();
 	List<Ticket> getTicketsByProject(int idProject);
 	List<Ticket> getTicketsByProjectByStaus(int idProject,StatusTicket status);
+	List<Ticket> getTicketsByEmployee(int idEmployee);
+	List<Ticket> getTicketsByEmployeeByStaus(int idEmployee, StatusTicket status);
 
 
 }

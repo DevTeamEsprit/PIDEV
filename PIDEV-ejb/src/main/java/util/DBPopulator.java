@@ -33,10 +33,8 @@ public class DBPopulator {
 	@PostConstruct
 	public void init() {
 		System.out.println("Application Strated ....");
-		// getProject();
-		// createTicket();
-		// assignAndUpdate();
-		searchtiketproject();
+		
+		getticketbyemlpoyee();
 	}
 
 	public void searchtiketproject() {
@@ -56,6 +54,14 @@ public class DBPopulator {
 
 	public void getProject() {
 		ticketServiceLocal.addTicketToProject(3, 4);
+	}
+
+	public void getticketbyemlpoyee() {
+		List<Ticket> list = ticketServiceLocal.getTicketsByEmployee(1);
+		System.out.println("siiiiiiiiiiize "+list.size());
+		for (Ticket t : list) {
+			System.out.println(t.getId() + " , " + t.getName());
+		}
 	}
 
 	public void updateTicket() {
