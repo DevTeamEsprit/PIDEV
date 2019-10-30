@@ -4,7 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"> 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      > 
       <h:head>
       <h2><h:outputText value="#{evaluationBean.evalTitle}"></h:outputText>  </h2>
       </h:head>
@@ -16,12 +18,22 @@
        </ui:repeat>
           </ol>
           <h3>List of employees</h3>
+         
            <ol>
        <ui:repeat value="#{evaluationBean.employes}" var="item">
-       <li><h:outputText value="#{item.nom} #{item.prenom}"/></li>
+       <li>
+        <h:form><h:outputText value="#{item.nom} #{item.prenom}   "/>
+        <h:commandButton value="See the sheet" action="#{evaluationBean.showEmpSheet}">
+        <f:setPropertyActionListener target="#{evaluationBean.empId}" value="#{item.id}" />
+            </h:commandButton>
+            </h:form>
+       </li>
        </ui:repeat>
           </ol>
+          
       <h:form id="form1">
+        <c:if test="#{false eq evaluationBean.evaluation.status}">
+
       
       <h:panelGrid columns="2">
       <h:outputText>Goal Text</h:outputText><h:inputText value="#{evaluationBean.goalext}"></h:inputText>
@@ -31,14 +43,14 @@
 </h:selectOneMenu>
 <h:commandButton id="btn-goal" value="Add goal" action="#{evaluationBean.addGoal}"></h:commandButton>
 <h:message for="btn-goal"/>
-      <h:commandButton id="btn-eval" value="Switch state of the evaluation" action="#{evaluationBean.SwitchEvaluation}"></h:commandButton>
-      <h:message for="btn-eval"/>
+    
       </h:panelGrid>
-      
+       </c:if>
+         <h:commandButton id="btn-eval" value="Switch state of the evaluation" action="#{evaluationBean.SwitchEvaluation}"></h:commandButton>
+      <h:message for="btn-eval"/>
+      <h:commandButton id="btn-sup" value="Cancel" action="#{evaluationBean.delete}"></h:commandButton>
       </h:form>
-       <ul>
        
-       </ul>
       </h:body>
 
 </html>

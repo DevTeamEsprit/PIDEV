@@ -35,10 +35,64 @@ public class EvaluationBean {
        private String EvalTitle;
        private Manager manager;
        private boolean status;
-       private GoalType goaltype;
-       private String goalext;
+       public Evaluation evaluation;
+       public Evaluation getEvaluation() {
+		return evaluation;
+	}
+
+	public void setEvaluation(Evaluation evaluation) {
+		this.evaluation = evaluation;
+	}
+
+	private long empId;
+       private String appreciation;
+       public String getAppreciation() {
+		return appreciation;
+	}
+
+	public void setAppreciation(String appreciation) {
+		this.appreciation = appreciation;
+	}
+
+	public long getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(long empId) {
+		this.empId = empId;
+	}
+
+	private GoalType goaltype;
+	private List<GoalByEmploye> goalsBySheet;
+       public List<GoalByEmploye> getGoalsBySheet() {
+		return goalsBySheet;
+	}
+
+	public void setGoalsBySheet(List<GoalByEmploye> goalsBySheet) {
+		this.goalsBySheet = goalsBySheet;
+	}
+
+	private String goalext;
        private List<Goal> goals;
-       private List<Employe> employes;
+       private EvaluationSheet evalSheet;
+       private List<EvaluationSheet> sheets ;
+       public List<EvaluationSheet> getSheets() {
+		return sheets;
+	}
+
+	public void setSheets(List<EvaluationSheet> sheets) {
+		this.sheets = sheets;
+	}
+
+	public EvaluationSheet getEvalSheet() {
+		return evalSheet;
+	}
+
+	public void setEvalSheet(EvaluationSheet evalSheet) {
+		this.evalSheet = evalSheet;
+	}
+
+	private List<Employe> employes;
        public boolean isStatus() {
 		return status;
 	}
@@ -157,6 +211,9 @@ public class EvaluationBean {
 				calendar.setTime(e.getDate());
 				this.setStatus(e.isStatus());
 				this.setEvalTitle("Evaluation of "+ date +"(by "+manager.getNom()+" "+manager.getPrenom()+")");
+				employes = evaluationService.findEmployesByEval(evalId);
+				evaluation = evaluationService.getLastEvaluation(1);
+				evals = evaluationService.findByManager(1);
 				return "evaluationDetails.xhtml?faces-redirect=true";
 				}
 				}
@@ -185,7 +242,10 @@ public class EvaluationBean {
 	public String showEval() {
 		goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
 		employes = evaluationService.findEmployesByEval(evalId);
-		this.setEvalTitle("Evaluation of "+date+"(by "+manager.getNom()+" "+manager.getPrenom()+")");
+		evaluation = evaluationService.findEval(evalId);
+		
+		sheets = evaluationService.findEvaluationSheetbyEval(evalId);
+		this.setEvalTitle(evaluation.getType()+" evaluation of "+date+"(by "+manager.getNom()+" "+manager.getPrenom()+")");
 		return "evaluationDetails.xhtml?faces-redirect=true";
 	}
 	
@@ -197,8 +257,12 @@ public class EvaluationBean {
         else {
         	evaluationService.SwitchState(evalId);
         	status = evaluationService.findEval(evalId).isStatus();
-        	if(status)
+        	if(status) {
         		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation triggered"));
+        	    for(EvaluationSheet e : sheets) {
+        	    	e.setEvalsheetTitle(evaluation.getType()+" evaluation of "+date);
+        	    }
+        	}
         	else
         		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation switched off"));
         		
@@ -217,26 +281,32 @@ public class EvaluationBean {
     			 int k = 0;
     			 for(EvaluationSheet i : evaluationService.findEvaluationSheetbyEval(evalId)) {
     				 System.out.println("Feuille d'evaluation trouvee");
-    				 GoalByEmployeId pk = new GoalByEmployeId(employesbyman.get(k).getId(), evaluationService.LastGoalByEval(evalId).getId(), 0,0);
-    				 GoalByEmploye gemp = new GoalByEmploye(pk);
+    				 GoalByEmployeId pk = new GoalByEmployeId(employesbyman.get(k).getId(), evaluationService.LastGoalByEval(evalId).getId());
+    				 GoalByEmploye gemp = new GoalByEmploye(pk,0,0);
     				 gemp.setEvaluationSheet(i);
     				 evaluationService.addGoalEmploye(gemp);
     				 k++;
     			 }
     			 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Goal added!"));
+    			 goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
+    				employes = evaluationService.findEmployesByEval(evalId);
+    				sheets = evaluationService.findEvaluationSheetbyEval(evalId);
         		 return "evaluationDetails.xhtml?faces-redirect=true";
     		 }
     		 else {
     			
     			 for(Employe e : evaluationService.getEmployeesOfManager(1)) {
     				 EvaluationSheet ev = new EvaluationSheet(0, false,evaluationService.findEval(evalId).getType().name()+" evaluation of "+ evaluationService.findEval(evalId).getDate(), "");
-    				 GoalByEmployeId pk = new GoalByEmployeId(e.getId(), evaluationService.LastGoalByEval(evalId).getId(), 0,0);
-    				 ev.addGoalEmploye(new GoalByEmploye(pk));
+    				 GoalByEmployeId pk = new GoalByEmployeId(e.getId(), evaluationService.LastGoalByEval(evalId).getId());
+    				 ev.addGoalEmploye(new GoalByEmploye(pk,0,0));
     				 evaluationService.createEvaluationSheet(ev);
     				 
     			 }
     			 
     			 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Goal added!"));
+    			 goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
+    				employes = evaluationService.findEmployesByEval(evalId);
+    				sheets = evaluationService.findEvaluationSheetbyEval(evalId);
         		 return "evaluationDetails.xhtml?faces-redirect=true";
     		 }
     		
@@ -244,5 +314,38 @@ public class EvaluationBean {
     	 else
     		 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Fill correctly!"));
     	 return "evaluationDetails.xhtml?faces-redirect=true";
+     }
+     
+     public String showEmpSheet(){
+    	          evalSheet = evaluationService.getEvSheetByEmpAndEval(evalId, empId);
+    	          evalSheet.setEvalsheetTitle(evaluation.getType()+" evaluation of "+evaluationService.findEval(evalId).getDate());
+    	          goalsBySheet = evaluationService.getGoalsOfEvals(evalSheet.getId());
+    	          appreciation = evalSheet.getAppreciation();
+    	 return "evaluationSheetMan.xhtml?faces-redirect=true";
+     }
+     
+     public String validate() {
+    	    if(appreciation == null)
+    	    	FacesContext.getCurrentInstance().addMessage("form:btn-val", new FacesMessage("Give an appreciation!"));
+    	    else {
+    	    	for(GoalByEmploye g : goalsBySheet) {
+    				evaluationService.changeNoteGoal(g);
+    			}
+    	    	
+    	    	evalSheet.setAppreciation(appreciation);
+    	    	evaluationService.UpdateEvalSheet(evalSheet);
+    	    	evalSheet = evaluationService.getEvSheetByEmpAndEval(evalId, empId);
+    	    	  goalsBySheet = evaluationService.getGoalsOfEvals(evalSheet.getId());
+    	    	FacesContext.getCurrentInstance().addMessage("form:btn-val", new FacesMessage("Submitted"));
+    	    	 return "evaluationSheetMan.xhtml?faces-redirect=true";
+    	    }
+    	    return null;
+     }
+     
+     public String  delete() {
+    	 evaluationService.CancelEvaluation(evaluation);
+    	 
+    	 evals = evaluationService.findByManager(1);
+    	 return "evaluationsCenter.xhtml?faces-redirect=true";
      }
 }
