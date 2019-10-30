@@ -74,4 +74,4 @@ public class Formation implements Serializable{
 		return "Formation [id=" + id + ", decription=" + decription + ", dateformation=" + dateformation + ", nbrjour="
 				+ nbrjour + "]";
 	}
-}
+}//////
