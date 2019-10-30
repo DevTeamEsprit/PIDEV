@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/index.xhtml">
+	<ui:param name="quiz_selection" value="index" />
+	<ui:define name="title">            
+			Quiz Selection          
+        </ui:define>
+	<ui:define name="content2">
+
+		<div id="accordion">
+			<section class="write-review py-5 bg-light" id="write-review">
+				<div class="mx-auto container-fluid" style="width: 700px;">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="row">
+
+
+
+								<div class="card">
+									<div class="card-header" id="headingOne">
+										<h5 class="mb-0">
+											<button class="btn btn-link" data-toggle="collapse"
+												data-target="#collapseOne" aria-expanded="true"
+												aria-controls="collapseOne">
+												<div class="col-md-6">
+													<h5>Overall Rating</h5>
+													<h5>Quiz: #{quizBean.userQuiz.quiz.title}</h5>
+												</div>
+												
+												
+												
+												
+												<div class="col-md-6 text-warning">
+													<i style="color: #{quizBean.correctAnswersPercentage >= 20 ? 'rgba(255,204,0)' : 'rgba(30,30,30,0.3)'}" class="fa fa-star"></i>
+													<i style="color: #{quizBean.correctAnswersPercentage >= 40 ? 'rgba(255,204,0)' : 'rgba(30,30,30,0.3)'}" class="fa fa-star"></i>
+													<i style="color: #{quizBean.correctAnswersPercentage >= 60 ? 'rgba(255,204,0)' : 'rgba(30,30,30,0.3)'}" class="fa fa-star"></i>
+													<i style="color: #{quizBean.correctAnswersPercentage >= 80 ? 'rgba(255,204,0)' : 'rgba(30,30,30,0.3)'}" class="fa fa-star"></i>
+													<i style="color: #{quizBean.correctAnswersPercentage >= 100 ? 'rgba(255,204,0)' : 'rgba(30,30,30,0.3)'}" class="fa fa-star"></i>
+												</div>
+												
+
+											</button>
+										</h5>
+									</div>
+
+									<div id="collapseOne" class="collapse"
+										aria-labelledby="headingOne" data-parent="#accordion">
+										<div class="card-body">Description: #{quizBean.userQuiz.quiz.description}</div>
+									</div>
+								</div>
+							</div>
+							<hr />
+
+
+							<ui:repeat
+								value="#{quizBean.quizQToUserResponseMap.keySet().toArray()}"
+								var="question" varStatus="q_loop">
+
+
+
+								<div id="accordation">
+
+									<div class="card">
+										<div class="card-header" id="question_#{q_loop.index}">
+											<h5 class="mb-0">
+												<button class="btn btn-link collapsed"
+													data-toggle="collapse"
+													data-target="#collapse_q_#{q_loop.index}"
+													aria-expanded="false"
+													aria-controls="collapse_q_#{q_loop.index}">
+
+													<div class="col-md-8">Question #{q_loop.index + 1}:
+														#{question.content}</div>
+
+												</button>
+											</h5>
+										</div>
+										<div id="collapse_q_#{q_loop.index}" class="collapse"
+											aria-labelledby="question_#{q_loop.index}"
+											data-parent="#accordion">
+
+											<ui:repeat
+												value="#{quizBean.quizQToUserResponseMap.get(question)}"
+												var="resp" varStatus="r_loop">
+
+
+												<div class="card" style="margin: 30px; background-color: #{resp.response.isCorrect eq resp.isChecked ? 'rgba(153, 255, 51, 1)' : 'rgba(255, 26, 26, 0.7);'}">
+													<div class="card-header" id="question_#{q_loop.index}">
+														<h5 class="mb-0"></h5>
+												<div class="card-body">
+												#{resp.response.content}
+												<br/>
+												<c:if test="#{resp.response.isCorrect eq resp.isChecked}">
+													<h5>Great Job!</h5>
+												</c:if>
+												<c:if test="#{resp.response.isCorrect != resp.isChecked}">
+													This has to be #{resp.response.isCorrect ? 'checked' : 'unchecked'}
+												</c:if>
+												</div>
+													</div>
+												</div>
+
+
+											</ui:repeat>
+
+										</div>
+									</div>
+
+								</div>
+
+
+
+
+							</ui:repeat>
+
+
+
+							<hr />
+							<div class="row pt-3">
+								<div class="col-md-12"></div>
+							</div>
+						</div>
+						<div class="col-md-4">
+						<h:form>
+							<h6> You answered #{quizBean.correctAnswersPercentage}% correctly.</h6>
+							<p> Required #{quizBean.userQuiz.quiz.minCorrectQuestionsPercentage}% at least.</p>
+									
+									<c:if test="#{quizBean.correctAnswersPercentage le quizBean.userQuiz.quiz.minCorrectQuestionsPercentage}">
+																<h:commandButton class="btn btn-warning btn-block my-4"
+												action="#{quizBean.goToQuiz}" 
+												value="Retry?" id="retry"
+												/>
+									</c:if>
+									
+							<h:commandButton class="btn btn-success btn-block my-4"
+							action="#{quizBean.goToQuizSelection}" 
+							value="Choose another Quiz" id="start-quiz-btn"
+							 />
+									</h:form>			
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+	</ui:define>
+</ui:composition>

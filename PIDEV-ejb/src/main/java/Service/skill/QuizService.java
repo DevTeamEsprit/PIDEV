@@ -1,11 +1,14 @@
 package Service.skill;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import entity.Utilisateur;
@@ -13,6 +16,7 @@ import entity.skill.Quiz;
 import entity.skill.QuizQuestion;
 import entity.skill.Skill;
 import entity.skill.UserQuiz;
+import entity.skill.UserQuizResponse;
 
 @Stateless
 @LocalBean
@@ -44,8 +48,8 @@ public class QuizService implements QuizServiceRemote {
 	@Override
 	public List<QuizQuestion> listQuestions(Quiz quiz) {
 
-		TypedQuery<QuizQuestion> query = em.createQuery("Select q from QuizQuestion where q.quiz=:quiz",
-				QuizQuestion.class);
+		TypedQuery<QuizQuestion> query = em.createQuery("SELECT Q FROM " + QuizQuestion.class.getName() + " Q WHERE Q.quiz = :quiz",
+				QuizQuestion.class).setParameter("quiz", quiz);
 		try {
 			return query.getResultList();
 		}
@@ -60,6 +64,7 @@ public class QuizService implements QuizServiceRemote {
 	public UserQuiz getOrCreateUserQuiz(long userId, long quizId) {
 		List<UserQuiz> userQuizs = em
 				.createQuery("SELECT UQ FROM " + UserQuiz.class.getName() + " UQ"
+						+ " JOIN FETCH UQ.quiz Q JOIN FETCH Q.questions QS"
 						+ " WHERE UQ.user.id = :userId AND UQ.quiz.id = :quizId", UserQuiz.class)
 				.setParameter("userId", userId).setParameter("quizId", quizId).getResultList();
 
@@ -84,7 +89,6 @@ public class QuizService implements QuizServiceRemote {
 			}
 
 			userQuiz = new UserQuiz(user, quiz, 1);
-			userQuiz.setCurrentQuestionIndex(1);
 			
 			em.persist(userQuiz);
 
@@ -119,5 +123,39 @@ public class QuizService implements QuizServiceRemote {
 		quiz = quizs.get(0);
 		
 		return quiz;
+	}
+	
+	@Override
+	public void updateUserQuiz(UserQuiz userQuiz)
+	{
+		em.persist(em.contains(userQuiz) ? userQuiz : em.merge(userQuiz));
+	}
+	
+	@Override
+	public Map<QuizQuestion, List<UserQuizResponse>> getUserQuizQuestionResponseMap(long userId, long quizId)
+	{
+		Map<QuizQuestion, List<UserQuizResponse>> map = new HashMap<QuizQuestion, List<UserQuizResponse>>();
+		
+		// Get all questions relevant to this quiz
+		List<QuizQuestion> quizQuestions = em.createQuery("SELECT QQ FROM " + QuizQuestion.class.getName() + " QQ"
+				+ " WHERE QQ.quiz.id = :quizId", QuizQuestion.class)
+				.setParameter("quizId", quizId)
+				.getResultList();
+
+		for(QuizQuestion quizQuestion : quizQuestions)
+		{
+			System.out.println("Fetching Responses for quiz question with id: " + quizQuestion.getId());
+			
+			String queryStr = "SELECT UQR FROM " + UserQuizResponse.class.getName() + " UQR"
+					+ " WHERE UQR.response.question.id = :questionId";
+			
+			List<UserQuizResponse> responses = em.createQuery(queryStr, UserQuizResponse.class)
+					.setParameter("questionId", quizQuestion.getId())
+					.getResultList();
+			
+			map.put(quizQuestion, responses);
+		}
+		
+	    return map;
 	}
 }

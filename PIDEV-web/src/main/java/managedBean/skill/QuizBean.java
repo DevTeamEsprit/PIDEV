@@ -1,6 +1,8 @@
 package managedBean.skill;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -9,13 +11,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import Service.skill.CategoryService;
+import Service.skill.QuestionService;
 import Service.skill.QuizService;
 import Service.skill.SkillService;
 import entity.Utilisateur;
 import entity.skill.Category;
+import entity.skill.QuestionResponse;
 import entity.skill.Quiz;
+import entity.skill.QuizQuestion;
 import entity.skill.Skill;
 import entity.skill.UserQuiz;
+import entity.skill.UserQuizResponse;
 import entity.skill.UserSkill;
 
 @ManagedBean(name = "quizBean", eager = true)
@@ -28,17 +34,25 @@ public class QuizBean {
 	SkillService skillService;
 	@EJB
 	QuizService quizService;
+	@EJB
+	QuestionService questionService;
 
 	long selectedCategoryId;
 	long selectedSkillId;
 	long selectedQuizId;
 
 	boolean canStartQuiz = false;
+	String startQuizMsg = "";
+	float correctAnswersPercentage = 0f;
 
-	Category selectedCategory;
-	Skill selectedSkill;
 	UserQuiz userQuiz;
+	QuizQuestion currentQuizQuestion;
+	List<UserQuizResponse> userQuestionResponses;
+	Map<QuizQuestion, List<UserQuizResponse>> quizQToUserResponseMap;
 
+	
+	// Google Calendar Related
+	
 	// @ManagedProperty(value = "#{loginBean}")
 	// private Loginbean lb;
 
@@ -50,7 +64,7 @@ public class QuizBean {
 		categories = categoryService.ListAllCategories();
 
 		canStartQuiz = false;
-		
+
 		if (selectedCategoryId > 0)
 			skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 	}
@@ -63,17 +77,26 @@ public class QuizBean {
 	public void changeSkill(AjaxBehaviorEvent abe) {
 		System.out.println("Changing skill! Category: " + selectedCategoryId + ".");
 
-		selectedCategory = categoryService.getCategoryById(selectedCategoryId);
+		Category selectedCategory = categoryService.getCategoryById(selectedCategoryId);
+
+		if (selectedCategory == null)
+			return;
 
 		skills = skillService.getSkillsByCategoryId(selectedCategoryId);
 		skills.stream().forEach(e -> System.out.println(e.getName()));
 
 		if (skills == null || skills.size() == 0) {
 			canStartQuiz = false;
+			
 			return;
 		}
-
 		selectedSkillId = skills.get(0).getId();
+
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
+		startQuizMsg = "Your current level is: " + userSkill.getLevel();
 
 		refreshQuiz(abe);
 	}
@@ -85,15 +108,28 @@ public class QuizBean {
 		System.out.println("refreshQuiz is called!");
 		System.out.println("canStartQuiz: " + canStartQuiz);
 
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
+		startQuizMsg = "Your current level is: " + userSkill.getLevel();
+
 		if (quiz == null) {
 			// Disable the quiz starting button
 			return;
 		}
-
+		
+		startQuizMsg = "";
 		// Enable quiz button
 		// Show current level
 	}
 
+	public String goToQuizSelection()
+	{
+		System.out.println("goToQuizSelection called!");
+		return "/skill/quiz_selection?faces-redirect=true";
+	}
+	
 	public String goToQuiz() {
 		String navTo = "/skill/quiz_attempt?faces-redirect=true";
 
@@ -112,6 +148,165 @@ public class QuizBean {
 		userQuiz = quizService.getOrCreateUserQuiz(user.getId(), quizId);
 
 		return navTo;
+	}
+
+	public boolean getHasPreviousQuestion() {
+		if (userQuiz == null)
+			return false;
+
+		return userQuiz.getCurrentQuestionIndex() > 0;
+	}
+
+	public boolean getHasNextQuestion() {
+		if (userQuiz == null)
+			return false;
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return false;
+
+		return userQuiz.getCurrentQuestionIndex() < (quizQuestions.size() - 1);
+	}
+
+	public String nextQuestion() {
+		System.out.println("nextQuestion called!");
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return null;
+
+		int targetQuestionIndex = Math.max(0,
+				Math.min(quizQuestions.size() - 1, userQuiz.getCurrentQuestionIndex() + 1));
+		System.out.println(targetQuestionIndex);
+
+		boolean finished = targetQuestionIndex == userQuiz.getCurrentQuestionIndex();
+
+		if (finished) {
+			System.out.println("finished");
+			return "path/to/result/page";
+		}
+
+		userQuiz.setCurrentQuestionIndex(targetQuestionIndex);
+		quizService.updateUserQuiz(userQuiz);
+
+		// QuizQuestion quizQuestion =
+		// quizQuestions.get(userQuiz.getCurrentQuestionIndex());
+
+		return "";
+	}
+
+	public String showQuizResult() {
+		System.out.println("SHOWING QUIZ RESULT!");
+
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		quizQToUserResponseMap = quizService.getUserQuizQuestionResponseMap(user.getId(), userQuiz.getQuiz().getId());
+
+		if (quizQToUserResponseMap == null)
+			return null;
+
+		float correctQuestionsCount = 0;
+		float questionsCount = quizQToUserResponseMap.keySet().size();
+
+		for (QuizQuestion key : quizQToUserResponseMap.keySet()) {
+
+			boolean questionAnsweredCorrectly = true;
+
+			for (UserQuizResponse uqr : quizQToUserResponseMap.get(key)) {
+				// We at least found a wrong answer
+				if (uqr.getIsChecked() != uqr.getResponse().getIsCorrect()) {
+					questionAnsweredCorrectly = false;
+					break;
+				}
+			}
+
+			if (questionAnsweredCorrectly)
+				correctQuestionsCount++;
+		}
+
+		correctAnswersPercentage = (int) (correctQuestionsCount / questionsCount) * 100;
+		
+		userQuiz.setScore((int)correctAnswersPercentage);
+
+		// Check if this percentage is enough to pass the quiz.
+		if (correctAnswersPercentage >= userQuiz.getQuiz().getMinCorrectQuestionsPercentage()) {
+			// Now, depending on the user type, we update skill level...
+			
+			// Meaning an employee
+			if (userQuiz.getUser().isActif() == true) {
+				
+				UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
+				userSkill.setLevel(Math.max(userSkill.getLevel() + 1, userQuiz.getQuiz().getRequiredMinLevel()));
+				skillService.updateUserSkill(userSkill);
+				
+			} else // Else, a candidate
+			{
+				// Use calendar to schedule an meet-up
+				
+			}
+
+		}
+
+		String navTo = "/skill/quiz_result?faces-redirect=true";
+		return navTo;
+	}
+
+	public String previousQuestion() {
+		System.out.println("previousQuestion called!");
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return null;
+
+		if (userQuiz.getCurrentQuestionIndex() <= 0) {
+			userQuiz.setCurrentQuestionIndex(0);
+			quizService.updateUserQuiz(userQuiz);
+			return "";
+		}
+
+		int targetQuestionIndex = userQuiz.getCurrentQuestionIndex() - 1;
+		userQuiz.setCurrentQuestionIndex(targetQuestionIndex);
+		quizService.updateUserQuiz(userQuiz);
+
+		return "";
+	}
+
+	public QuizQuestion getCurrentQuizQuestion() {
+		if (userQuiz == null)
+			return null;
+
+		List<QuizQuestion> quizQuestions = quizService.listQuestions(userQuiz.getQuiz());
+
+		if (quizQuestions == null)
+			return null;
+
+		QuizQuestion quizQuestion = quizQuestions.get(userQuiz.getCurrentQuestionIndex());
+
+		return quizQuestion;
+	}
+
+	public void updateUserQuestionResponse(long responseId, boolean toChecked) {
+
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		System.out.println("updateUserQuestionResponse called!!!");
+
+		UserQuizResponse userQuizResponse = questionService.getOrCreateUserQuestionResponse(user.getId(), responseId);
+
+		if (userQuizResponse == null) {
+			System.out.println("Got non-valid user quiz response with responseId: " + responseId);
+			return;
+		}
+
+		System.out.println("INPUT: " + responseId + "|" + toChecked);
+
+		userQuizResponse.setIsChecked(toChecked);
+		questionService.updateUserQuizResponse(userQuizResponse);
 	}
 
 	/*
@@ -139,6 +334,8 @@ public class QuizBean {
 			return null;
 		}
 
+		startQuizMsg = "Your current level is: " + userSkill.getLevel();
+		
 		int lookForLevel = userSkill.getLevel() + 1;
 
 		Quiz quiz = quizService.getQuizOfSkillWithLevel(selectedSkillId, lookForLevel);
@@ -174,22 +371,16 @@ public class QuizBean {
 		this.canStartQuiz = canStartQuiz;
 	}
 
-	public Category getSelectedCategory() {
-		return selectedCategory;
+	public String getStartQuizMsg()
+	{
+		return startQuizMsg;
 	}
-
-	public void setSelectedCategory(Category selectedCategory) {
-		this.selectedCategory = selectedCategory;
+	
+	public void setStartQuizMsg(String startQuizMsg)
+	{
+		this.startQuizMsg = startQuizMsg;
 	}
-
-	public Skill getSelectedSkill() {
-		return selectedSkill;
-	}
-
-	public void setSelectedSkill(Skill selectedSkill) {
-		this.selectedSkill = selectedSkill;
-	}
-
+	
 	public List<Category> getCategories() {
 		return categories;
 	}
@@ -206,6 +397,29 @@ public class QuizBean {
 		this.skills = skills;
 	}
 
+	public List<UserQuizResponse> getUserQuestionResponses() {
+
+		userQuestionResponses = new ArrayList<UserQuizResponse>();
+
+		Utilisateur user = new Utilisateur();
+		user.setId(1);// lb.getUser();
+
+		List<QuestionResponse> questionResponses = questionService.listResponses(getCurrentQuizQuestion());
+
+		// Init or check for user-response rows in database
+		for (QuestionResponse questionResponse : questionResponses) {
+			UserQuizResponse uqr = questionService.getOrCreateUserQuestionResponse(user.getId(),
+					questionResponse.getId());
+			userQuestionResponses.add(uqr);
+		}
+
+		return userQuestionResponses;
+	}
+
+	public void setUserQuestionResponses(List<UserQuizResponse> userQuestionResponses) {
+		this.userQuestionResponses = userQuestionResponses;
+	}
+
 	public UserQuiz getUserQuiz() {
 		return userQuiz;
 	}
@@ -214,4 +428,19 @@ public class QuizBean {
 		this.userQuiz = userQuiz;
 	}
 
+	public Map<QuizQuestion, List<UserQuizResponse>> getQuizQToUserResponseMap() {
+		return quizQToUserResponseMap;
+	}
+
+	public void setQuizQToUserResponseMap(Map<QuizQuestion, List<UserQuizResponse>> quizQToUserResponseMap) {
+		this.quizQToUserResponseMap = quizQToUserResponseMap;
+	}
+
+	public float getCorrectAnswersPercentage() {
+		return correctAnswersPercentage;
+	}
+
+	public void setCorrectAnswersPercentage(float correctAnswersPercentage) {
+		this.correctAnswersPercentage = correctAnswersPercentage;
+	}
 }

@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +74,4 @@ public class Formation implements Serializable{
 		return "Formation [id=" + id + ", decription=" + decription + ", dateformation=" + dateformation + ", nbrjour="
 				+ nbrjour + "]";
 	}
-	
-	
 }

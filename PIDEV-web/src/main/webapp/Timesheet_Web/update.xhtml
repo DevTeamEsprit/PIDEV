@@ -10,48 +10,40 @@
 	<ui:param name="page_name" value="index" />
 	<ui:define name="content2">
 
-			<h:form styleClass="form">
-				<div style="color: red">#{timesheetUpdateBean.error}</div>
+		<h:form styleClass="form">
+			<div style="color: red">#{timesheetUpdateBean.error}</div>
 
-				<div style="width: 60%">
-					<div class="form-group">
-						<label>Name</label>
-						<h:inputText styleClass="form-control"
-							value="#{timesheetUpdateBean.ticket.name}" />
-					</div>
-					<div class="form-group">
-						<label>Description</label>
-						<h:inputText styleClass="form-control"
-							value="#{timesheetUpdateBean.ticket.description}" />
+			<div style="width: 60%">
+				<div class="form-group">
+					<label>Name</label>
+					<h:inputText styleClass="form-control"
+						value="#{timesheetUpdateBean.ticket.name}" />
+				</div>
+				<div class="form-group">
+					<label>Description</label>
+					<h:inputText styleClass="form-control"
+						value="#{timesheetUpdateBean.ticket.description}" />
 
-					</div>
-					<div class="form-group">
-						<label>Start Date</label>
-						<h:inputText styleClass="form-control"
-							value="#{timesheetUpdateBean.startDateString}" />
+				</div>
+				<div class="form-group">
+					<label>Start Date</label>
+					<h:inputText styleClass="form-control"
+						value="#{timesheetUpdateBean.startDateString}" />
 
-					</div>
-					<div class="form-group">
-						<label>End Date</label>
-						<h:inputText styleClass="form-control"
-							value="#{timesheetUpdateBean.endDateString}" />
+				</div>
+				<div class="form-group">
+					<label>End Date</label>
+					<h:inputText styleClass="form-control"
+						value="#{timesheetUpdateBean.endDateString}" />
 
-					</div>
-
-					<h:commandButton styleClass="btn btn-success"
-						action="#{timesheetUpdateBean.doUpdateTicket()}"
-						value="Update Ticket" />
 				</div>
 
-			</h:form>
+				<h:commandButton styleClass="btn btn-success"
+					action="#{timesheetUpdateBean.doUpdateTicket()}"
+					value="Update Ticket" />
+			</div>
 
-
-			</h:panelGrid>
-			</h:form>
-
-
-		</h:body>
-		</html>
+	</h:form>
 
 	</ui:define>
 

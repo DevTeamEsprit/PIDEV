@@ -32,6 +32,12 @@ public class SkillService implements SkillServiceRemote {
 	}
 
 	@Override
+	public void updateUserSkill(UserSkill userSkill)
+	{
+		em.persist(em.contains(userSkill) ? userSkill : em.merge(userSkill));
+	}
+	
+	@Override
 	public void deleteSkill(Skill skill) {
 		em.remove(skill);
 
