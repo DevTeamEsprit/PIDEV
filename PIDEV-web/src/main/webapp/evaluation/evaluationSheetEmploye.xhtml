@@ -1,16 +1,49 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"> 
-      <h:body>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+     <ui:composition template="/template/templateNew.xhtml">
+
+    	<ui:define name="content">
       <h2>#{evaluationBeanEmploye.evsheet.evalsheetTitle}</h2>
+      <h:form>
       <ol>
        <ui:repeat value="#{evaluationBeanEmploye.goalByEvalsheet}" var="item">
-       <li><h:outputText value="#{item.goal.text}"></h:outputText>  </li>
+       <li><h:outputText value="#{item.goal.text}"></h:outputText> 
+      <!--  <p:rating stars="3" value="#{item.noteByEmp}" />--> 
+      <h:selectOneMenu value="#{item.noteByEmp}">
+     <f:selectItem itemValue="0" ItemLabel="0"></f:selectItem>
+          <f:selectItem itemValue="1" ItemLabel="1"></f:selectItem>
+           <f:selectItem itemValue="2" ItemLabel="2"></f:selectItem>
+           <f:selectItem itemValue="3" ItemLabel="3"></f:selectItem>
+  </h:selectOneMenu>
+ </li>
        </ui:repeat>
           </ol>
-     
-      </h:body>
+            <c:if test="#{empty evaluationBeanEmploye.evsheet.appreciation}">
+          <h:commandButton value="#{evaluationBeanEmploye.submitvalue}" action="#{evaluationBeanEmploye.submitSheet}"></h:commandButton>
+       </c:if>
+          
+         <h3>Appreciation of your manager</h3>
+
+      <ol>
+       <ui:repeat value="#{evaluationBeanEmploye.goalByEvalsheet}" var="item">
+       <li><h:outputText value="#{item.goal.text} : "></h:outputText> 
+   <h:outputText value="#{item.noteByMan}"></h:outputText> <!-- <p:rating stars="#{item.noteByMan}" readonly="true" /> -->
+ </li>
+       </ui:repeat>
+          </ol> 
+          <h:outputText value="Appreciation :"></h:outputText><h:outputText value="#{evaluationBeanEmploye.appreciation}"></h:outputText>
+          <br/>
+          <c:if test="#{ evaluationBeanEmploye.appreciation ne ''}">
+         <h:inputText value=""></h:inputText> <h:commandButton value="Send a reclamation"></h:commandButton>
+         </c:if>
+     </h:form>
+     </ui:define>
+     </ui:composition>
 </html>

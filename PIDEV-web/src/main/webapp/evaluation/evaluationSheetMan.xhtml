@@ -1,0 +1,51 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+     <ui:composition template="/template/templateNew.xhtml">
+
+    	<ui:define name="content">
+      <h2>#{evaluationBean.evalTitle}</h2>
+      <h:form>
+      <ol>
+       <ui:repeat value="#{evaluationBean.goalsBySheet}" var="item">
+       <li><h:outputText value="#{item.goal.text} : "></h:outputText> 
+        <h:outputText value="#{item.noteByEmp}"></h:outputText> 
+      <!-- <p:rating stars="3" value="#{item.noteByEmp}" readonly="true"  /> --> 
+      
+ </li>
+       </ui:repeat>
+          </ol>
+          
+         <h3>Your validation</h3>
+
+      <ol>
+       <ui:repeat value="#{evaluationBean.goalsBySheet}" var="item">
+       <li><h:outputText value="#{item.goal.text} :"></h:outputText> 
+<!--  <h:outputText value="#{item.noteByMan}"></h:outputText><p:rating stars="#{item.noteByMan}" />--> 
+ <h:selectOneMenu value="#{item.noteByMan}">
+     <f:selectItem itemValue="0" ItemLabel="0"></f:selectItem>
+          <f:selectItem itemValue="1" ItemLabel="1"></f:selectItem>
+           <f:selectItem itemValue="2" ItemLabel="2"></f:selectItem>
+           <f:selectItem itemValue="3" ItemLabel="3"></f:selectItem>
+  </h:selectOneMenu>
+ </li>
+       </ui:repeat>
+          </ol> 
+         <h:outputText value="Appreciation :"></h:outputText> <h:selectOneMenu value="#{evaluationBean.evalSheet.appreciation}">
+         <f:selectItem itemValue="Bad" ItemLabel="Bad"></f:selectItem>
+          <f:selectItem itemValue="Medium" ItemLabel="Medium"></f:selectItem>
+           <f:selectItem itemValue="Good" ItemLabel="Good"></f:selectItem>
+           <f:selectItem itemValue="Very good" ItemLabel="Very good"></f:selectItem>
+            <f:selectItem itemValue="Excellent" ItemLabel="Excellent"></f:selectItem>
+         </h:selectOneMenu>
+          <h:commandButton value="Submit" action="#{evaluationBean.validate}"></h:commandButton>
+     </h:form>
+      </ui:define>
+      </ui:composition>
+</html>

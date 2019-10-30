@@ -28,4 +28,13 @@ public interface EvaluationServiceLocal {
 	public List<EvaluationSheet> EvalsByEmploye(long empid);
 	public List<GoalByEmploye> getGoalsOfEvals(int evaluationsheetid);
 	public EvaluationSheet getEvSheetById(int id);
+	public EvaluationSheet getEvSheetByEmpAndEval(int evalid,long empid);
+	public void changeNoteGoal(GoalByEmploye g);
+	public void switchSheetState(EvaluationSheet ev);
+	public Evaluation getEvaluationBySheet(EvaluationSheet e);
+	public void UpdateEvalSheet(EvaluationSheet e);
+	public void CancelEvaluation(Evaluation e);
+	public void DeleteGoal(int goalid);
+	public void DeleteEvalSheets(int evalid);
+
 }

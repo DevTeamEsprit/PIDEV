@@ -185,7 +185,81 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 				
 	}
 
-	
+	@Override
+	public void changeNoteGoal(GoalByEmploye g) {
+	    em.merge(g);
+	}
 
+	@Override
+	public void switchSheetState(EvaluationSheet ev) {
+		EvaluationSheet e = em.find(EvaluationSheet.class, ev.getId());
+		if(e.isStatus()==true)
+			e.setStatus(false);
+		else
+			e.setStatus(true);
+		
+	}
 
+	@Override
+	public Evaluation getEvaluationBySheet(EvaluationSheet e) {
+		TypedQuery<Evaluation> q = em.createQuery("select e from Evaluation e where e.id in (select go.evaluation.id from Goal go where go.id in (select ge.pk.GoalId from GoalByEmploye ge where ge.evaluationSheet =:ev))",Evaluation.class);
+		q.setParameter("ev", e);
+		return q.getSingleResult();
+	}
+
+	@Override
+	public EvaluationSheet getEvSheetByEmpAndEval(int evalid, long empid) {
+		TypedQuery<EvaluationSheet> q = em.createQuery("select es from EvaluationSheet es where es.id in (select ge.evaluationSheet.id from GoalByEmploye ge join ge.goal g join g.evaluation ev where ev.id=:evalid and ge.pk.employeId=:empid)",EvaluationSheet.class);
+		q.setParameter("evalid", evalid);
+		q.setParameter("empid", empid);
+		return q.getSingleResult();
+	}
+
+	@Override
+	public void UpdateEvalSheet(EvaluationSheet e) {
+		em.merge(e);
+		
+	}
+
+	@Override
+	public void CancelEvaluation(Evaluation e) {
+		
+		List<EvaluationSheet> evaluations = this.findEvaluationSheetbyEval(e.getId());
+		
+		if(evaluations !=null) {
+		for(EvaluationSheet es : evaluations) {
+			EvaluationSheet esv =em.find(EvaluationSheet.class, es.getId());
+			em.remove(esv);
+		}
+		}
+		Evaluation e2 =em.find(Evaluation.class, e.getId());
+		em.remove(e2);
+	}
+
+	@Override
+	public void DeleteGoal(int goalid) {
+		
+		Query q = em.createQuery("select ge from GoalByEmploye ge where ge.GoalId=:goalid");
+		 q.setParameter("goalid", goalid);
+		 
+		 List<GoalByEmploye> goalemp = q.getResultList();
+		 for(GoalByEmploye g : goalemp) {
+			 GoalByEmploye ge = em.find(GoalByEmploye.class, g.getPk());
+			 em.remove(ge);
+		 }
+		
+		 Goal goal =em.find(Goal.class, goalid);
+		 em.remove(goal);
+	}
+
+	@Override
+	public void DeleteEvalSheets(int evalid) {
+		List<EvaluationSheet> sheets = this.findEvaluationSheetbyEval(evalid);
+		for(EvaluationSheet e : sheets) {
+			EvaluationSheet ev = em.find(EvaluationSheet.class, e.getId());
+			em.remove(ev);
+		}
+		
+	}
 }
+	
