@@ -18,10 +18,10 @@ public class CategoryService implements CategoryServiceRemote {
 	EntityManager em;
 
 	@Override
-	public int addCategory(Category category) {
+	public Category addCategory(Category category) {
 
 		em.persist(category);
-		return category.getId();
+		return category;
 	}
 
 	@Override
@@ -48,6 +48,27 @@ public class CategoryService implements CategoryServiceRemote {
 			System.out.print("error");
 		}
 		return null;
+	}
+
+	@Override
+	public List<Category> ListAllCategories() {
+		TypedQuery<Category> query = em.createQuery("Select c from Category c ", Category.class);
+		try {
+			return query.getResultList();
+		}
+
+		catch (Exception e) {
+			System.out.print("error");
+		}
+		return null;
+	}
+	
+	@Override
+	public Category getCategoryById(long categoryId)
+	{
+		Category category = em.find(Category.class, categoryId);
+		
+		return category;
 	}
 
 }

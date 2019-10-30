@@ -15,7 +15,9 @@
       <ol>
        <ui:repeat value="#{evaluationBean.goals}" var="item">
        <li><h:outputText value="#{item.text} (#{item.type})"/>
+        <h:commandButton value="delete">
         
+        </h:commandButton>
        </li>
        </ui:repeat>
           </ol>

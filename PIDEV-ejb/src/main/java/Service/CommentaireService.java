@@ -33,19 +33,13 @@ public class CommentaireService {
     }
     
     public void addComm(Commentaire c) {
-    	Utilisateur u =em.find(Utilisateur.class,1L);
-    	if(u instanceof Employe)
-    		c.setUser((Employe)u);
-    	else
-    		c.setUser((Manager)u);
-    	
-    	c.setDateCreation(new Date());
     	em.persist(c);
     }
     
     public void delete(long id_com) {
     	em.remove(em.find(Commentaire.class,id_com));
     }
+    
      
 
 }

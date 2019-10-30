@@ -1,141 +1,60 @@
- <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:jsf="http://xmlns.jcp.org/jsf"
-	xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
-    xmlns:c="http://java.sun.com/jstl/core"
-	template="/template/index.xhtml">
-	<ui:param name="page_name" value="index" />
-	<ui:define name="content2">
- 	<h:form enctype="multipart/form-data">
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/templateNew.xhtml">
+	<ui:define name="pageTitle">Gestion Employés</ui:define>
+	<ui:define name="content">
+
+
+
+
 		<div class="card">
-          
-         
-            <div class="card-header">
-                <div class="tab-content">
-                  	<div class="active tab-pane" id="activity">
-                               
-                     <div class="card card-default">
-				          <div class="card-body">
-				            <div class="row">
-				              <div class="col-md-6">
-						                <div class="form-group">
-						                    <h:outputText class="card-title" value="Nom"/>
-											<h:inputText value="#{utilisateurbean.nom}" class="form-control"   placeholder="Enter name" />
-						                 </div>
-						                 <div class="form-group">
-						                    <h:outputText class="card-title" value="NCIN"/>
-						                
-											<h:inputText value="#{utilisateurbean.cin}" class="form-control"   placeholder="Enter name" />
-						                 </div>
-						                 <div class="form-group">						                  
-						                       <h:outputText class="card-title" value="Adresse"/>
-											<h:inputText value="#{utilisateurbean.adresse}" class="form-control"   placeholder="Enter name" />
-						                 </div>					                      
-						                         <h:outputText class="card-title" value="Num Telephone"/>
-							               	  <div class="input-group">     
-								                    <div class="input-group-prepend">
-								                      <span class="input-group-text"><i class="fa fa-phone"></i></span>
-								                    </div>
-								                    <h:inputText type="text" class="form-control" value="#{utilisateurbean.tel}"/>
-							                   
-							             	   </div>
-						                 
-				              </div>
-				              <div class="col-md-6">
-							                 <div class="form-group">
-							                    <h:outputText class="card-title" value="Prenom"/>
-												<h:inputText value="#{utilisateurbean.prenom}" class="form-control"   placeholder="Enter name" />
-							                 </div>
-							                 <div class="form-group">
-							                    <h:outputText value="email" class="card-title"/>
-												<h:inputText value="#{utilisateurbean.email}" class="form-control"   placeholder="Enter name" />
-							                 </div>
-							                 <div class="form-group">
-							                    <h:outputText class="card-title" value="Sexe"/>
-												<h:selectOneMenu value="#{utilisateurbean.sexe}" class="form-control" >
-													<f:selectItem itemLabel="Slectionner le  sexe " itemValue=""/>
-													<f:selectItem itemLabel="H" itemValue="H"/>
-													<f:selectItem itemLabel="F" itemValue="F"/>
-												</h:selectOneMenu>
-							                 
-							                 </div>
-					             			 <div class="form-group">
-							                    <h:outputText value="Image" class="card-title"/>
-							                    <div class="input-group">
-							                      <div class="custom-file">
-							                         
-							   
-							                    <p:fileUpload value="#{utilisateurbean.file}" mode="simple" skinSimple="true"/>
-							                    
-							                    
-							                      </div>
-							                       
-							                    </div>
-							                  </div>         	
-				              <div class="form-group">
-						                    <h:outputText class="card-title" value="Dare fin"/>
-											<h:inputText value="#{utilisateurbean.dateFin}" class="form-control"   placeholder="Enter name" />
-						                 </div>
-						                 <div class="form-group">
-						                    <h:outputText class="card-title" value="Salaire"/>
-											<h:inputText value="#{utilisateurbean.salaire}" class="form-control"   placeholder="Enter name" />
-						                 </div>
-				              </div>
-				            </div>
-				            <!-- /.row -->
-				          </div>
-	       
-			        </div>
-			 
-             
-                   
-                	</div>    
-                <!-- /.tab-content -->
-                <div class="tab-pane" id="timeline">
-                 
-	 
-                     	<div class="card card-default">
-				          <div class="card-body">
-				            	<div class="row">
-                 <div class="col-md-6">
-						                <div class="form-group">
-						                    <h:outputText class="card-title" value="Date debut"/>
-											<h:inputText value="#{utilisateurbean.dateDebut}" class="form-control"   placeholder="Enter name" />
-						                 </div>
-						                 <div class="form_group">
-						                 	<h:outputText value="Type Contrat"></h:outputText>
-											<h:selectOneMenu value="#{utilisateurbean.typeContrat}" >
-												<f:selectItem itemLabel="Slectionner Type  contrat " itemValue=""/>
-												<f:selectItem itemLabel="CDI" itemValue="SIVP" />
-												<f:selectItem itemLabel="CDI" itemValue="CDI" />
-										        <f:selectItem itemLabel="CDD" itemValue="CDD" />
-										        <f:selectItem itemLabel="CTT" itemValue="CTT" />
-										        <f:selectItem itemLabel="CDP" itemValue="CDP" />								      
-											</h:selectOneMenu>	
-						                 </div>
-			                 	</div>
-                   				</div>
-                   			</div>
-                   		</div>
-                </div>
-              </div><!-- /.card-body -->
-              			   
- 				<p:commandButton value="Submit" ajax="false" action="#{utilisateurbean.add}"  />
-		
-            </div> 
-			<div class="card-body p-2  ">
-                <ul class="nav nav-pills float-right">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Ajouter un Employé</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">affecter un contrat</a></li>
-              
-                </ul>
-              </div><!-- /.card-header -->
+			<div class="card-header">
+				<h3 class="card-title">Latest Members</h3>
+
+
+			</div>
+			<!-- /.card-header -->
+
+			<div class="card-body p-0">
+				<ul class="users-list clearfix">
+					<ui:repeat var="user" value="#{utilisateurbean.lstEmploye}">
+						<li>
+							<div class="box-body box-profile">
+								<img class="profile-user-img img-responsive img-circle"
+									src="data:image/png;base64,#{user.image}"
+									alt="User profile picture" />
+
+								<h3 class="profile-username text-center">#{user.prenom}
+									#{user.nom}</h3>
+
+								<p class="text-muted text-center">#{user.email}</p>
+								<p class="text-muted text-center">#{user.adresse}</p>
+								<ul class="list-group list-group-unbordered">
+									<li class="list-group-item"><b>Type Contrat</b> <a
+										class="pull-right">#{user.contrat.typeContrat}</a></li>
+									<li class="list-group-item"><b>Date debut</b> <a
+										class="pull-right">#{user.contrat.dateDebut}</a></li>
+									<li class="list-group-item"><b>Date fin</b> <a
+										class="pull-right">#{user.contrat.dateFin}</a></li>
+								</ul>
+
+								<a href="#" class="btn btn-primary btn-block"><b>Profile</b></a>
+							</div>
+						</li>
+					</ui:repeat>
+				</ul>
+				<!-- /.users-list -->
+			</div>
+			<!-- /.card-body -->
+
 		</div>
-	</h:form> 
-	
-  
+
+
+
 	</ui:define>
 </ui:composition>

@@ -1,0 +1,35 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j" template="/template/index.xhtml">
+	<ui:param name="page_name" value="index" />
+
+	<ui:define name="content2">
+		<h5>Ticket</h5>
+		<h2>Name : #{timesheetEmployeeBean.detailsTicket.name}</h2>
+		<div>Description :
+			#{timesheetEmployeeBean.detailsTicket.description}</div>
+		<div>Status :
+			#{timesheetEmployeeBean.detailsTicket.status.toString()}</div>
+		<h:form>
+			<h:commandButton
+				rendered="#{timesheetEmployeeBean.detailsTicket.status.toString() =='ToDo'}"
+				styleClass="btn btn-primary" value="In Progress"
+				action="#{timesheetEmployeeBean.doUpdateStatus('progress')}">
+			</h:commandButton>
+			<h:commandButton
+				rendered="#{timesheetEmployeeBean.detailsTicket.status.toString() =='InProgress'}"
+				styleClass="btn btn-success" value="Done"
+				action="#{timesheetEmployeeBean.doUpdateStatus('done')}">
+			</h:commandButton>
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>

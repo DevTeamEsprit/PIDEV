@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/index.xhtml">
+
+	<ui:param name="quiz_selection" value="index" />
+
+	<ui:define name="title">            
+			Quiz | #{quizBean.userQuiz.quiz.title}
+        </ui:define>
+
+	<ui:define name="content2">
+
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<link rel="stylesheet" href="../resources/css/quiz/quiz.css" />
+
+		<script
+			src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+		<div class="mx-auto container-fluid" style="width: 700px;">
+
+			<div class="row justify-content-center">
+				<br></br>
+				<div class="col-md-12">
+					<h:form class=" border border-light p-5"
+						id="category-selection-form">
+						<div class="container-fluid bg-Dinfo">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h3>
+											<span class="label label-warning" id="qid">#{quizBean.userQuiz.currentQuestionIndex
+												+ 1}</span> #{quizBean.currentQuizQuestion.content}
+										</h3>
+									</div>
+									<div class="modal-body">
+										<div class="col-xs-3 col-xs-offset-5">
+											<div id="loadbar" style="display: none;">
+												<div class="blockG" id="rotateG_01"></div>
+												<div class="blockG" id="rotateG_02"></div>
+												<div class="blockG" id="rotateG_03"></div>
+												<div class="blockG" id="rotateG_04"></div>
+												<div class="blockG" id="rotateG_05"></div>
+												<div class="blockG" id="rotateG_06"></div>
+												<div class="blockG" id="rotateG_07"></div>
+												<div class="blockG" id="rotateG_08"></div>
+											</div>
+										</div>
+
+
+										<h:form id="form">
+											<ui:repeat value="#{quizBean.userQuestionResponses}"
+												var="uqr" varStatus="i">
+												<label class="element-animation1 btn btn- btn-block">
+													<h:selectBooleanCheckbox style="margin-right: 1px" id="a">
+														<span class="btn-label"><i
+															class="glyphicon glyphicon-chevron-right"></i></span>
+														<f:attribute name="value" value="#{uqr.isChecked}" />
+														<f:ajax event="click"
+															listener="#{quizBean.updateUserQuestionResponse(uqr.response.id,uqr.isChecked)}" />
+													</h:selectBooleanCheckbox> ${i.index + 1}: #{uqr.response.content}
+												</label>
+												<h:outputLabel value="#{boxElement.val}" for="a" />
+											</ui:repeat>
+
+											<h:commandButton class="btn btn-info btn-block my-4"
+												action="#{quizBean.previousQuestion}" type="submit"
+												value="Previous question" id="prev-q-btn"
+												disabled="#{!quizBean.hasPreviousQuestion}" />
+
+											<c:choose>
+												<c:when test="#{quizBean.hasNextQuestion}">
+													<h:commandButton class="btn btn-info btn-block my-4"
+														action="#{quizBean.nextQuestion}" type="submit"
+														value="Next question" id="next-q-btn" />
+												</c:when>
+												<c:otherwise>
+													<h:commandButton class="btn btn-info btn-block my-4"
+														action="#{quizBean.showQuizResult}" type="submit"
+														value="Finish!" id="show-results-btn" />
+												</c:otherwise>
+											</c:choose>
+
+										</h:form>
+
+
+									</div>
+									<div class="modal-footer text-muted">
+										<span id="answer"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

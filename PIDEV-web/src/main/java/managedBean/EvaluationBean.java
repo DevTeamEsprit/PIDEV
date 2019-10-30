@@ -1,4 +1,5 @@
 
+
 package managedBean;
 
 import java.text.ParseException;
@@ -22,7 +23,16 @@ import entity.*;
 @SessionScoped
 public class EvaluationBean {
 	   private int evalId;
-       public int getEvalId() {
+	   private int goalid;
+       public int getGoalid() {
+		return goalid;
+	}
+
+	public void setGoalid(int goalid) {
+		this.goalid = goalid;
+	}
+
+	public int getEvalId() {
 		return evalId;
 	}
 
@@ -347,5 +357,10 @@ public class EvaluationBean {
     	 
     	 evals = evaluationService.findByManager(1);
     	 return "evaluationsCenter.xhtml?faces-redirect=true";
+    	 
+    	 public String deleteGoal() {
+    		 
+    		 return "evaluationDetails.xhtml?faces-redirect=true";
+    	 }
      }
 }

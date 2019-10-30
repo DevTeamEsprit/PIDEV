@@ -93,4 +93,3 @@ local.properties
 
 # Testing environment specific
 derby.log
-PIDEV-ear/target/m2e-wtp/ear-resources/META-INF/MANIFEST.MF

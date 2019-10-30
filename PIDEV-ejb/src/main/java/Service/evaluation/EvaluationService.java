@@ -235,8 +235,5 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 		Evaluation e2 =em.find(Evaluation.class, e.getId());
 		em.remove(e2);
 	}
-
-	
-
-
 }
+	

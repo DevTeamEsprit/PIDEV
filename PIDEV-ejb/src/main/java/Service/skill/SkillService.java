@@ -1,10 +1,14 @@
 package Service.skill;
 
+import java.util.List;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
+import entity.Utilisateur;
 import entity.skill.*;
 
 @Stateless
@@ -13,23 +17,30 @@ public class SkillService implements SkillServiceRemote {
 
 	@PersistenceContext
 	EntityManager em;
+
 	@Override
-	public int addSkill(Skill skill) {
+	public Skill addSkill(Skill skill) {
 		em.persist(skill);
-		return skill.getId();
-		
+		return skill;
+
 	}
 
 	@Override
 	public Skill updateSkill(Skill skill) {
-		// TODO Auto-generated method stub
+		em.persist(skill);
 		return skill;
 	}
 
 	@Override
+	public void updateUserSkill(UserSkill userSkill)
+	{
+		em.persist(em.contains(userSkill) ? userSkill : em.merge(userSkill));
+	}
+	
+	@Override
 	public void deleteSkill(Skill skill) {
 		em.remove(skill);
-		
+
 	}
 
 	@Override
@@ -39,4 +50,82 @@ public class SkillService implements SkillServiceRemote {
 		return skill;
 	}
 
+	@Override
+	public List<Utilisateur> listUsers(Skill skill) {
+		TypedQuery<Utilisateur> query = em.createQuery("Select u from Utilisateur where u.skill=:skill",
+				Utilisateur.class);
+		try {
+			return query.getResultList();
+		}
+
+		catch (Exception e) {
+			System.out.print("error");
+		}
+		return null;
+	}
+
+	@Override
+	public List<Quiz> listQuizzes(Skill skill) {
+		TypedQuery<Quiz> query = em.createQuery("Select q from Quiz where q.skill=:skill", Quiz.class);
+		try {
+			return query.getResultList();
+		}
+
+		catch (Exception e) {
+			System.out.print("error");
+		}
+		return null;
+	}
+
+	@Override
+	public List<Skill> getSkillsByCategoryId(long categoryId) {
+		List<Skill> skills = em.createQuery("SELECT S FROM " + Skill.class.getName() + " S"
+				+ " WHERE S.category.id = :categoryId", Skill.class)
+				.setParameter("categoryId", categoryId)
+				.getResultList();
+		
+		return skills;
+	}
+
+	@Override
+	public UserSkill getOrCreateUserSkill(long userId, long skillId)
+	{		
+		List<UserSkill> userSkills = em
+				.createQuery("SELECT US FROM " + UserSkill.class.getName() + " US"
+						+ " WHERE US.user.id = :userId AND US.skill.id = :skillId", UserSkill.class)
+				.setParameter("userId", userId)
+				.setParameter("skillId", skillId)
+				.getResultList();
+
+		UserSkill userSkill = null;
+
+		// Does it exist?
+		if (userSkills == null || userSkills.size() == 0) {
+			// Then create one
+
+			Utilisateur user = em.find(Utilisateur.class, userId);
+
+			if (user == null) {
+				System.out.println("Got a non-valid user id: " + userId + ".");
+				return null;
+			}
+
+			Skill skill = em.find(Skill.class, skillId);
+
+			if (skill == null) {
+				System.out.println("Got a non-valid skill id: " + skillId + ".");
+				return null;
+			}
+
+			// 0 for actual relation level, to start with quiz 1, and so...
+			userSkill = new UserSkill(user, skill, 0);
+			em.persist(userSkill);
+
+		} else {
+			userSkill = userSkills.get(0);
+		}
+
+		return userSkill;
+		
+	}
 }

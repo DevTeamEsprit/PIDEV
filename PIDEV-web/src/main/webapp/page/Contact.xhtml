@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/templateNew.xhtml">
+	<ui:define name="pageTitle">Liste des contacts</ui:define>
+	<ui:define name="content">
+			<div class="row">
+			
+			<div class="col-md-9">
+	<h:form>
+		<div class="container">
+		 
+			<div class="card card-default" id="card_contacts">
+				<div id="contacts" class="panel-collapse collapse show" 	aria-expanded="true" style="">
+					<ul class="list-group pull-down" id="contact-list">
+						<ui:repeat var="user" value="#{utilisateurbean.lstEmploye}">
+							<li class="list-group-item">
+								<div class="row w-100">
+									<div class="col-12 col-sm-6 col-md-3 px-0">
+										<img
+											src="data:image/png;base64,#{user.image}" style="width: 75%;"
+											alt="Mike Anamendolla" 	class="rounded-circle mx-auto d-block img-fluid" />
+									</div>
+									<div class="col-12 col-sm-6 col-md-9 text-center text-sm-left">
+										 
+									
+												
+											<label class="name lead"> #{user.prenom}	#{user.nom} 	</label> 
+											<br></br>
+											<h:commandLink action="#{utilisateurbean.goProfile(user)}"    >
+												<i class="fa fa-user float-right" aria-hidden="true">Profile</i>  
+											</h:commandLink><br></br>
+											<h:commandLink action="#{contactsBean.goToChat(user)}" 	value="#{contact.prenom} #{contact.nom}" class="d-block" >
+											<span class="fab fa-facebook-messenger float-right  " title="online now"><b>Contacter</b>	</span>
+											</h:commandLink>
+											 <span 	class="fa fa-map-marker fa-fw text-muted" data-toggle="tooltip" title="" data-original-title="5842 Hillcrest Rd"></span> 
+											 <span 	class="text-muted">#{user.adresse}</span> <br></br> 
+											 <span 	class="fa fa-phone fa-fw text-muted" data-toggle="tooltip" 	title="" data-original-title="(870) 288-4149"></span>
+											<span 	class="text-muted small">#{user.tel}</span> <br></br> 
+											<span class="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span> 
+											 
+											<span class="text-muted small text-truncate">#{user.email}</span>
+											
+											
+									</div>
+								</div>
+									
+							</li>
+
+						</ui:repeat>
+					</ul>
+					<!--/contacts list-->
+				</div>
+			</div>
+		</div>
+
+	</h:form>
+</div></div>
+	</ui:define>
+</ui:composition>
