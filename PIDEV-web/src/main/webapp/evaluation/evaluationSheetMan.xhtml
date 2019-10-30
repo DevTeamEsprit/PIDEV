@@ -7,7 +7,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
-      <h:body>
+     <ui:composition template="/template/templateNew.xhtml">
+
+    	<ui:define name="content">
       <h2>#{evaluationBean.evalTitle}</h2>
       <h:form>
       <ol>
@@ -25,7 +27,7 @@
       <ol>
        <ui:repeat value="#{evaluationBean.goalsBySheet}" var="item">
        <li><h:outputText value="#{item.goal.text} :"></h:outputText> 
-<!--  <h:outputText value="#{item.noteByMan}"></h:outputText>--> <p:rating stars="#{item.noteByMan}" />
+<!--  <h:outputText value="#{item.noteByMan}"></h:outputText><p:rating stars="#{item.noteByMan}" />--> 
  <h:selectOneMenu value="#{item.noteByMan}">
      <f:selectItem itemValue="0" ItemLabel="0"></f:selectItem>
           <f:selectItem itemValue="1" ItemLabel="1"></f:selectItem>
@@ -44,5 +46,6 @@
          </h:selectOneMenu>
           <h:commandButton value="Submit" action="#{evaluationBean.validate}"></h:commandButton>
      </h:form>
-      </h:body>
+      </ui:define>
+      </ui:composition>
 </html>

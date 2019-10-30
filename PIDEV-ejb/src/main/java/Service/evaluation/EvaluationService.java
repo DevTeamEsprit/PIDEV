@@ -235,5 +235,31 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 		Evaluation e2 =em.find(Evaluation.class, e.getId());
 		em.remove(e2);
 	}
+
+	@Override
+	public void DeleteGoal(int goalid) {
+		
+		Query q = em.createQuery("select ge from GoalByEmploye ge where ge.GoalId=:goalid");
+		 q.setParameter("goalid", goalid);
+		 
+		 List<GoalByEmploye> goalemp = q.getResultList();
+		 for(GoalByEmploye g : goalemp) {
+			 GoalByEmploye ge = em.find(GoalByEmploye.class, g.getPk());
+			 em.remove(ge);
+		 }
+		
+		 Goal goal =em.find(Goal.class, goalid);
+		 em.remove(goal);
+	}
+
+	@Override
+	public void DeleteEvalSheets(int evalid) {
+		List<EvaluationSheet> sheets = this.findEvaluationSheetbyEval(evalid);
+		for(EvaluationSheet e : sheets) {
+			EvaluationSheet ev = em.find(EvaluationSheet.class, e.getId());
+			em.remove(ev);
+		}
+		
+	}
 }
 	

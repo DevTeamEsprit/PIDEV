@@ -34,5 +34,7 @@ public interface EvaluationServiceLocal {
 	public Evaluation getEvaluationBySheet(EvaluationSheet e);
 	public void UpdateEvalSheet(EvaluationSheet e);
 	public void CancelEvaluation(Evaluation e);
+	public void DeleteGoal(int goalid);
+	public void DeleteEvalSheets(int evalid);
 
 }

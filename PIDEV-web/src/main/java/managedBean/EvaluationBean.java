@@ -253,7 +253,10 @@ public class EvaluationBean {
 		goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
 		employes = evaluationService.findEmployesByEval(evalId);
 		evaluation = evaluationService.findEval(evalId);
-		
+	 
+		if((new Date()).compareTo(evaluation.getDate())==0) {
+	           evaluationService.activateEvaluation(evaluation.getId());
+	        }
 		sheets = evaluationService.findEvaluationSheetbyEval(evalId);
 		this.setEvalTitle(evaluation.getType()+" evaluation of "+date+"(by "+manager.getNom()+" "+manager.getPrenom()+")");
 		return "evaluationDetails.xhtml?faces-redirect=true";
@@ -360,8 +363,28 @@ public class EvaluationBean {
     	 
     	
      }
-     public String deletegoal() {
+     
+     public String RemoveGoal() {
+		 if(evaluation.isStatus()) {
+			 FacesContext.getCurrentInstance().addMessage("form:btn-del", new FacesMessage("Turn evaluation down first!"));
+		 }
 		 
-		 return "evaluationDetails.xhtml?faces-redirect=true";
+		 
+		 else {
+			 evaluationService.DeleteGoal(goalid);
+			 goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
+			 if(goals == null) {
+				 evaluationService.DeleteEvalSheets(evalId);
+			 }
+			 
+			 employes = evaluationService.findEmployesByEval(evalId);
+				sheets = evaluationService.findEvaluationSheetbyEval(evalId);
+			 return "evaluationDetails.xhtml?faces-redirect=true";
+		 }
+		 return null;
 	 }
+     
+     public void FormWrite() {
+    	 FacesContext.getCurrentInstance().addMessage("form:btn-del", new FacesMessage("Turn evaluation down first!"));
+     }
 }
