@@ -358,9 +358,10 @@ public class EvaluationBean {
     	 evals = evaluationService.findByManager(1);
     	 return "evaluationsCenter.xhtml?faces-redirect=true";
     	 
-    	 public String deleteGoal() {
-    		 
-    		 return "evaluationDetails.xhtml?faces-redirect=true";
-    	 }
+    	
      }
+     public String deletegoal() {
+		 
+		 return "evaluationDetails.xhtml?faces-redirect=true";
+	 }
 }
