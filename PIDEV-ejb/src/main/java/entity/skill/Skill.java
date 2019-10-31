@@ -49,6 +49,13 @@ public class Skill implements Serializable {
 		super();
 	}
 	
+	public Skill(String name, String description,  Category category ) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.category = category;
+	}
+	
 	public Skill(long id, String name, String description,  Category category ) {
 		super();
 		this.id = id;

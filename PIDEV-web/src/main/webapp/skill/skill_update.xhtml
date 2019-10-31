@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/index.xhtml">
+	<ui:param name="quiz_selection" value="index" />
+	<ui:define name="title">            
+			Skill update
+        </ui:define>
+	<ui:define name="content2">
+
+		<!-- Default form login -->
+		<div class="mx-auto container-fluid" style="width: 700px;">
+			<div class="row justify-content-center">
+				<br></br>
+				<div class="col-md-12">
+					<h:form class=" border border-light p-5" id="new-category-form">
+						<h2>Update Skill!</h2>
+						<h5>Name</h5>
+						<h:inputText class="wrap-input100 validate-input"
+							value="#{skillBean.name}">
+							<f:ajax listener="#{skillBean.verifyExistance}"
+								render="add-category-btn" />
+						</h:inputText>
+
+						<h5>Description</h5>
+						<h:inputText class="wrap-input100 validate-input"
+							value="#{skillBean.description}">
+						</h:inputText>
+						<br></br>
+						<br></br>
+						<br></br>
+
+						<h:commandButton class="btn btn-info btn-block my-4"
+							action="#{skillBean.updateSkill}" type="submit"
+							value="Update skill!" id="add-category-btn" />
+
+						<h:commandButton action="skill_crud.xhtml?faces-redirect=true"
+							data-toggle="modal" value="Browse Skills"
+							class="btn btn-info btn-block my-4"></h:commandButton>
+
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
