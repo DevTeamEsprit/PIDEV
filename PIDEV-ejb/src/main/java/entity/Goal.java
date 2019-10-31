@@ -2,7 +2,7 @@
 package entity;
 
 import java.io.Serializable;
-
+import entity.GoalType;
 import javax.persistence.*;
 
 @Entity

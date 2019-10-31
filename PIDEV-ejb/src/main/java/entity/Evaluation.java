@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import entity.EvalType;
 import javax.persistence.*;
 
 @Entity

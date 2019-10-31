@@ -1,16 +1,23 @@
 package managedBean;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.SelectEvent;
 
 import Service.Timesheet.ProjectServiceLocal;
 import Service.Timesheet.TicketServiceLocal;
+import entity.Employe;
 import entity.Project;
 import entity.StatusTicket;
 import entity.Ticket;
@@ -23,7 +30,7 @@ public class TimesheetProjectDetailsBean {
 	private ProjectServiceLocal projectServiceLocal;
 	@EJB
 	private TicketServiceLocal ticketServiceLocal;
-
+	
 	private Ticket ticket = new Ticket();
 	private Project detailsproject;
 	private String startDateString = "";
@@ -33,20 +40,13 @@ public class TimesheetProjectDetailsBean {
 
 	}
 
+	@PostConstruct
+    public void init() {
+	}
 	public String createTIcket() {
 
 		String navigateTo = "/Timesheet_Web/detailsproject?faces-redirect=true";
-		Date endDate = new Date();
-		Date startDate = new Date();
-		try {
-			String pattern = "dd-MM-yyyy";
-			startDate = new SimpleDateFormat(pattern).parse(startDateString);
-			endDate = new SimpleDateFormat(pattern).parse(endDateString);
-		} catch (Exception e) {
-			// TODO: handle exception`
-		}
-		ticket.setStartDate(startDate);
-		ticket.setEndDate(endDate);
+		
 		ticket.setStatus(StatusTicket.ToDo);
 		ticket.setProject(detailsproject);
 		ticketServiceLocal.create(ticket);
@@ -63,6 +63,7 @@ public class TimesheetProjectDetailsBean {
 		return navigateTo;
 
 	}
+	
 
 	public Project getDetailsproject() {
 		return detailsproject;
@@ -77,6 +78,7 @@ public class TimesheetProjectDetailsBean {
 		System.out.println(vb.size());
 		return vb;
 	}
+	
 
 	public List<Ticket> getDones() {
 		List<Ticket> vb = ticketServiceLocal.getTicketsByProjectByStaus(detailsproject.getId(), StatusTicket.Done);
@@ -118,7 +120,7 @@ public class TimesheetProjectDetailsBean {
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 	}
-	
-	
 
+	
+	
 }

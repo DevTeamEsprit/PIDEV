@@ -1,12 +1,13 @@
 package managedBean;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+
+import Service.UtilisateurServiceLocal;
 import Service.Timesheet.TicketServiceLocal;
 import entity.StatusTicket;
 import entity.Ticket;
@@ -17,17 +18,20 @@ public class TimesheetDetailsBean {
 
 	@EJB
 	private TicketServiceLocal ticketServiceLocal;
+	@EJB
+	private UtilisateurServiceLocal utilisateurServiceLocal;
 
 	private Ticket detailsTicket;
 	private String startDateString = "";
 	private String endDateString = "";
-
+   
 	public TimesheetDetailsBean() {
 	}
 
 	@PostConstruct
 	public void init() {
 		detailsTicket = new Ticket();
+		
 	}
 
 	public int getProjectTicketsByStatus(int idProject, int type) {
@@ -120,5 +124,6 @@ public class TimesheetDetailsBean {
 	public void setEndDateString(String endDateString) {
 		this.endDateString = endDateString;
 	}
+
 
 }

@@ -12,36 +12,56 @@
 	<ui:define name="content2">
 
 		<div class="row">
-			<h:form styleClass="form">
-				<div style="width: 60%">
-					<div class="form-group">
-						<label>Name</label>
+			<h:form styleClass="form" style="padding : 20px">
+				<div class="row">
+					<div class="form-group col-md-4">
+						<p:outputLabel for="time1" value="Nom Ticket :" />
 						<h:inputText styleClass="form-control"
 							value="#{timesheetProjectDetailsBean.ticket.name}" />
 					</div>
-					<div class="form-group">
-						<label>Description</label>
+					<div class="form-group  col-md-4">
+						<p:outputLabel for="time1" value="Description Ticket :" />
+
+
 						<h:inputText styleClass="form-control"
 							value="#{timesheetProjectDetailsBean.ticket.description}" />
 
 					</div>
-					<div class="form-group">
-						<label>Start Date</label>
-						<h:inputText styleClass="form-control"
-							value="#{timesheetProjectDetailsBean.startDateString}" />
+					<div class="form-group  col-md-4">
+						<p:outputLabel for="time1" value="Employee Ticket :" />
+
+						<h:selectOneMenu styleClass="form-control"
+							value="#{timesheetBean.idEmp}">
+							<f:selectItems value="#{timesheetBean.listemployees}"
+								itemValue="#{e.id}" var="e" itemLabel="#{e.nom}" />
+						</h:selectOneMenu>
 
 					</div>
-					<div class="form-group">
-						<label>End Date</label>
-						<h:inputText styleClass="form-control"
-							value="#{timesheetProjectDetailsBean.endDateString}" />
 
+					<div class="form-group  col-md-4">
+						<p:outputLabel for="time1" value="Start Date:" />
+						<p:datePicker id="time1"
+							value="#{timesheetProjectDetailsBean.ticket.startDate}"
+							showTime="true" />
+					</div>
+					<div class="form-group  col-md-4">
+						<p:outputLabel for="time2" value="End Date:" />
+						<p:datePicker id="time2"
+							value="#{timesheetProjectDetailsBean.ticket.endDate}"
+							showTime="true" />
 					</div>
 
-					<h:commandButton styleClass="btn btn-success"
-						action="#{timesheetProjectDetailsBean.createTIcket()}" value="Add Ticket" />
+
+
+
 				</div>
-
+				<div class="row">
+					<div class="form-group  col-md-4">
+						<h:commandButton styleClass="btn btn-sm btn-success"
+							action="#{timesheetProjectDetailsBean.createTIcket()}"
+							value="Add Ticket" />
+					</div>
+				</div>
 			</h:form>
 		</div>
 		<div class="row" style="margin-top: 15px">
@@ -52,11 +72,24 @@
 					</div>
 					<ui:repeat var="ticket"
 						value="#{timesheetProjectDetailsBean.todos}" varStatus="t">
-						<div class="bg-danger disabled" style="margin-bottom: 5px">
-							<div>#{ticket.id} #{ticket.name}</div>
-							<div>#{ticket.description}</div>
+						<div class="bg-danger disabled"
+							style="padding: 5px; margin-bottom: 5px">
+							<div>
+								<strong>Name Ticket : </strong>#{ticket.name}
+							</div>
+							<div>
+								<strong>Description : </strong>#{ticket.description}
+							</div>
+							<div>
+								<strong>Project : </strong>#{ticket.project.name}
+							</div>
+							<div>
+								<strong>Period : </strong>#{ticket.startDate} -
+								#{ticket.endDate}
+							</div>
+
 							<h:form>
-								<h:commandButton styleClass="btn btn-primary"
+								<h:commandButton styleClass="btn btn-sm btn-primary"
 									action="#{timesheetDetailsBean.doupdatestatus(ticket)}"
 									value=" Doing " />
 							</h:form>
@@ -72,16 +105,30 @@
 					</div>
 					<ui:repeat var="ticket"
 						value="#{timesheetProjectDetailsBean.doings}" varStatus="t">
-						<div class="bg-info disabled color-palette"
-							style="margin-bottom: 5px">
-							<div>#{ticket.id} #{ticket.name}</div>
-							<div>#{ticket.description}</div>
+						<div class="bg-info disabled"
+							style="padding: 5px; margin-bottom: 5px">
+							<div>
+								<strong>Name Ticket : </strong>#{ticket.name}
+							</div>
+							<div>
+								<strong>Description : </strong>#{ticket.description}
+							</div>
+							<div>
+								<strong>Project : </strong>#{ticket.project.name}
+							</div>
+							<div>
+								<strong>Period : </strong>#{ticket.startDate} -
+								#{ticket.endDate}
+							</div>
+
 							<h:form>
 								<h:commandButton styleClass="btn btn-primary"
 									action="#{timesheetDetailsBean.doupdatestatus(ticket)}"
 									value=" Done " />
 							</h:form>
+
 						</div>
+
 					</ui:repeat>
 				</div>
 			</div>
@@ -93,9 +140,20 @@
 					<ui:repeat var="ticket"
 						value="#{timesheetProjectDetailsBean.dones}" varStatus="t">
 						<div class="bg-teal disabled color-palette"
-							style="margin-bottom: 5px">
-							<div>#{ticket.id} #{ticket.name}</div>
-							<div>#{ticket.description}</div>
+							style="padding: 5px; margin-bottom: 5px">
+							<div>
+								<strong>Name :</strong>#{ticket.name}
+							</div>
+							<div>
+								<strong>Description : </strong>#{ticket.description}
+							</div>
+							<div>
+								<strong>Project : </strong>#{ticket.project.name}
+							</div>
+							<div>
+								<strong>Period : </strong>#{ticket.startDate} -
+								#{ticket.endDate}
+							</div>
 						</div>
 					</ui:repeat>
 				</div>
@@ -123,7 +181,9 @@
 		</div>
 	</ui:define>
 	<ui:define name="scripts">
+		<script src="../resources/plugins/chart.js/Chart.min.js"></script>
 		<script>
+		console.log("beginnn");
 		     var nbtodo=#{timesheetDetailsBean.getProjectTicketsByStatus(timesheetProjectDetailsBean.detailsproject.id,1)};
 		     var nbdoing=#{timesheetDetailsBean.getProjectTicketsByStatus(timesheetProjectDetailsBean.detailsproject.id,2)};
 		     var nbdone=#{timesheetDetailsBean.getProjectTicketsByStatus(timesheetProjectDetailsBean.detailsproject.id,3)};
@@ -146,7 +206,40 @@
 				type : 'pie',
 				data : pieData,
 				options : pieOptions
-			})
+			});
+
+			PrimeFaces.locales['es'] = {
+			    closeText: 'Cerrar',
+			    prevText: 'Anterior',
+			    nextText: 'Siguiente',
+			    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+			    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+			    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+			    weekHeader: 'Semana',
+			    firstDayOfWeek: 1,
+			    isRTL: false,
+			    showMonthAfterYear: false,
+			    yearSuffix: '',
+			    timeOnlyTitle: 'Sólo hora',
+			    timeText: 'Tiempo',
+			    hourText: 'Hora',
+			    minuteText: 'Minuto',
+			    secondText: 'Segundo',
+			    currentText: 'Fecha actual',
+			    ampm: false,
+			    month: 'Mes',
+			    week: 'Semana',
+			    day: 'Día',
+			    allDayText: 'Todo el día'
+			};
+			//<![CDATA[
+			function dateTemplateFunc(date) {
+			    return '<span style="background-color:' + ((date.day < 21 && date.day > 10) ? '#81C784' : 'inherit') + ';border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;">' + date.day + '</span>';
+			}
+			//]]>
+			
 		</script>
 
 	</ui:define>

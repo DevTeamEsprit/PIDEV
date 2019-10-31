@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import entity.Employe;
 import entity.StatusTicket;
 import entity.Ticket;
 
@@ -21,6 +22,7 @@ public interface TicketServiceRemote {
 	List<Ticket> findAll();
 	List<Ticket> getTicketsByProject(int idProject);
 	List<Ticket> getTicketsByProjectByStaus(int idProject,StatusTicket status);
+	List<Employe> getEmployes();
 
 
 }
