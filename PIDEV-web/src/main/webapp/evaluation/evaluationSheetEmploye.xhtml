@@ -10,18 +10,19 @@
      <ui:composition template="/template/templateNew.xhtml">
 
     	<ui:define name="content">
+    	<h:head></h:head>
       <h2>#{evaluationBeanEmploye.evsheet.evalsheetTitle}</h2>
       <h:form>
       <ol>
        <ui:repeat value="#{evaluationBeanEmploye.goalByEvalsheet}" var="item">
        <li><h:outputText value="#{item.goal.text}"></h:outputText> 
-      <!--  <p:rating stars="3" value="#{item.noteByEmp}" />--> 
-      <h:selectOneMenu value="#{item.noteByEmp}">
+       <p:rating stars="3" value="#{item.noteByEmp}" />
+     <!-- <h:selectOneMenu value="#{item.noteByEmp}">
      <f:selectItem itemValue="0" ItemLabel="0"></f:selectItem>
           <f:selectItem itemValue="1" ItemLabel="1"></f:selectItem>
            <f:selectItem itemValue="2" ItemLabel="2"></f:selectItem>
            <f:selectItem itemValue="3" ItemLabel="3"></f:selectItem>
-  </h:selectOneMenu>
+  </h:selectOneMenu> --> 
  </li>
        </ui:repeat>
           </ol>
@@ -34,14 +35,15 @@
       <ol>
        <ui:repeat value="#{evaluationBeanEmploye.goalByEvalsheet}" var="item">
        <li><h:outputText value="#{item.goal.text} : "></h:outputText> 
-   <h:outputText value="#{item.noteByMan}"></h:outputText> <!-- <p:rating stars="#{item.noteByMan}" readonly="true" /> -->
+   <!-- <h:outputText value="#{item.noteByMan}"></h:outputText>--> <p:rating stars="#{item.noteByMan}" readonly="true" disabled="true"/> 
  </li>
        </ui:repeat>
           </ol> 
           <h:outputText value="Appreciation :"></h:outputText><h:outputText value="#{evaluationBeanEmploye.appreciation}"></h:outputText>
           <br/>
           <c:if test="#{ evaluationBeanEmploye.appreciation ne ''}">
-         <h:inputText value=""></h:inputText> <h:commandButton value="Send a reclamation"></h:commandButton>
+         <h:inputText value="#{evaluationBeanEmploye.emailText}"></h:inputText> <h:commandButton id="mail-btn" value="Send a reclamation" action="#{evaluationBeanEmploye.SendEmail}"></h:commandButton>
+         <h:message for="mail-btn"></h:message>
          </c:if>
      </h:form>
      </ui:define>

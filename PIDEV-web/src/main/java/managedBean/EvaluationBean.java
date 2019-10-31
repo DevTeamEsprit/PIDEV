@@ -2,6 +2,8 @@
 
 package managedBean;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,15 +16,29 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.*;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 import Service.UtilisateurService;
 import Service.evaluation.EvaluationService;
 import entity.*;
+import service.ServiceManager;
 
 @ManagedBean
 @SessionScoped
-public class EvaluationBean {
+public class EvaluationBean implements Serializable{
 	   private int evalId;
+	   @ManagedProperty(value = "#{loginbean}")
+		private Loginbean lb;
+	   public Loginbean getLb() {
+			return lb;
+		}
+
+		public void setLb(Loginbean lb) {
+			this.lb = lb;
+		}
+	   
+	   @Inject
+		private ServiceManager serviceManager;
 	   private int goalid;
        public int getGoalid() {
 		return goalid;
@@ -191,6 +207,14 @@ public class EvaluationBean {
 
 	@PostConstruct
     public void init() {
+		if (this.lb.getUser() == null) {
+			try {
+				this.serviceManager.goToPage("../login.jsf");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
         evals = evaluationService.findByManager(1);
         manager = utilisateurService.findManager(1);
         
@@ -216,6 +240,7 @@ public class EvaluationBean {
 				evaluationService.createEvaluation(e);
 				Evaluation LastEval = evaluationService.getLastEvaluation(1);
 				evalId = LastEval.getId();
+				EvaluationService.evalid=evalId;
 				goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(e.getDate());
@@ -253,7 +278,7 @@ public class EvaluationBean {
 		goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
 		employes = evaluationService.findEmployesByEval(evalId);
 		evaluation = evaluationService.findEval(evalId);
-	 
+		EvaluationService.evalid=evalId;
 		if((new Date()).compareTo(evaluation.getDate())==0) {
 	           evaluationService.activateEvaluation(evaluation.getId());
 	        }
@@ -335,6 +360,7 @@ public class EvaluationBean {
     	          goalsBySheet = evaluationService.getGoalsOfEvals(evalSheet.getId());
     	          appreciation = evalSheet.getAppreciation();
     	 return "evaluationSheetMan.xhtml?faces-redirect=true";
+    	        
      }
      
      public String validate() {

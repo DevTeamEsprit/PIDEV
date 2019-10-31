@@ -10,13 +10,17 @@
      <ui:composition template="/template/templateNew.xhtml">
 
     	<ui:define name="content">
+    	<h:head>
+          
+     </h:head>
       <h2>#{evaluationBean.evalTitle}</h2>
+      <c:if test="#{evaluationBean.evalSheet.status eq true}">
       <h:form>
       <ol>
        <ui:repeat value="#{evaluationBean.goalsBySheet}" var="item">
        <li><h:outputText value="#{item.goal.text} : "></h:outputText> 
-        <h:outputText value="#{item.noteByEmp}"></h:outputText> 
-      <!-- <p:rating stars="3" value="#{item.noteByEmp}" readonly="true"  /> --> 
+       <!--  <h:outputText value="#{item.noteByEmp}"></h:outputText>  -->
+       <p:rating stars="3" value="#{item.noteByEmp}" readonly="true" disabled="true" /> 
       
  </li>
        </ui:repeat>
@@ -27,13 +31,13 @@
       <ol>
        <ui:repeat value="#{evaluationBean.goalsBySheet}" var="item">
        <li><h:outputText value="#{item.goal.text} :"></h:outputText> 
-<!--  <h:outputText value="#{item.noteByMan}"></h:outputText><p:rating stars="#{item.noteByMan}" />--> 
- <h:selectOneMenu value="#{item.noteByMan}">
+ <p:rating stars="3" value="#{item.noteByMan}"/>
+ <!--<h:selectOneMenu value="#{item.noteByMan}">
      <f:selectItem itemValue="0" ItemLabel="0"></f:selectItem>
           <f:selectItem itemValue="1" ItemLabel="1"></f:selectItem>
            <f:selectItem itemValue="2" ItemLabel="2"></f:selectItem>
            <f:selectItem itemValue="3" ItemLabel="3"></f:selectItem>
-  </h:selectOneMenu>
+  </h:selectOneMenu>--> 
  </li>
        </ui:repeat>
           </ol> 
@@ -46,6 +50,10 @@
          </h:selectOneMenu>
           <h:commandButton value="Submit" action="#{evaluationBean.validate}"></h:commandButton>
      </h:form>
+     </c:if>
+     <c:if test="#{evaluationBean.evalSheet.status eq false}">
+         <h:outputText value="Sheet not submitted" />
+     </c:if>
       </ui:define>
       </ui:composition>
 </html>

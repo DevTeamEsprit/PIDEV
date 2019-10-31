@@ -5,9 +5,14 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"> 
+      <ui:define name="header">
+      </ui:define>
       <ui:composition template="/template/templateNew.xhtml">
 
     	<ui:define name="content">
+    	<h:head>
+          
+     </h:head>
     			 <h2>List of  evaluations</h2>
       <ul>
     <ui:repeat value="#{evaluationBean.evals}" var="eval">
@@ -16,6 +21,7 @@
             <h:commandButton value="Evaluation of #{eval.date}" action="#{evaluationBean.showEval}">
             <f:setPropertyActionListener target="#{evaluationBean.date}" value="#{eval.date}" />
             <f:setPropertyActionListener target="#{evaluationBean.evalId}" value="#{eval.id}" />
+            <f:setPropertyActionListener target="#{chartView.evalid}" value="#{eval.id}" />
             </h:commandButton>
             </h:form>
             </li>

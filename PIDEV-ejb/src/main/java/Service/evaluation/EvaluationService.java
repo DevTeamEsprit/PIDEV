@@ -16,6 +16,7 @@ import entity.*;
 @LocalBean
 public class EvaluationService implements EvaluationServiceLocal,EvaluationServiceRemote {
 
+	 public static int evalid;
 	@PersistenceContext
 	EntityManager em;
     /**
@@ -260,6 +261,24 @@ public class EvaluationService implements EvaluationServiceLocal,EvaluationServi
 			em.remove(ev);
 		}
 		
+	}
+
+	@Override
+	public List<Employe> findEmployeOrderByNote(int evalid) {
+		Query q = em.createQuery("SELECT u FROM  Utilisateur u where u.id in (SELECT go.employe.id from goalbyemploye go join go.goal g join g.evaluation e where e.id=:evalid order by go.noteByEmp DESC)");
+		q.setParameter("evalid", evalid);
+		if(q.getResultList().get(0)!=null && q.getResultList().get(1)!=null && q.getResultList().get(2)!=null)
+		return q.getResultList().subList(0,2);
+		
+		return q.getResultList();
+	}
+
+	@Override
+	public List<GoalByEmploye> gempbyEmpAndEval(long empid, int evalid) {
+		Query Q = em.createQuery("SELECT g FROM GoalByEmploye g WHERE g.employe.id=:empid and g.goal.id in (SELECT go.id from Goal go WHERE go.evaluation.id=:evalid)");
+		Q.setParameter("evalid", evalid);
+		Q.setParameter("empid", empid);
+		return Q.getResultList();
 	}
 }
 	

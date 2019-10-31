@@ -6,11 +6,14 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      > 
+      xmlns:p="http://primefaces.org/ui"> 
+
        <ui:composition template="/template/templateNew.xhtml">
 
     	<ui:define name="content">
-     
+     <h:head>
+          
+     </h:head>
       <h2><h:outputText value="#{evaluationBean.evalTitle}"></h:outputText>  </h2>
 
       <h3>List of goals</h3>
@@ -20,7 +23,7 @@
        <li>
        <h:form>
        <h:outputText value="#{goal.text} (#{goal.type})"/>
-        <h:commandButton value="delete" id="btn-del" action="#{evaluationBean.FormWrite}">
+        <h:commandButton value="delete" id="btn-del" action="#{evaluationBean.RemoveGoal}">
         <f:setPropertyActionListener target="#{evaluationBean.goalid}" value="#{goal.id}" />
         </h:commandButton>
         <h:message for="btn-del"/>
@@ -62,7 +65,10 @@
       <h:message for="btn-eval"/>
       <h:commandButton id="btn-sup" value="Cancel" action="#{evaluationBean.delete}"></h:commandButton>
       </h:form>
-       
+      
+      <h3>Statistics</h3>
+      <p:inputText rendered="false" />
+       <p:chart type="bar" model="#{chartView.barModel}" style="height:300px;width:50%"/>
       </ui:define>
       </ui:composition>
 

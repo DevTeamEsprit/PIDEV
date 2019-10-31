@@ -1,26 +1,48 @@
 
 package managedBean;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.mail.MessagingException;
 
 import Service.UtilisateurService;
 import Service.evaluation.EvaluationService;
+import Service.evaluation.MailService;
 import entity.*;
 import io.undertow.server.session.Session;
+import service.ServiceManager;
 
 @ManagedBean
 @SessionScoped
-public class EvaluationBeanEmploye {
+public class EvaluationBeanEmploye implements Serializable{
       private List<EvaluationSheet> evaluationsheets;
       
-     
+      @ManagedProperty(value = "#{loginbean}")
+  	private Loginbean lb;
+      public Loginbean getLb() {
+  		return lb;
+  	}
+
+  	public void setLb(Loginbean lb) {
+  		this.lb = lb;
+  	}
+      
+      @Inject
+  	private ServiceManager serviceManager;
+      
       private int evalsheetid;
       private String emailText;
+     // private MailService mailservice ;
       private Session mailSession;
       public Session getMailSession() {
 		return mailSession;
@@ -100,6 +122,14 @@ public class EvaluationBeanEmploye {
 	
 	@PostConstruct
     public void init() {
+		if (this.lb.getUser() == null) {
+			try {
+				this.serviceManager.goToPage("../login.jsf");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
        evaluationsheets = evaluationService.EvalsByEmploye(2);
        for(EvaluationSheet e :  evaluationsheets) {
     	   e.setEvalsheetTitle("Evaluation of "+ evaluationService.getEvaluationBySheet(e).getDate());
@@ -152,4 +182,15 @@ public class EvaluationBeanEmploye {
 		return null;
 	}
      
+	public void SendEmail() {
+		 try {
+	            MailService.sendMessage(utilisateurService.findManager(1).getEmail(),evsheet.getEvalsheetTitle() , emailText);
+	            FacesContext.getCurrentInstance().addMessage("form:mail-btn", new FacesMessage("Message sent"));
+	        }
+	        catch(MessagingException ex) {
+	        	System.out.println(ex.getMessage());
+	        	//FacesContext.getCurrentInstance().addMessage("form:mail-btn", new FacesMessage("Error sending"));
+	        }
+		
+	}
 }
