@@ -1,3 +1,4 @@
+
 package entity;
 
 import java.io.Serializable;
@@ -21,6 +22,27 @@ public class GoalByEmploye implements Serializable{
 	@ManyToOne
 	private EvaluationSheet evaluationSheet;
 
+	private int noteByEmp=0;
+	private int noteByMan=0;
+	public int getNoteByEmp() {
+		return noteByEmp;
+	}
+	public GoalByEmploye(GoalByEmployeId pk, int noteByEmp, int noteByMan) {
+		super();
+		this.pk = pk;
+		this.noteByEmp = noteByEmp;
+		this.noteByMan = noteByMan;
+	}
+	public void setNoteByEmp(int noteByEmp) {
+		this.noteByEmp = noteByEmp;
+	}
+	
+	public int getNoteByMan() {
+		return noteByMan;
+	}
+	public void setNoteByMan(int noteByMan) {
+		this.noteByMan = noteByMan;
+	}
 	public EvaluationSheet getEvaluationSheet() {
 		return evaluationSheet;
 	}
