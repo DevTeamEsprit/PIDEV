@@ -19,6 +19,7 @@ import dto.PublicationCommentaireDto;
 import entity.Commentaire;
 import entity.Contrat;
 import entity.Employe;
+import entity.Manager;
 import entity.Message;
 import entity.Publication;
 import entity.Utilisateur;
@@ -42,6 +43,10 @@ public class ServiceManager implements Serializable {
 	public void addUser(Employe user) {
 		this.utilisateurService.addUser(user);
 	}
+	
+	public void addManager(Manager user) {
+		this.utilisateurService.addUser(user);
+	}	
 
 	public List<Employe> listerEmploye() {
 		return this.utilisateurService.consulterEmploye();

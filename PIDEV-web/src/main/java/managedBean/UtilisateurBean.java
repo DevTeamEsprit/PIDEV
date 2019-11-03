@@ -23,6 +23,7 @@ import dto.PublicationCommentaireDto;
 import entity.Commentaire;
 import entity.Contrat;
 import entity.Employe;
+import entity.Manager;
 import entity.Publication;
 import entity.Utilisateur;
 import service.ServiceManager;
@@ -35,6 +36,7 @@ public class UtilisateurBean implements Serializable {
 	private ServiceManager serviceManager;
 	private Contrat contrat = new Contrat();
 	private Employe emp = new Employe();
+	private Manager manager = new Manager();
 	private List<Employe> lstEmploye;
 	private String dated, datef;
 	private String newpassword;
@@ -46,6 +48,14 @@ public class UtilisateurBean implements Serializable {
 
 	public Loginbean getLb() {
 		return lb;
+	}
+
+	public Manager getManager() {
+		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
 	}
 
 	public void setLb(Loginbean lb) {
@@ -135,8 +145,16 @@ public class UtilisateurBean implements Serializable {
 		this.lstEmploye = this.serviceManager.listerEmploye();
 	}
 
-	public void ajouterEmploye() {
-
+	public void ajouterManager() {
+		byte[] fileContent = file.getContents();
+		String encodedString = Base64.getEncoder().encodeToString(fileContent);
+		this.manager.setContrat(contrat);
+		this.manager.setPassword(this.serviceManager.MD5(manager.getCin()));
+		this.manager.setImage(encodedString);
+		System.out.println(manager);
+		this.serviceManager.addManager(this.manager);
+		this.manager=new Manager();
+		this.contrat=new Contrat();
 	}
 
 	public void upload() {
@@ -186,6 +204,21 @@ public class UtilisateurBean implements Serializable {
 	 
 		this.serviceManager.updatpassword(this.lb.getUser());
 		this.serviceManager.goToPage("Accueil.jsf");
+	}
+	
+	public void bloqueruser(Employe e) {
+		e.setActif(true);
+		this.serviceManager.updatpassword(e);
+	}
+	
+	public void changerImage() {
+		if(file!=null) {
+		byte[] fileContent = file.getContents();
+		String encodedString = Base64.getEncoder().encodeToString(fileContent);
+		this.lb.getUser().setImage(encodedString);
+		this.serviceManager.updatpassword(this.lb.getUser());
+		}
+		 
 	}
 
 }

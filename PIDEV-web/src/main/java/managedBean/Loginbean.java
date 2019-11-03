@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -72,7 +73,9 @@ public class Loginbean implements Serializable {
 			else
 				navigateto = "/page/Accueil?faces-redirect=true";
 						 
-		}
+		}else
+			FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Bad Credentials"));
+		//<h:commandButton class="login100-form-btn" id="btn" value="CONTINUER" action="#{employeBean.doLogin()}" />
 		return navigateto;
 
 	}

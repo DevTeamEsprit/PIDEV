@@ -7,6 +7,37 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:a4j="http://richfaces.org/a4j"
 	template="/template/templateNew.xhtml">
+		<ui:define name="nav">
+		<li class="nav-item"><a href="../page/Accueil.jsf"
+			class="nav-link "> <i class="nav-icon fa fa-th"></i>
+				<p>Accueil</p>
+		</a></li>
+		<li class="nav-item"><a href="../page/Employe.jsf"
+			class="nav-link"> <i class="nav-icon fa fa-th"></i>
+				<p>Gestion des employés</p>
+		</a></li>
+ 
+		<li class="nav-item has-treeview"><a href="#" class="nav-link">
+				<i class="nav-icon fa fa-th"></i>
+				<p>Ajouter une formation
+				<i class="right fa fa-angle-left"></i>
+				</p>
+		</a>
+						<ul class="nav nav-treeview">
+				<li class="nav-item"><a href="../Formation/Formation.jsf"
+					class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>Ajouter une formation</p>
+				</a></li>
+				<li class="nav-item"><a href="../Formation/listeformation.jsf"
+					class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>lister les formations</p>
+				</a></li>
+
+			</ul>
+		</li>
+ 
+
+	</ui:define>
 	<ui:define name="pageTitle">Profile</ui:define>
 	<ui:define name="content">
 
@@ -115,11 +146,7 @@
 												</span>
 											</div>
 											<div class="card-tools">
-												<p:commandLink
-													rendered="#{entry.publication.user.id == loginbean.user.id}"
-													class="btn btn-tool btn-tool-edit" title="Modifier">
-													<i class="fas fa-edit"></i>
-												</p:commandLink>
+												
 												<h:commandLink
 													rendered="#{entry.publication.user.id == loginbean.user.id}"
 													class="btn btn-tool btn-tool-delete" title="Supprimer">

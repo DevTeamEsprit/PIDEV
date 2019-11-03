@@ -46,5 +46,9 @@ public class Manager extends Utilisateur implements Serializable{
 		this.evaluations = evaluations;
 	}
 
+
+
+	 
+
 	
 }

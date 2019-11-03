@@ -112,5 +112,8 @@ public class UtilisateurService implements UtilisateurServiceLocal {
 		return query.getSingleResult();
 
 	}
+	
+
+	
 
 }
