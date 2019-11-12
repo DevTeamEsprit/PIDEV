@@ -25,6 +25,7 @@ import entity.Publication;
 import entity.Utilisateur;
 
 public class ServiceManager implements Serializable {
+	
 	@EJB
 	private PublicationService publicationService;
 	@EJB

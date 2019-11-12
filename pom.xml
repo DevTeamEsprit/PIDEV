@@ -64,6 +64,20 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- https://mvnrepository.com/artifact/com.github.rkonovalov/json-ignore -->
+			<dependency>
+				<groupId>com.github.rkonovalov</groupId>
+				<artifactId>json-ignore</artifactId>
+				<version>1.0.12</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>2.9.6</version>
+			</dependency>
+
 			<!-- web service -->
 			<dependency>
 				<groupId>org.jboss.resteasy</groupId>

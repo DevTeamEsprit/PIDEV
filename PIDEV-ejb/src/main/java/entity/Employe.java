@@ -5,11 +5,14 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @DiscriminatorValue(value="employe")
 public class Employe extends Utilisateur implements Serializable {
 
 	@ManyToOne
+	@JsonManagedReference
 	private Manager manager;
 	
 	

@@ -21,6 +21,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
  
 
 @Entity
@@ -39,11 +42,13 @@ public class Utilisateur implements Serializable {
 	private String adresse;
 	private String tel;
 	private String email;
+	@JsonIgnore
 	private String password;
 	@Temporal(TemporalType.DATE)
 	private Date datNais;
 	private boolean Actif;
 	@Column(columnDefinition = "MEDIUMTEXT")
+	@JsonIgnore
 	private String image;
 	@Enumerated(EnumType.STRING)
 	private Sexe sexe;
@@ -67,9 +72,11 @@ public class Utilisateur implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "sender")
+	@JsonBackReference
 	private List<Message> messagesSent;
 
 	@OneToMany(mappedBy = "receiver")
+	@JsonBackReference
 	private List<Message> messagesReceived;
 
 	public Sexe getSexe() {
@@ -81,12 +88,15 @@ public class Utilisateur implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
+	@JsonBackReference
 	private List<Publication> lstPub;
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
+	@JsonBackReference
 	private List<Commentaire> lstcom;
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
+	@JsonBackReference
 	private List<DemandeFormation> lstdemande;
  
 
@@ -97,8 +107,9 @@ public class Utilisateur implements Serializable {
 	public void setLstcom(List<Commentaire> lstcom) {
 		this.lstcom = lstcom;
 	}
-
+	
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.EAGER)
+	@JsonBackReference
 	private Contrat contrat;
 
 	public Utilisateur(long id, String nom, String prenom, String cin, String adresse, String tel, String email,
