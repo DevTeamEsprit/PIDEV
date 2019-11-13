@@ -72,11 +72,13 @@ public class Utilisateur implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "sender")
-	@JsonBackReference
+//	@JsonBackReference
+	@JsonIgnore
 	private List<Message> messagesSent;
 
 	@OneToMany(mappedBy = "receiver")
-	@JsonBackReference
+	//@JsonBackReference
+	@JsonIgnore
 	private List<Message> messagesReceived;
 
 	public Sexe getSexe() {
@@ -88,15 +90,18 @@ public class Utilisateur implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
-	@JsonBackReference
+	//@JsonBackReference
+	@JsonIgnore
 	private List<Publication> lstPub;
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
-	@JsonBackReference
+	//@JsonBackReference(value="user_pub")
+	@JsonIgnore
 	private List<Commentaire> lstcom;
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
-	@JsonBackReference
+	//@JsonBackReference
+	@JsonIgnore
 	private List<DemandeFormation> lstdemande;
  
 
@@ -109,7 +114,8 @@ public class Utilisateur implements Serializable {
 	}
 	
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.EAGER)
-	@JsonBackReference
+	//@JsonBackReference
+	@JsonIgnore
 	private Contrat contrat;
 
 	public Utilisateur(long id, String nom, String prenom, String cin, String adresse, String tel, String email,

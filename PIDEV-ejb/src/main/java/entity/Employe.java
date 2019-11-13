@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Employe extends Utilisateur implements Serializable {
 
 	@ManyToOne
-	@JsonManagedReference
+//	@JsonManagedReference
 	private Manager manager;
 	
 	

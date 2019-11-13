@@ -38,7 +38,8 @@ public class Publication implements Serializable {
 	
 	
 	@OneToMany(mappedBy="pub" , cascade= {CascadeType.REMOVE} , fetch=FetchType.EAGER)
-	@JsonManagedReference
+	@JsonManagedReference(value="commentaire_pub")
+	//@JsonIgnore
 	private List<Commentaire> lstComm = new ArrayList<>();
 	
 	public Publication() {

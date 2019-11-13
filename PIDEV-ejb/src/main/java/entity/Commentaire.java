@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -42,12 +43,13 @@ public class Commentaire implements Serializable {
 
 	@ManyToOne 
 	@JoinColumn(name="id_pub")
-	@JsonBackReference
+	@JsonBackReference(value="commentaire_pub")
+	//@JsonIgnore
 	private Publication pub;
 	
 	@ManyToOne 
 	@JoinColumn(name="id_user")
-	@JsonManagedReference
+	//@JsonManagedReference(value="user_pub")
 	private Utilisateur user;
 
 	

@@ -26,12 +26,12 @@ public class Message implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "id_sender")
-	@JsonManagedReference
+	//@JsonManagedReference
 	private Utilisateur sender;
 
 	@ManyToOne
 	@JoinColumn(name = "id_receiver")
-	@JsonManagedReference
+	//@JsonManagedReference
 	private Utilisateur receiver;
 
 	@Temporal(TemporalType.TIMESTAMP)

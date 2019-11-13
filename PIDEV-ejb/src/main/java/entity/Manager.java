@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Manager extends Utilisateur implements Serializable{
 
 	@OneToMany(mappedBy = "manager", cascade=CascadeType.PERSIST)
-	@JsonBackReference
+//	@JsonBackReference
 	public List<Employe> employes;
 
 	
