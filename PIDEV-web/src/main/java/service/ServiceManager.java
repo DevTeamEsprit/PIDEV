@@ -41,6 +41,11 @@ public class ServiceManager implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext().redirect("../page/" + page);
 	}
 
+	public Publication getPubById(long id) {
+		
+		return this.publicationService.getUserPub(id);
+	}
+	
 	public void addUser(Employe user) {
 		this.utilisateurService.addUser(user);
 	}

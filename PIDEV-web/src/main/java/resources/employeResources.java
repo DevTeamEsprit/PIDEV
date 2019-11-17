@@ -44,6 +44,17 @@ public class employeResources {
 	public Response listPub() {
 		return Response.status(Response.Status.CREATED).entity(this.serviceManager.getPubs()).build();
 	}
+
+	@GET
+	@Path("/publication/{id}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public Response getUserPub(@PathParam(value="id") long idPub ) {
+	
+		//System.out.println("3asbaa");
+		//return null;
+		return Response.status(Response.Status.CREATED).entity(this.serviceManager.getPubById(idPub).getUser()).build();
+	}
+	
 	
 	@POST
 	@Path("/publication")

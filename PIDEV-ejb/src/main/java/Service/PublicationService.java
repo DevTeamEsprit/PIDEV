@@ -33,6 +33,9 @@ public class PublicationService {
         // TODO Auto-generated constructor stub
     }
     
+    public Publication getUserPub(long id) {
+    	return (em.find(Publication.class,id));
+    }
     
     public void addPublicaion(Publication p ) {
     	em.persist(p);
