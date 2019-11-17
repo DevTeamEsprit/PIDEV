@@ -39,7 +39,9 @@ public class PublicationService {
     }
     
     public void updatePublication(Publication p) {
-    	em.merge(p);
+    	Publication pub = em.find(Publication.class,p.getId());
+    	pub.setDescription(p.getDescription());
+    	em.merge(pub);
     }
     
     public void deletePublication(long id_pub) {

@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -30,6 +31,8 @@ public class Publication implements Serializable {
 	private Long id;
 	private String description;
 	@Temporal(TemporalType.TIMESTAMP)
+	//@JsonIgnore
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm::ss")
 	private Date dateCreation;
 	
 	@ManyToOne 
