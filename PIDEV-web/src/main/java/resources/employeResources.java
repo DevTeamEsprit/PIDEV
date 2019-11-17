@@ -90,7 +90,7 @@ public class employeResources {
 		Utilisateur user=this.serviceManager.doLogin(login,this.serviceManager.MD5(pass));
 		System.out.println(user);
 		if(user!=null)
-			return Response.status(Response.Status.OK).entity("mawjoud").build();
+			return Response.status(Response.Status.OK).entity(user).build();
 		return Response.status(Response.Status.EXPECTATION_FAILED).entity("mahouch mawjoud").build();
 	}
 }

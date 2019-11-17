@@ -32,7 +32,7 @@ public class Publication implements Serializable {
 	private String description;
 	@Temporal(TemporalType.TIMESTAMP)
 	//@JsonIgnore
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm::ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date dateCreation;
 	
 	@ManyToOne 
