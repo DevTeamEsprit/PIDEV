@@ -50,8 +50,6 @@ public class employeResources {
 	@Produces(MediaType.APPLICATION_JSON)	
 	public Response getUserPub(@PathParam(value="id") long idPub ) {
 	
-		//System.out.println("3asbaa");
-		//return null;
 		return Response.status(Response.Status.CREATED).entity(this.serviceManager.getPubById(idPub).getUser()).build();
 	}
 	
@@ -97,9 +95,8 @@ public class employeResources {
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)		
 	public Response login(@QueryParam(value="login") String login , @QueryParam(value="pass") String pass) {
-		System.out.println(login+"/"+pass);
 		Utilisateur user=this.serviceManager.doLogin(login,this.serviceManager.MD5(pass));
-		System.out.println(user);
+	//	System.out.println(user);
 		if(user!=null)
 			return Response.status(Response.Status.OK).entity(user).build();
 		return Response.status(Response.Status.EXPECTATION_FAILED).entity("mahouch mawjoud").build();
