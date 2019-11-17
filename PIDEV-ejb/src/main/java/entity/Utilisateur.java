@@ -48,7 +48,7 @@ public class Utilisateur implements Serializable {
 	private Date datNais;
 	private boolean Actif;
 	@Column(columnDefinition = "MEDIUMTEXT")
-	@JsonIgnore
+	//@JsonIgnore
 	private String image;
 	@Enumerated(EnumType.STRING)
 	private Sexe sexe;
