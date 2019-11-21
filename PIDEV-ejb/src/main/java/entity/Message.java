@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Message implements Serializable {
 	@Id
@@ -24,10 +26,12 @@ public class Message implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "id_sender")
+	//@JsonManagedReference
 	private Utilisateur sender;
 
 	@ManyToOne
 	@JoinColumn(name = "id_receiver")
+	//@JsonManagedReference
 	private Utilisateur receiver;
 
 	@Temporal(TemporalType.TIMESTAMP)

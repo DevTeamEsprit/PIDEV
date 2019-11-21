@@ -6,6 +6,39 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
 	xmlns:c="http://java.sun.com/jstl/core"
 	template="/template/templateNew.xhtml">
+
+
+	<ui:define name="nav">
+		<li class="nav-item"><a href="../page/Accueil.jsf"
+			class="nav-link active"> <i class="nav-icon fa fa-th"></i>
+				<p>Accueil</p>
+		</a></li>
+		<li class="nav-item"><a href="../page/Employe.jsf"
+			class="nav-link"> <i class="nav-icon fa fa-th"></i>
+				<p>Gestion des employés</p>
+		</a></li>
+
+		<li class="nav-item has-treeview"><a href="#" class="nav-link">
+				<i class="nav-icon fa fa-th"></i>
+				<p>
+					Ajouter une formation <i class="right fa fa-angle-left"></i>
+				</p>
+		</a>
+			<ul class="nav nav-treeview">
+				<li class="nav-item"><a href="../Formation/Formation.jsf"
+					class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>Ajouter une formation</p>
+				</a></li>
+				<li class="nav-item"><a href="../Formation/listeformation.jsf"
+					class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>lister les formations</p>
+				</a></li>
+
+			</ul></li>
+
+
+	</ui:define>
+
 	<ui:define name="pageTitle">Accueil</ui:define>
 	<ui:define name="content">
 		<div class="row">
@@ -40,7 +73,7 @@
 					</div>
 				</h:form>
 
-				<h:form   id="form">
+				<h:form id="form">
 					<ui:repeat value="#{publicationBean.list}" var="entry">
 						<div class="card card-widget">
 							<div class="card-header">
@@ -58,11 +91,6 @@
 									</span>
 								</div>
 								<div class="card-tools">
-									<p:commandLink
-										rendered="#{entry.publication.user.id == loginbean.user.id}"
-										class="btn btn-tool btn-tool-edit" title="Modifier">
-										<i class="fas fa-edit"></i>
-									</p:commandLink>
 									<h:commandLink
 										action="#{publicationBean.deltePublication(entry.publication)}"
 										rendered="#{entry.publication.user.id == loginbean.user.id}"
@@ -77,8 +105,8 @@
 							<div class="card-body">
 								<!-- post text -->
 								<p>#{entry.publication.description}</p>
-								  
-								<span class="float-right text-muted"> 
+
+								<span class="float-right text-muted">
 									#{entry.publication.lstComm.size()} commentaires</span>
 							</div>
 							<!-- /.card-body -->
@@ -92,20 +120,15 @@
 										<div class="comment-text">
 											<span class="username"> #{com.user.nom}
 												#{com.user.prenom} <span class="text-muted float-right">
+
 													<h:commandLink
-														rendered="#{com.user.id == loginbean.user.id}"
-														class="btn btn-tool btn-tool-edit" title="Modifier">
-														<i class="fas fa-edit"></i>
-													</h:commandLink> 
-													<h:commandLink 
 														action="#{publicationBean.deleteComentaire(com)}"
 														onclick="return confirm('Are you sure?')" update="@form"
 														rendered="#{com.user.id == loginbean.user.id}"
 														class="btn btn-tool btn-tool-delete" title="Supprimer">
 														<i class="fas fa-trash"></i>
-														  
-													</h:commandLink> 
-													<h:outputText id="date"
+
+													</h:commandLink> <h:outputText id="date"
 														converterMessage="#{i18n['converter-message']}"
 														value="#{com.dateCreation}">
 														<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
@@ -145,6 +168,7 @@
 			</div>
 			<!-- /.card -->
 		</div>
+
 	</ui:define>
 
 </ui:composition>

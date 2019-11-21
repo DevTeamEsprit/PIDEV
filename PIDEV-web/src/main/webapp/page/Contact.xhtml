@@ -6,6 +6,37 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
 	xmlns:c="http://java.sun.com/jstl/core"
 	template="/template/templateNew.xhtml">
+		<ui:define name="nav">
+		<li class="nav-item"><a href="../page/Accueil.jsf"
+			class="nav-link "> <i class="nav-icon fa fa-th"></i>
+				<p>Accueil</p>
+		</a></li>
+		<li class="nav-item"><a href="../page/Employe.jsf"
+			class="nav-link"> <i class="nav-icon fa fa-th"></i>
+				<p>Gestion des employés</p>
+		</a></li>
+ 
+		<li class="nav-item has-treeview"><a href="#" class="nav-link">
+				<i class="nav-icon fa fa-th"></i>
+				<p>Ajouter une formation
+				<i class="right fa fa-angle-left"></i>
+				</p>
+		</a>
+			<ul class="nav nav-treeview">
+				<li class="nav-item"><a href="../Formation/Formation.jsf"
+					class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>Ajouter une formation</p>
+				</a></li>
+				<li class="nav-item"><a href="../Formation/listeformation.jsf"
+					class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>lister les formations</p>
+				</a></li>
+
+			</ul>
+		</li>
+ 
+
+	</ui:define>
 	<ui:define name="pageTitle">Liste des contacts</ui:define>
 	<ui:define name="content">
 			<div class="row">
@@ -18,39 +49,40 @@
 				<div id="contacts" class="panel-collapse collapse show" 	aria-expanded="true" style="">
 					<ul class="list-group pull-down" id="contact-list">
 						<ui:repeat var="user" value="#{utilisateurbean.lstEmploye}">
-							<li class="list-group-item">
-								<div class="row w-100">
-									<div class="col-12 col-sm-6 col-md-3 px-0">
-										<img
-											src="data:image/png;base64,#{user.image}" style="width: 75%;"
-											alt="Mike Anamendolla" 	class="rounded-circle mx-auto d-block img-fluid" />
-									</div>
-									<div class="col-12 col-sm-6 col-md-9 text-center text-sm-left">
-										 
-									
-												
-											<label class="name lead"> #{user.prenom}	#{user.nom} 	</label> 
-											<br></br>
-											<h:commandLink action="#{utilisateurbean.goProfile(user)}"    >
-												<i class="fa fa-user float-right" aria-hidden="true">Profile</i>  
-											</h:commandLink><br></br>
-											<h:commandLink action="#{contactsBean.goToChat(user)}" 	value="#{contact.prenom} #{contact.nom}" class="d-block" >
-											<span class="fab fa-facebook-messenger float-right  " title="online now"><b>Contacter</b>	</span>
-											</h:commandLink>
-											 <span 	class="fa fa-map-marker fa-fw text-muted" data-toggle="tooltip" title="" data-original-title="5842 Hillcrest Rd"></span> 
-											 <span 	class="text-muted">#{user.adresse}</span> <br></br> 
-											 <span 	class="fa fa-phone fa-fw text-muted" data-toggle="tooltip" 	title="" data-original-title="(870) 288-4149"></span>
-											<span 	class="text-muted small">#{user.tel}</span> <br></br> 
-											<span class="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span> 
+							<ui:fragment rendered="#{user.id  != loginbean.user.id}">
+								<li class="list-group-item">
+									<div class="row w-100">
+										<div class="col-12 col-sm-6 col-md-3 px-0">
+											<img
+												src="data:image/png;base64,#{user.image}" style="width: 75%;"
+												alt="Mike Anamendolla" 	class="rounded-circle mx-auto d-block img-fluid" />
+										</div>
+										<div class="col-12 col-sm-6 col-md-9 text-center text-sm-left">
 											 
-											<span class="text-muted small text-truncate">#{user.email}</span>
-											
-											
+										
+													
+												<label class="name lead"> #{user.prenom}	#{user.nom} 	</label> 
+												<br></br>
+												<h:commandLink action="#{utilisateurbean.goProfile(user)}"    >
+													<i class="fa fa-user float-right" aria-hidden="true">Profile</i>  
+												</h:commandLink><br></br>
+												<h:commandLink action="#{contactsBean.goToChat(user)}" 	value="#{contact.prenom} #{contact.nom}" class="d-block" >
+												<span class="fab fa-facebook-messenger float-right  " title="online now"><b>Contacter</b>	</span>
+												</h:commandLink>
+												 <span 	class="fa fa-map-marker fa-fw text-muted" data-toggle="tooltip" title="" data-original-title="5842 Hillcrest Rd"></span> 
+												 <span 	class="text-muted">#{user.adresse}</span> <br></br> 
+												 <span 	class="fa fa-phone fa-fw text-muted" data-toggle="tooltip" 	title="" data-original-title="(870) 288-4149"></span>
+												<span 	class="text-muted small">#{user.tel}</span> <br></br> 
+												<span class="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span> 
+												 
+												<span class="text-muted small text-truncate">#{user.email}</span>
+												
+												
+										</div>
 									</div>
-								</div>
-									
-							</li>
-
+										
+								</li>
+							</ui:fragment>
 						</ui:repeat>
 					</ul>
 					<!--/contacts list-->

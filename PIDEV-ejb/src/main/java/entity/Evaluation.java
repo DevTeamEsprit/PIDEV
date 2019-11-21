@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Evaluation implements Serializable{
 	
@@ -29,6 +31,7 @@ public class Evaluation implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	@ManyToOne
+	@JsonManagedReference
 	private Manager manager;
 	
 	public Evaluation(int id, EvalType type, Date date, Manager manager,boolean status) {

@@ -33,13 +33,18 @@ public class PublicationService {
         // TODO Auto-generated constructor stub
     }
     
+    public Publication getUserPub(long id) {
+    	return (em.find(Publication.class,id));
+    }
     
     public void addPublicaion(Publication p ) {
     	em.persist(p);
     }
     
     public void updatePublication(Publication p) {
-    	em.merge(p);
+    	Publication pub = em.find(Publication.class,p.getId());
+    	pub.setDescription(p.getDescription());
+    	em.merge(pub);
     }
     
     public void deletePublication(long id_pub) {

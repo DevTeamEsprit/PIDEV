@@ -8,11 +8,14 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @DiscriminatorValue(value="manager")
 public class Manager extends Utilisateur implements Serializable{
 
 	@OneToMany(mappedBy = "manager", cascade=CascadeType.PERSIST)
+//	@JsonBackReference
 	public List<Employe> employes;
 
 	
@@ -36,6 +39,7 @@ public class Manager extends Utilisateur implements Serializable{
 	}
 
 	@OneToMany(mappedBy="manager")
+	@JsonBackReference
 	private List<Evaluation> evaluations = new ArrayList<Evaluation>();
 
 	public List<Evaluation> getEvaluations() {
@@ -45,6 +49,10 @@ public class Manager extends Utilisateur implements Serializable{
 	public void setEvaluations(List<Evaluation> evaluations) {
 		this.evaluations = evaluations;
 	}
+
+
+
+	 
 
 	
 }
