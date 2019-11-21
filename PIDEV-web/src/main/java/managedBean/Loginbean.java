@@ -9,6 +9,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+
+import entity.Employe;
 import entity.Utilisateur;
 import service.ServiceManager;
 
@@ -63,6 +65,17 @@ public class Loginbean implements Serializable {
 		this.password = password;
 	}
 
+	private boolean type;
+	public boolean isType() {
+		return type;
+	}
+
+
+	public void setType(boolean type) {
+		this.type = type;
+	}
+
+
 	public String Connecter() {
 
 		user = this.serviceManager.doLogin(login, this.serviceManager.MD5(password));
@@ -71,7 +84,11 @@ public class Loginbean implements Serializable {
 				navigateto = "/page/FirstConnection?faces-redirect=true";
 			else
 				navigateto = "/page/Accueil?faces-redirect=true";
-						 
+			
+			if(user instanceof Employe)
+						 type=true;
+			else
+				type=false;
 		}
 		return navigateto;
 

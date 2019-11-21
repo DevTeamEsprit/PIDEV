@@ -215,9 +215,9 @@ public class EvaluationBean implements Serializable{
 				e1.printStackTrace();
 			}
 		}
-        evals = evaluationService.findByManager(1);
-        manager = utilisateurService.findManager(1);
-        
+        evals = evaluationService.findByManager(4);
+        manager = utilisateurService.findManager(4);
+       // if(manager)
         for(Evaluation e : evals) {
         	if((new Date()).compareTo(e.getDate())==0)
            evaluationService.activateEvaluation(e.getId());
@@ -232,13 +232,13 @@ public class EvaluationBean implements Serializable{
 		try {
 			if(evalType.ordinal()!=0  ) {
 				if((new Date()).compareTo(date)<0) {
-				if(evalType.ordinal()==2 && evaluationService.isAnnualExists(1)) {
+				if(evalType.ordinal()==2 && evaluationService.isAnnualExists(4)) {
 					FacesContext.getCurrentInstance().addMessage("form:btn-addeval", new FacesMessage("Annual evaluation already programmed by you"));
 				}
 				else {
 					
 				evaluationService.createEvaluation(e);
-				Evaluation LastEval = evaluationService.getLastEvaluation(1);
+				Evaluation LastEval = evaluationService.getLastEvaluation(4);
 				evalId = LastEval.getId();
 				EvaluationService.evalid=evalId;
 				goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
@@ -247,8 +247,8 @@ public class EvaluationBean implements Serializable{
 				this.setStatus(e.isStatus());
 				this.setEvalTitle("Evaluation of "+ date +"(by "+manager.getNom()+" "+manager.getPrenom()+")");
 				employes = evaluationService.findEmployesByEval(evalId);
-				evaluation = evaluationService.getLastEvaluation(1);
-				evals = evaluationService.findByManager(1);
+				evaluation = evaluationService.getLastEvaluation(4);
+				evals = evaluationService.findByManager(4);
 				return "evaluationDetails.xhtml?faces-redirect=true";
 				}
 				}
@@ -313,7 +313,7 @@ public class EvaluationBean implements Serializable{
     		 evaluationService.addGoal(new Goal(0, goaltype, goalext, evaluationService.findEval(evalId)));
     		 if(Lastgoal!=null) {
     			 List<Employe> employesbyman = new ArrayList<Employe>();
-    			 for(Employe e : evaluationService.getEmployeesOfManager(1)) {
+    			 for(Employe e : evaluationService.getEmployeesOfManager(4)) {
     				 employesbyman.add(e);
     			 }
     			 int k = 0;
@@ -333,7 +333,7 @@ public class EvaluationBean implements Serializable{
     		 }
     		 else {
     			
-    			 for(Employe e : evaluationService.getEmployeesOfManager(1)) {
+    			 for(Employe e : evaluationService.getEmployeesOfManager(4)) {
     				 EvaluationSheet ev = new EvaluationSheet(0, false,evaluationService.findEval(evalId).getType().name()+" evaluation of "+ evaluationService.findEval(evalId).getDate(), "");
     				 GoalByEmployeId pk = new GoalByEmployeId(e.getId(), evaluationService.LastGoalByEval(evalId).getId());
     				 ev.addGoalEmploye(new GoalByEmploye(pk,0,0));
@@ -384,7 +384,7 @@ public class EvaluationBean implements Serializable{
      public String  delete() {
     	 evaluationService.CancelEvaluation(evaluation);
     	 
-    	 evals = evaluationService.findByManager(1);
+    	 evals = evaluationService.findByManager(4);
     	 return "evaluationsCenter.xhtml?faces-redirect=true";
     	 
     	
