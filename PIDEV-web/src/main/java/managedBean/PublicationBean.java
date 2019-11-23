@@ -11,8 +11,10 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -88,6 +90,10 @@ public class PublicationBean implements Serializable {
 		serviceManager.addPub(publication);
 		publication = new Publication();
 		this.getPubs();
+		
+		
+		FacesMessage msg = new FacesMessage("Publication est ajouté avec succée");
+        FacesContext.getCurrentInstance().addMessage("Alerte", msg);
 	}
 
 	private void getPubs() {
@@ -130,4 +136,8 @@ public class PublicationBean implements Serializable {
 		this.getPubs();
 	}
  
+	public void deltePublication(Publication p) {
+		this.serviceManager.deletePub(p.getId());
+		this.getPubs();
+	}
 }

@@ -1,6 +1,9 @@
 
+
 package managedBean;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,16 +16,39 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.*;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 import Service.UtilisateurService;
 import Service.evaluation.EvaluationService;
 import entity.*;
+import service.ServiceManager;
 
 @ManagedBean
 @SessionScoped
-public class EvaluationBean {
+public class EvaluationBean implements Serializable{
 	   private int evalId;
-       public int getEvalId() {
+	   @ManagedProperty(value = "#{loginbean}")
+		private Loginbean lb;
+	   public Loginbean getLb() {
+			return lb;
+		}
+
+		public void setLb(Loginbean lb) {
+			this.lb = lb;
+		}
+	   
+	   @Inject
+		private ServiceManager serviceManager;
+	   private int goalid;
+       public int getGoalid() {
+		return goalid;
+	}
+
+	public void setGoalid(int goalid) {
+		this.goalid = goalid;
+	}
+
+	public int getEvalId() {
 		return evalId;
 	}
 
@@ -35,10 +61,64 @@ public class EvaluationBean {
        private String EvalTitle;
        private Manager manager;
        private boolean status;
-       private GoalType goaltype;
-       private String goalext;
+       public Evaluation evaluation;
+       public Evaluation getEvaluation() {
+		return evaluation;
+	}
+
+	public void setEvaluation(Evaluation evaluation) {
+		this.evaluation = evaluation;
+	}
+
+	private long empId;
+       private String appreciation;
+       public String getAppreciation() {
+		return appreciation;
+	}
+
+	public void setAppreciation(String appreciation) {
+		this.appreciation = appreciation;
+	}
+
+	public long getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(long empId) {
+		this.empId = empId;
+	}
+
+	private GoalType goaltype;
+	private List<GoalByEmploye> goalsBySheet;
+       public List<GoalByEmploye> getGoalsBySheet() {
+		return goalsBySheet;
+	}
+
+	public void setGoalsBySheet(List<GoalByEmploye> goalsBySheet) {
+		this.goalsBySheet = goalsBySheet;
+	}
+
+	private String goalext;
        private List<Goal> goals;
-       private List<Employe> employes;
+       private EvaluationSheet evalSheet;
+       private List<EvaluationSheet> sheets ;
+       public List<EvaluationSheet> getSheets() {
+		return sheets;
+	}
+
+	public void setSheets(List<EvaluationSheet> sheets) {
+		this.sheets = sheets;
+	}
+
+	public EvaluationSheet getEvalSheet() {
+		return evalSheet;
+	}
+
+	public void setEvalSheet(EvaluationSheet evalSheet) {
+		this.evalSheet = evalSheet;
+	}
+
+	private List<Employe> employes;
        public boolean isStatus() {
 		return status;
 	}
@@ -127,9 +207,17 @@ public class EvaluationBean {
 
 	@PostConstruct
     public void init() {
-        evals = evaluationService.findByManager(1);
-        manager = utilisateurService.findManager(1);
-        
+		if (this.lb.getUser() == null) {
+			try {
+				this.serviceManager.goToPage("../login.jsf");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+        evals = evaluationService.findByManager(4);
+        manager = utilisateurService.findManager(4);
+       // if(manager)
         for(Evaluation e : evals) {
         	if((new Date()).compareTo(e.getDate())==0)
            evaluationService.activateEvaluation(e.getId());
@@ -144,19 +232,23 @@ public class EvaluationBean {
 		try {
 			if(evalType.ordinal()!=0  ) {
 				if((new Date()).compareTo(date)<0) {
-				if(evalType.ordinal()==2 && evaluationService.isAnnualExists(1)) {
+				if(evalType.ordinal()==2 && evaluationService.isAnnualExists(4)) {
 					FacesContext.getCurrentInstance().addMessage("form:btn-addeval", new FacesMessage("Annual evaluation already programmed by you"));
 				}
 				else {
 					
 				evaluationService.createEvaluation(e);
-				Evaluation LastEval = evaluationService.getLastEvaluation(1);
+				Evaluation LastEval = evaluationService.getLastEvaluation(4);
 				evalId = LastEval.getId();
+				EvaluationService.evalid=evalId;
 				goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(e.getDate());
 				this.setStatus(e.isStatus());
 				this.setEvalTitle("Evaluation of "+ date +"(by "+manager.getNom()+" "+manager.getPrenom()+")");
+				employes = evaluationService.findEmployesByEval(evalId);
+				evaluation = evaluationService.getLastEvaluation(4);
+				evals = evaluationService.findByManager(4);
 				return "evaluationDetails.xhtml?faces-redirect=true";
 				}
 				}
@@ -185,7 +277,13 @@ public class EvaluationBean {
 	public String showEval() {
 		goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
 		employes = evaluationService.findEmployesByEval(evalId);
-		this.setEvalTitle("Evaluation of "+date+"(by "+manager.getNom()+" "+manager.getPrenom()+")");
+		evaluation = evaluationService.findEval(evalId);
+		EvaluationService.evalid=evalId;
+		if((new Date()).compareTo(evaluation.getDate())==0) {
+	           evaluationService.activateEvaluation(evaluation.getId());
+	        }
+		sheets = evaluationService.findEvaluationSheetbyEval(evalId);
+		this.setEvalTitle(evaluation.getType()+" evaluation of "+date+"(by "+manager.getNom()+" "+manager.getPrenom()+")");
 		return "evaluationDetails.xhtml?faces-redirect=true";
 	}
 	
@@ -197,8 +295,12 @@ public class EvaluationBean {
         else {
         	evaluationService.SwitchState(evalId);
         	status = evaluationService.findEval(evalId).isStatus();
-        	if(status)
+        	if(status) {
         		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation triggered"));
+        	    for(EvaluationSheet e : sheets) {
+        	    	e.setEvalsheetTitle(evaluation.getType()+" evaluation of "+date);
+        	    }
+        	}
         	else
         		FacesContext.getCurrentInstance().addMessage("form1:btn-eval", new FacesMessage("Evaluation switched off"));
         		
@@ -211,32 +313,38 @@ public class EvaluationBean {
     		 evaluationService.addGoal(new Goal(0, goaltype, goalext, evaluationService.findEval(evalId)));
     		 if(Lastgoal!=null) {
     			 List<Employe> employesbyman = new ArrayList<Employe>();
-    			 for(Employe e : evaluationService.getEmployeesOfManager(1)) {
+    			 for(Employe e : evaluationService.getEmployeesOfManager(4)) {
     				 employesbyman.add(e);
     			 }
     			 int k = 0;
     			 for(EvaluationSheet i : evaluationService.findEvaluationSheetbyEval(evalId)) {
     				 System.out.println("Feuille d'evaluation trouvee");
-    				 GoalByEmployeId pk = new GoalByEmployeId(employesbyman.get(k).getId(), evaluationService.LastGoalByEval(evalId).getId(), 0,0);
-    				 GoalByEmploye gemp = new GoalByEmploye(pk);
+    				 GoalByEmployeId pk = new GoalByEmployeId(employesbyman.get(k).getId(), evaluationService.LastGoalByEval(evalId).getId());
+    				 GoalByEmploye gemp = new GoalByEmploye(pk,0,0);
     				 gemp.setEvaluationSheet(i);
     				 evaluationService.addGoalEmploye(gemp);
     				 k++;
     			 }
     			 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Goal added!"));
+    			 goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
+    				employes = evaluationService.findEmployesByEval(evalId);
+    				sheets = evaluationService.findEvaluationSheetbyEval(evalId);
         		 return "evaluationDetails.xhtml?faces-redirect=true";
     		 }
     		 else {
     			
-    			 for(Employe e : evaluationService.getEmployeesOfManager(1)) {
+    			 for(Employe e : evaluationService.getEmployeesOfManager(4)) {
     				 EvaluationSheet ev = new EvaluationSheet(0, false,evaluationService.findEval(evalId).getType().name()+" evaluation of "+ evaluationService.findEval(evalId).getDate(), "");
-    				 GoalByEmployeId pk = new GoalByEmployeId(e.getId(), evaluationService.LastGoalByEval(evalId).getId(), 0,0);
-    				 ev.addGoalEmploye(new GoalByEmploye(pk));
+    				 GoalByEmployeId pk = new GoalByEmployeId(e.getId(), evaluationService.LastGoalByEval(evalId).getId());
+    				 ev.addGoalEmploye(new GoalByEmploye(pk,0,0));
     				 evaluationService.createEvaluationSheet(ev);
     				 
     			 }
     			 
     			 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Goal added!"));
+    			 goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
+    				employes = evaluationService.findEmployesByEval(evalId);
+    				sheets = evaluationService.findEvaluationSheetbyEval(evalId);
         		 return "evaluationDetails.xhtml?faces-redirect=true";
     		 }
     		
@@ -244,5 +352,65 @@ public class EvaluationBean {
     	 else
     		 FacesContext.getCurrentInstance().addMessage("form1:btn-goal", new FacesMessage("Fill correctly!"));
     	 return "evaluationDetails.xhtml?faces-redirect=true";
+     }
+     
+     public String showEmpSheet(){
+    	          evalSheet = evaluationService.getEvSheetByEmpAndEval(evalId, empId);
+    	          evalSheet.setEvalsheetTitle(evaluation.getType()+" evaluation of "+evaluationService.findEval(evalId).getDate());
+    	          goalsBySheet = evaluationService.getGoalsOfEvals(evalSheet.getId());
+    	          appreciation = evalSheet.getAppreciation();
+    	 return "evaluationSheetMan.xhtml?faces-redirect=true";
+    	        
+     }
+     
+     public String validate() {
+    	    if(appreciation == null)
+    	    	FacesContext.getCurrentInstance().addMessage("form:btn-val", new FacesMessage("Give an appreciation!"));
+    	    else {
+    	    	for(GoalByEmploye g : goalsBySheet) {
+    				evaluationService.changeNoteGoal(g);
+    			}
+    	    	
+    	    	evalSheet.setAppreciation(appreciation);
+    	    	evaluationService.UpdateEvalSheet(evalSheet);
+    	    	evalSheet = evaluationService.getEvSheetByEmpAndEval(evalId, empId);
+    	    	  goalsBySheet = evaluationService.getGoalsOfEvals(evalSheet.getId());
+    	    	FacesContext.getCurrentInstance().addMessage("form:btn-val", new FacesMessage("Submitted"));
+    	    	 return "evaluationSheetMan.xhtml?faces-redirect=true";
+    	    }
+    	    return null;
+     }
+     
+     public String  delete() {
+    	 evaluationService.CancelEvaluation(evaluation);
+    	 
+    	 evals = evaluationService.findByManager(4);
+    	 return "evaluationsCenter.xhtml?faces-redirect=true";
+    	 
+    	
+     }
+     
+     public String RemoveGoal() {
+		 if(evaluation.isStatus()) {
+			 FacesContext.getCurrentInstance().addMessage("form:btn-del", new FacesMessage("Turn evaluation down first!"));
+		 }
+		 
+		 
+		 else {
+			 evaluationService.DeleteGoal(goalid);
+			 goals = evaluationService.findGoalsByEval(evaluationService.findEval(evalId).getId());
+			 if(goals == null) {
+				 evaluationService.DeleteEvalSheets(evalId);
+			 }
+			 
+			 employes = evaluationService.findEmployesByEval(evalId);
+				sheets = evaluationService.findEvaluationSheetbyEval(evalId);
+			 return "evaluationDetails.xhtml?faces-redirect=true";
+		 }
+		 return null;
+	 }
+     
+     public void FormWrite() {
+    	 FacesContext.getCurrentInstance().addMessage("form:btn-del", new FacesMessage("Turn evaluation down first!"));
      }
 }

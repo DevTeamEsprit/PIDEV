@@ -7,14 +7,48 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:a4j="http://richfaces.org/a4j"
 	template="/template/templateNew.xhtml">
+		<ui:define name="nav">
+			<li class="nav-item"><a href="../page/Accueil.jsf"
+				class="nav-link "> <i class="nav-icon fa fa-th"></i>
+					<p>Accueil</p>
+			</a></li>
+			<li class="nav-item"><a href="../page/Employe.jsf"
+				class="nav-link active"> <i class="nav-icon fa fa-th"></i>
+					<p>Gestion des employés</p>
+			</a></li>
+	 
+			<li class="nav-item has-treeview"><a href="#" class="nav-link">
+					<i class="nav-icon fa fa-th"></i>
+					<p>Ajouter une formation
+					<i class="right fa fa-angle-left"></i>
+					</p>
+			</a>
+							<ul class="nav nav-treeview">
+					<li class="nav-item"><a href="../Formation/Formation.jsf"
+						class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+							<p>Ajouter une formation</p>
+					</a></li>
+					<li class="nav-item"><a href="../Formation/listeformation.jsf"
+						class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+							<p>lister les formations</p>
+					</a></li>
+	
+				</ul>
+			</li>
+	 
+
+		</ui:define>
+
 	<ui:define name="pageTitle">Gestion Employés</ui:define>
 	<ui:define name="content">
-		<h:form enctype="multipart/form-data">
+		
 			<div class="card">
 				<div class="card-body p-2  ">
 					<ul class="nav nav-pills float-left">
 						<li class="nav-item"><a class="nav-link active"
 							href="#activity" data-toggle="tab">Ajouter un employé</a></li>
+						<li class="nav-item"><a class="nav-link" href="#activity2"
+							data-toggle="tab">Ajouter un manager</a></li>
 						<li class="nav-item"><a class="nav-link" href="#timeline"
 							data-toggle="tab">Liste des employés</a></li>
 
@@ -25,26 +59,32 @@
 				<div class="card-header">
 					<div class="tab-content">
 						<div class="active tab-pane" id="activity">
-
+						<h:form enctype="multipart/form-data">
 							<div class="card card-default">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
 												<h:outputText class="card-title" value="Nom" />
-												<h:inputText value="#{utilisateurbean.emp.nom}"
-													class="form-control" placeholder="Enter name" />
+												<p:inputText id="nom" value="#{utilisateurbean.emp.nom}"
+													class="form-control" required="true"
+													requiredMessage="Vous devez spécifier le nom" />
+												<h:message for="nom" style="color:red"></h:message>
 											</div>
 											<div class="form-group">
 												<h:outputText class="card-title" value="NCIN" />
-
-												<h:inputText value="#{utilisateurbean.emp.cin}"
-													class="form-control" placeholder="Enter name" />
+												<p:inputText id="cin" value="#{utilisateurbean.emp.cin}"
+													class="form-control" required="true"
+													requiredMessage="Vous devez spécifier le cin" />
+												<h:message for="cin" style="color:red"></h:message>
 											</div>
 											<div class="form-group">
 												<h:outputText class="card-title" value="Adresse" />
-												<h:inputText value="#{utilisateurbean.emp.adresse}"
-													class="form-control" placeholder="Enter name" />
+												<p:inputText id="adresse"
+													value="#{utilisateurbean.emp.adresse}" required="true"
+													class="form-control"
+													requiredMessage="Vous devez spécifier l'adresse" />
+												<h:message for="adresse" style="color:red"></h:message>
 											</div>
 											<h:outputText class="card-title" value="Num Telephone" />
 											<div class="input-group">
@@ -52,43 +92,55 @@
 													<span class="input-group-text"><i
 														class="fa fa-phone"></i></span>
 												</div>
-												<h:inputText type="text" class="form-control"
-													value="#{utilisateurbean.emp.tel}" />
+												<p:inputText id="tel" type="text" class="form-control"
+													value="#{utilisateurbean.emp.tel}" required="true"
+													requiredMessage="Vous devez spécifier le num tel" />
 
 											</div>
-
+											<h:message for="tel" style="color:red"></h:message>
 											<div class="form-group">
-												<h:outputText class="card-title" value="Dare debut" />
+												<h:outputText class="card-title" value="Date debut" />
 												<div class="input-group">
-													<div class="input-group-prepend datepicker-icon" style="cursor: pointer;">
+													<div class="input-group-prepend datepicker-icon"
+														style="cursor: pointer;">
 														<span class="input-group-text"><i
 															class="fa fa-calendar"></i></span>
 													</div>
-													<h:inputText styleClass="form-control datepicker"
+													<h:inputText id="dtd" styleClass="form-control datepicker"
 														style="padding-left:12px;"
 														value="#{utilisateurbean.contrat.dateDebut}"
-														autocomplete="off">
+														autocomplete="off" required="true"
+														requiredMessage="Vous devez indiquer le date de debut">
 														<f:convertDateTime pattern="dd/MM/yyyy" />
 													</h:inputText>
 												</div>
+												<h:message for="dtd" style="color:red"></h:message>
 											</div>
 											<div class="form-group">
 												<h:outputText class="card-title" value="Salaire" />
-												<h:inputText value="#{utilisateurbean.contrat.salaire}"
-													class="form-control" placeholder="Enter name" />
+												<h:inputText id="sl"
+													value="#{utilisateurbean.contrat.salaire}"
+													class="form-control" required="true"
+													requiredMessage="Vous devez spécifier le salaire de base" />
+												<h:message for="sl" style="color:red"></h:message>
 											</div>
 
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<h:outputText class="card-title" value="Prenom" />
-												<h:inputText value="#{utilisateurbean.emp.prenom}"
-													class="form-control" placeholder="Enter name" />
+												<h:inputText id="prenom"
+													value="#{utilisateurbean.emp.prenom}" class="form-control"
+													required="true"
+													requiredMessage="Vous devez spécifier le prenom" />
+												<h:message for="prenom" style="color:red"></h:message>
 											</div>
 											<div class="form-group">
 												<h:outputText value="email" class="card-title" />
-												<h:inputText value="#{utilisateurbean.emp.email}"
-													class="form-control" placeholder="Enter name" />
+												<h:inputText id="email" value="#{utilisateurbean.emp.email}"
+													class="form-control" required="true"
+													requiredMessage="Vous devez spécifier l'email" />
+												<h:message for="email" style="color:red"></h:message>
 											</div>
 											<div class="form-group">
 												<h:outputText class="card-title" value="Sexe" />
@@ -105,29 +157,36 @@
 												<h:outputText value="Image" class="card-title" />
 												<div class="input-group">
 													<div class="custom-file">
-														<p:fileUpload value="#{utilisateurbean.file}"
-															mode="simple" skinSimple="true" class="custom-file-input" />
+														<p:fileUpload id="imf" value="#{utilisateurbean.file}"
+															mode="simple" skinSimple="true" class="custom-file-input"
+															required="true"
+															requiredMessage="Vous devez indiquer l'image " />
 														<label class="custom-file-label" for="exampleInputFile">Choose
 															file</label>
 													</div>
 
 												</div>
+												<h:message for="imf" style="color:red"></h:message>
 											</div>
 											<div class="form-group">
 												<h:outputText class="card-title" value="Date fin" />
 												<div class="input-group">
-													<div class="input-group-prepend datepicker-icon" style="cursor: pointer;">
+													<div class="input-group-prepend datepicker-icon"
+														style="cursor: pointer;">
 														<span class="input-group-text"><i
 															class="fa fa-calendar"></i></span>
 													</div>
-													<h:inputText styleClass="form-control datepicker"
+													<h:inputText id="dtf" styleClass="form-control datepicker"
 														style="padding-left:12px;"
 														value="#{utilisateurbean.contrat.dateFin}"
-														autocomplete="off">
+														autocomplete="off" required="true"
+														requiredMessage="Vous devez indiquer le date de fin">
 														<f:convertDateTime pattern="dd/MM/yyyy" />
 													</h:inputText>
 												</div>
+												<h:message for="dtf" style="color:red"></h:message>
 											</div>
+
 											<div class="form_group">
 												<h:outputText class="card-title" value="Type Contrat"></h:outputText>
 												<h:selectOneMenu
@@ -147,12 +206,13 @@
 									</div>
 									<!-- /.row -->
 								</div>
-
+						
 
 
 							</div>
 							<p:commandButton value="Submit" ajax="false"
 								action="#{utilisateurbean.upload}" />
+								</h:form>
 						</div>
 						<!-- /.tab-content -->
 						<div class="tab-pane" id="timeline">
@@ -161,6 +221,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<ul class="users-list clearfix">
+											
 												<ui:repeat var="user" value="#{utilisateurbean.lstEmploye}">
 													<li>
 														<div class="box-body box-profile">
@@ -182,13 +243,18 @@
 																	class="pull-right">#{user.contrat.dateFin}</a></li>
 															</ul>
 
-															<a href="#" class="btn btn-primary btn-block"><b>Profile</b></a>
+														<h:form>	 
+															<h:commandButton
+																action="#{utilisateurbean.bloqueruser(user)}"
+																class="btn btn-primary btn-block" value="Bloquer" />
 															<h:commandButton
 																action="#{utilisateurbean.goProfile(user)}"
 																class="btn btn-primary btn-block" value="Profile" />
+														</h:form>
 														</div>
 													</li>
 												</ui:repeat>
+												 
 											</ul>
 											<!-- /.users-list -->
 
@@ -201,11 +267,172 @@
 							</div>
 
 						</div>
+						<div class="tab-pane" id="activity2">
+						<h:form enctype="multipart/form-data">
+							<div class="card card-default">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<h:outputText class="card-title" value="Nom" />
+												<p:inputText id="nomm"
+													value="#{utilisateurbean.manager.nom}" class="form-control"
+													required="true"
+													requiredMessage="Vous devez spécifier le nom" />
+												<h:message for="nomm" style="color:red"></h:message>
+											</div>
+											<div class="form-group">
+												<h:outputText class="card-title" value="NCIN" />
+												<p:inputText id="cinm"
+													value="#{utilisateurbean.manager.cin}" class="form-control"
+													required="true"
+													requiredMessage="Vous devez spécifier le cin" />
+												<h:message for="cinm" style="color:red"></h:message>
+											</div>
+											<div class="form-group">
+												<h:outputText class="card-title" value="Adresse" />
+												<p:inputText id="adressem"
+													value="#{utilisateurbean.manager.adresse}" required="true"
+													class="form-control"
+													requiredMessage="Vous devez spécifier l'adresse" />
+												<h:message for="adressem" style="color:red"></h:message>
+											</div>
+											<h:outputText class="card-title" value="Num Telephone" />
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"><i
+														class="fa fa-phone"></i></span>
+												</div>
+												<p:inputText id="telm" type="text" class="form-control"
+													value="#{utilisateurbean.manager.tel}" required="true"
+													requiredMessage="Vous devez spécifier le num tel" />
+
+											</div>
+											<h:message for="telm" style="color:red"></h:message>
+
+											<div class="form-group">
+												<h:outputText class="card-title" value="Date debut" />
+												<div class="input-group">
+													<div class="input-group-prepend datepicker-icon"
+														style="cursor: pointer;">
+														<span class="input-group-text"><i
+															class="fa fa-calendar"></i></span>
+													</div>
+													<h:inputText id="dtdm" styleClass="form-control datepicker"
+														style="padding-left:12px;"
+														value="#{utilisateurbean.contrat.dateDebut}"
+														autocomplete="off" required="true"
+														requiredMessage="Vous devez indiquer le date de debut">
+														<f:convertDateTime pattern="dd/MM/yyyy" />
+													</h:inputText>
+												</div>
+												<h:message for="dtdm" style="color:red"></h:message>
+											</div>
+											<div class="form-group">
+												<h:outputText class="card-title" value="Salaire" />
+												<h:inputText id="slm"
+													value="#{utilisateurbean.contrat.salaire}"
+													class="form-control" required="true"
+													requiredMessage="Vous devez spécifier le salaire de base" />
+												<h:message for="slm" style="color:red"></h:message>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<h:outputText class="card-title" value="Prenom" />
+												<h:inputText id="prenomm"
+													value="#{utilisateurbean.manager.prenom}"
+													class="form-control" required="true"
+													requiredMessage="Vous devez spécifier le prenom" />
+												<h:message for="prenomm" style="color:red"></h:message>
+											</div>
+											<div class="form-group">
+												<h:outputText value="email" class="card-title" />
+												<h:inputText id="emailm"
+													value="#{utilisateurbean.manager.email}"
+													class="form-control" required="true"
+													requiredMessage="Vous devez spécifier l'email" />
+												<h:message for="emailm" style="color:red"></h:message>
+											</div>
+
+											<div class="form-group">
+												<h:outputText class="card-title" value="Sexe" />
+												<h:selectOneMenu value="#{utilisateurbean.manager.sexe}"
+													class="form-control">
+													<f:selectItem itemLabel="Slectionner le  sexe "
+														itemValue="" />
+													<f:selectItem itemLabel="H" itemValue="H" />
+													<f:selectItem itemLabel="F" itemValue="F" />
+												</h:selectOneMenu>
+
+											</div>
+
+											<div class="form-group">
+												<h:outputText value="Image" class="card-title" />
+												<div class="input-group">
+													<div class="custom-file">
+														<p:fileUpload id="imfm" value="#{utilisateurbean.file}"
+															mode="simple" skinSimple="true" class="custom-file-input"
+															required="true"
+															requiredMessage="Vous devez indiquer l'image " />
+														<label class="custom-file-label" for="exampleInputFile">Choose
+															file</label>
+													</div>
+
+												</div>
+												<h:message for="imf" style="color:red"></h:message>
+											</div>
+
+											<div class="form-group">
+												<h:outputText class="card-title" value="Date fin" />
+												<div class="input-group">
+													<div class="input-group-prepend datepicker-icon"
+														style="cursor: pointer;">
+														<span class="input-group-text"><i
+															class="fa fa-calendar"></i></span>
+													</div>
+													<h:inputText id="dtfm" styleClass="form-control datepicker"
+														style="padding-left:12px;"
+														value="#{utilisateurbean.contrat.dateFin}"
+														autocomplete="off" required="true"
+														requiredMessage="Vous devez indiquer le date de fin">
+														<f:convertDateTime pattern="dd/MM/yyyy" />
+													</h:inputText>
+												</div>
+												<h:message for="dtfm" style="color:red"></h:message>
+											</div>
+
+											<div class="form_group">
+												<h:outputText class="card-title" value="Type Contrat"></h:outputText>
+												<h:selectOneMenu
+													value="#{utilisateurbean.contrat.typeContrat}"
+													class="form-control">
+													<f:selectItem itemLabel="Slectionner Type  contrat "
+														itemValue="" />
+													<f:selectItem itemLabel="CDI" itemValue="SIVP" />
+													<f:selectItem itemLabel="CDI" itemValue="CDI" />
+													<f:selectItem itemLabel="CDD" itemValue="CDD" />
+													<f:selectItem itemLabel="CTT" itemValue="CTT" />
+													<f:selectItem itemLabel="CDP" itemValue="CDP" />
+												</h:selectOneMenu>
+											</div>
+
+										</div>
+								</div>
+								</div>
+								<div class="card-footer">
+								<p:commandButton value="Ajouter" ajax="false"
+								action="#{utilisateurbean.ajouterManager}" /></div>
+							</div>
+							</h:form>
+						</div>
+
 					</div>
 					<!-- /.card-body -->
 				</div>
 
 			</div>
-		</h:form>
+		
 	</ui:define>
 </ui:composition>

@@ -1,3 +1,4 @@
+
 package entity;
 
 import java.io.Serializable;
@@ -8,27 +9,13 @@ import javax.persistence.Embeddable;
 public class GoalByEmployeId implements Serializable{
 	private long employeId;
 	private int GoalId;
-	private int noteByEmp;
-	private int noteByMan;
-	public int getNoteByEmp() {
-		return noteByEmp;
-	}
-	public void setNoteByEmp(int noteByEmp) {
-		this.noteByEmp = noteByEmp;
-	}
-	public GoalByEmployeId(long employeId, int goalId, int noteByEmp, int noteByMan) {
+	
+	public GoalByEmployeId(long employeId, int goalId) {
 		super();
 		this.employeId = employeId;
 		GoalId = goalId;
-		this.noteByEmp = noteByEmp;
-		this.noteByMan = noteByMan;
 	}
-	public int getNoteByMan() {
-		return noteByMan;
-	}
-	public void setNoteByMan(int noteByMan) {
-		this.noteByMan = noteByMan;
-	}
+	
 	public long getEmployeId() {
 		return employeId;
 	}

@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+
+import entity.Employe;
 import entity.Utilisateur;
 import service.ServiceManager;
 
@@ -38,6 +41,7 @@ public class Loginbean implements Serializable {
 		}
 	}
 
+ 
 	public String getLogin() {
 		return login;
 	}
@@ -62,20 +66,45 @@ public class Loginbean implements Serializable {
 		this.password = password;
 	}
 
+	private boolean type;
+	public boolean isType() {
+		return type;
+	}
+
+
+	public void setType(boolean type) {
+		this.type = type;
+	}
+
+
 	public String Connecter() {
 
-		user = this.serviceManager.doLogin(login, password);
+		user = this.serviceManager.doLogin(login, this.serviceManager.MD5(password));
 		if (user != null) {
-			navigateto = "/page/Accueil?faces-redirect=true";
+			if(!user.isFirstLogin())
+				navigateto = "/page/FirstConnection?faces-redirect=true";
+			else
+				navigateto = "/page/Accueil?faces-redirect=true";
+			
+			if(user instanceof Employe)
+						 type=true;
+			else
+				type=false;
 		}
+						 
+		else
+			FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Bad Credentials"));
+		//<h:commandButton class="login100-form-btn" id="btn" value="CONTINUER" action="#{employeBean.doLogin()}" />
 		return navigateto;
 
 	}
 
 	public String doLogout() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "/Login?face-redirect=true";
+		return "../Login?face-redirect=true";
 
 	}
+	
+
 }
  

@@ -1,34 +1,43 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-public class Formation implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@Entity
+public class Formation implements Serializable{
 	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY )
-	private int id;
-	private Date startDate;
-	private Date endDate;
-	@ManyToOne
-	private Formation formation; 
-	@ManyToOne
-	private Employe employe;
-	public Formation(int id, Date startDate, Date endDate, Formation formation, Employe employe) {
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id ; 
+	private String decription ;
+	private Date dateformation;
+	private int nbrjour;
+	
+	
+	
+	@OneToMany(mappedBy = "formation", fetch=FetchType.EAGER)
+	private List<DemandeFormation> lstdemande=new ArrayList<>();
+	
+	
+	
+	
+	public Formation() {
 		super();
-		this.id = id;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.formation = formation;
-		this.employe = employe;
+	}
+	public Formation(String decription, Date dateformation, int nbrjour) {
+		super();
+		this.decription = decription;
+		this.dateformation = dateformation;
+		this.nbrjour = nbrjour;
 	}
 	public int getId() {
 		return id;
@@ -36,31 +45,33 @@ public class Formation implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getStartDate() {
-		return startDate;
+	public String getDecription() {
+		return decription;
 	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setDecription(String decription) {
+		this.decription = decription;
 	}
-	public Date getEndDate() {
-		return endDate;
+	public Date getDateformation() {
+		return dateformation;
 	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setDateformation(Date dateformation) {
+		this.dateformation = dateformation;
 	}
-	public Formation getFormation() {
-		return formation;
+	public int getNbrjour() {
+		return nbrjour;
 	}
-	public void setFormation(Formation formation) {
-		this.formation = formation;
+	public void setNbrjour(int nbrjour) {
+		this.nbrjour = nbrjour;
 	}
-	public Employe getEmploye() {
-		return employe;
+	public List<DemandeFormation> getLstdemande() {
+		return lstdemande;
 	}
-	public void setEmploye(Employe employe) {
-		this.employe = employe;
-	} 
-	
-	
-	
-}
+	public void setLstdemande(List<DemandeFormation> lstdemande) {
+		this.lstdemande = lstdemande;
+	}
+	@Override
+	public String toString() {
+		return "Formation [id=" + id + ", decription=" + decription + ", dateformation=" + dateformation + ", nbrjour="
+				+ nbrjour + "]";
+	}
+}//////

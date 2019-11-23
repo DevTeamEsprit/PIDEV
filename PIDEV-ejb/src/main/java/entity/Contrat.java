@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
  
  
 
@@ -33,6 +35,7 @@ public class Contrat implements Serializable{
 	private float salaire;
 	
 	@OneToOne(mappedBy="contrat")
+	@JsonManagedReference
 	private Utilisateur utilisatuer;
 
 	public Date getDateFin() {

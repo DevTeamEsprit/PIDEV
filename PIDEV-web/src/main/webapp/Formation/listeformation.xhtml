@@ -1,0 +1,78 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/templateNew.xhtml">
+	<ui:define name="nav">
+		<li class="nav-item"><a href="../page/Accueil.jsf"
+			class="nav-link "> <i class="nav-icon fa fa-th"></i>
+				<p>Accueil</p>
+		</a></li>
+		<li class="nav-item"><a href="../page/Employe.jsf"
+			class="nav-link"> <i class="nav-icon fa fa-th"></i>
+				<p>Gestion des employés</p>
+		</a></li>
+ 
+		<li class="nav-item has-treeview menu-open"><a href="#" class="nav-link active">
+				<i class="nav-icon fa fa-th"></i>
+				<p>Ajouter une formation
+				<i class="right fa fa-angle-left"></i>
+				</p>
+		</a>
+			<ul class="nav nav-treeview">
+				<li class="nav-item"><a href="../Formation/Formation.jsf"
+					class="nav-link"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>Ajouter une formation</p>
+				</a></li>
+				<li class="nav-item"><a href="../Formation/listeformation.jsf"
+					class="nav-link active"> <i class="fa fa-circle-o nav-icon"></i>
+						<p>lister les formations</p>
+				</a></li>
+
+			</ul>
+		</li>
+	</ui:define>
+	
+	<ui:define name="pageTitle">Gestion des formation</ui:define>
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-md-12">
+				<h:form role="form">
+					<div class="card card-primary">
+						<div class="card-hedear">Liste des formations</div>
+						<div class="card-body">
+
+							<ui:repeat value="#{formationBean.lstFormation}" var="entry">
+								<div class="card card-widget">
+									<div class="card-body">
+										<!-- post text -->
+										<p>Description de formation</p> 
+										<p>#{entry.decription}</p>
+										<p>Date :</p>
+										<h:outputText
+											id="date" converterMessage="#{i18n['converter-message']}"
+											value="#{entry.dateformation}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+										<br></br>
+										<h:commandLink type="button" class="btn btn-default btn-sm" action="#{formationBean.participe(entry)}">
+											<i class="far fa-thumbs-up"></i> Participer
+										</h:commandLink> 
+										<span class="float-right text-muted"> - #{entry.lstdemande.size()} 
+											  Participants</span>
+									</div>
+							 
+								</div>
+							</ui:repeat>
+						</div>
+
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
