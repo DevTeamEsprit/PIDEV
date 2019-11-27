@@ -18,6 +18,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Publication implements Serializable {
 
@@ -26,6 +31,8 @@ public class Publication implements Serializable {
 	private Long id;
 	private String description;
 	@Temporal(TemporalType.TIMESTAMP)
+	//@JsonIgnore
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date dateCreation;
 	
 	@ManyToOne 
@@ -34,6 +41,8 @@ public class Publication implements Serializable {
 	
 	
 	@OneToMany(mappedBy="pub" , cascade= {CascadeType.REMOVE} , fetch=FetchType.EAGER)
+	@JsonManagedReference(value="commentaire_pub")
+	//@JsonIgnore
 	private List<Commentaire> lstComm = new ArrayList<>();
 	
 	public Publication() {

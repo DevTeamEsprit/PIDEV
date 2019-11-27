@@ -19,4 +19,6 @@ public interface SkillServiceRemote {
 	public List<Skill> getSkillsByCategoryId(long categoryId);
 	public UserSkill getOrCreateUserSkill(long userId, long skillId);
 	public void updateUserSkill(UserSkill userSkill);
+	public Skill getSkillByName(String skillName);
+	public Skill getSkillById(long skillId);
 }

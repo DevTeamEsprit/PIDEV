@@ -29,7 +29,7 @@ public class TimesheetEmployeeBean {
 	private String endDateString = "";
 	private List<Ticket> tickets;
 	// change user id : simulation log in
-	private int currentUserConnected = 1;
+	private int currentUserConnected = 2;
 	private List<Ticket> ticketsemployee;
 	
 	private Ticket ticket;

@@ -19,11 +19,13 @@ import dto.PublicationCommentaireDto;
 import entity.Commentaire;
 import entity.Contrat;
 import entity.Employe;
+import entity.Manager;
 import entity.Message;
 import entity.Publication;
 import entity.Utilisateur;
 
 public class ServiceManager implements Serializable {
+	
 	@EJB
 	private PublicationService publicationService;
 	@EJB
@@ -39,9 +41,18 @@ public class ServiceManager implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext().redirect("../page/" + page);
 	}
 
+	public Publication getPubById(long id) {
+		
+		return this.publicationService.getUserPub(id);
+	}
+	
 	public void addUser(Employe user) {
 		this.utilisateurService.addUser(user);
 	}
+	
+	public void addManager(Manager user) {
+		this.utilisateurService.addUser(user);
+	}	
 
 	public List<Employe> listerEmploye() {
 		return this.utilisateurService.consulterEmploye();
@@ -95,6 +106,35 @@ public class ServiceManager implements Serializable {
 		}
 
 		return users;
+	}
+
+
+	public void deletePub(long idPub) {
+		this.publicationService.deletePublication(idPub);
+		
+	}
+	
+	public static String MD5(String password) 
+	{
+		  try {
+		        java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+		        byte[] array = md.digest(password.getBytes());
+		        StringBuffer sb = new StringBuffer();
+		        for (int i = 0; i < array.length; ++i) {
+		          sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+		       }
+		        return sb.toString();
+		    } catch (java.security.NoSuchAlgorithmException e) {
+		    }
+		    return password;
+	}
+	
+	public void updatpassword(Utilisateur user) {
+		this.utilisateurService.updatepass((Employe)user);
+	}
+	
+	public void updatePub(Publication p) {
+		this.publicationService.updatePublication(p);
 	}
 }
   

@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+
 
 @Entity
 public class Mission implements Serializable {
@@ -17,74 +19,94 @@ public class Mission implements Serializable {
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private int id;
 	private String localisation;
-	private int Idemp;
-	@Temporal(TemporalType.DATE)
+	private int idemp;
 	private Date date;
-	private int Duration;
+	private int duration;
 	private boolean stat;
-	private boolean resultat;
-	public Mission(int id, String localisation, int idemp, java.util.Date date, int duration, boolean stat,
-			boolean resultat) {
-		super();
-		this.id = id;
-		this.localisation = localisation;
-		Idemp = idemp;
-		date = date;
-		Duration = duration;
-		this.stat = stat;
-		this.resultat = resultat;
-	}
-	public Mission() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	@Enumerated(EnumType.STRING)
+	private resultatMission resultat;
+	
+	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getLocalisation() {
 		return localisation;
 	}
+
 	public void setLocalisation(String localisation) {
 		this.localisation = localisation;
 	}
+
 	public int getIdemp() {
-		return Idemp;
+		return idemp;
 	}
+
 	public void setIdemp(int idemp) {
-		Idemp = idemp;
+		this.idemp = idemp;
 	}
+
 	public Date getDate() {
 		return date;
 	}
+
 	public void setDate(Date date) {
-		date = date;
+		this.date = date;
 	}
+
 	public int getDuration() {
-		return Duration;
+		return duration;
 	}
+
 	public void setDuration(int duration) {
-		Duration = duration;
+		this.duration = duration;
 	}
+
 	public boolean isStat() {
 		return stat;
 	}
-	public void setStat(boolean Stat) {
-		stat = Stat;
+
+	public void setStat(boolean stat) {
+		this.stat = stat;
 	}
-	public boolean isResultat() {
+
+	public resultatMission getResultat() {
 		return resultat;
 	}
-	public void setResultat(boolean resultat) {
+
+	public void setResultat(resultatMission resultat) {
 		this.resultat = resultat;
 	}
-	@Override
-	public String toString() {
-		return "Mission [id=" + id + ", localisation=" + localisation + ", Idemp=" + Idemp + ", Date=" + date
-				+ ", Duration=" + Duration + ", stat=" + stat + ", resultat=" + resultat + "]";
+
+	
+
+	
+
+	public Mission() {
+		super();
 	}
+
+	public Mission(int id, String localisation, int idemp, Date date, int duration, boolean stat,
+			resultatMission resultat) {
+		super();
+		this.id = id;
+		this.localisation = localisation;
+		this.idemp = idemp;
+		this.date = date;
+		this.duration = duration;
+		this.stat = stat;
+		this.resultat = resultat;
+	}
+	
+	
+	
+	
 
 	
 	}

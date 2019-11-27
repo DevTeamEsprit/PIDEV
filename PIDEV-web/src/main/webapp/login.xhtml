@@ -23,7 +23,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<h:form class="login100-form validate-form">
+				<h:form class="login100-form validate-form" iid="form">
 					<span class="login100-form-title p-b-43">
 						Login to continue
 					</span>
@@ -59,8 +59,8 @@
 			
 
 					<div class="container-login100-form-btn">
-						<h:commandButton class="login100-form-btn" value="Login" action="#{loginbean.Connecter}"/>
-						 
+						<h:commandButton class="login100-form-btn" id="btn" value="Login" action="#{loginbean.Connecter}"/>
+						 <h:message for="btn"/>
 					</div>
 					
 				 

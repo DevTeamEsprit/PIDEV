@@ -1,23 +1,30 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"> 
-      <h:body>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      > 
+      <ui:composition template="/template/templateNew.xhtml">
+
+    	<ui:define name="content">
       <h2>List of your evaluations</h2>
+      <h:form>
+     
       <ol>
        <ui:repeat value="#{evaluationBeanEmploye.evaluationsheets}" var="item">
        <li>
-        <h:form>
         <h:commandButton value="#{item.evalsheetTitle}" action="#{evaluationBeanEmploye.showEvalSheet}">
             <f:setPropertyActionListener target="#{evaluationBeanEmploye.evalsheetid}" value="#{item.id}" />
             </h:commandButton>
-            </h:form>
+
       </li>
       <hr />
        </ui:repeat>
           </ol>
-     
-      </h:body>
-</html>
+      </h:form>
+      </ui:define>
+      </ui:composition>
+      </html>

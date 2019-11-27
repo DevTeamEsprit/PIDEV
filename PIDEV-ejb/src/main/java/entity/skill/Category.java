@@ -23,6 +23,11 @@ public class Category implements Serializable {
 	private List<Skill> skills;
 	
 	public Category() {}
+	public Category(String name,String description)
+	{
+		this.name = name;
+		this.description = description;
+	}
 	public Category(long id, String name, String description, List<Skill> skills) {
 		super();
 		this.id = id;
