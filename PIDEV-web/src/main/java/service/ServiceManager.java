@@ -108,6 +108,10 @@ public class ServiceManager implements Serializable {
 		return users;
 	}
 
+	public List<Commentaire> getComPuB(long idpub) {
+		
+		return this.publicationService.getComPub(idpub);
+	}
 
 	public void deletePub(long idPub) {
 		this.publicationService.deletePublication(idPub);

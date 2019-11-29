@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -31,6 +32,7 @@ public class Commentaire implements Serializable {
 	private String description;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date dateCreation;
 	
 	public Date getDateCreation() {
@@ -43,13 +45,14 @@ public class Commentaire implements Serializable {
 
 	@ManyToOne 
 	@JoinColumn(name="id_pub")
-	@JsonBackReference(value="commentaire_pub")
-	//@JsonIgnore
+	//@JsonBackReference(value="commentaire_pub")
+	@JsonIgnore
 	private Publication pub;
 	
 	@ManyToOne 
 	@JoinColumn(name="id_user")
-	//@JsonManagedReference(value="user_pub")
+	//@JsonBackReference(value="user_com")
+	//@JsonIgnore
 	private Utilisateur user;
 
 	
