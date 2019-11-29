@@ -28,7 +28,8 @@ public class TimesheetEmployeeBean {
 	private String startDateString = "";
 	private String endDateString = "";
 	private List<Ticket> tickets;
-
+	// change user id : simulation log in
+	private int currentUserConnected = 2;
 	private List<Ticket> ticketsemployee;
 	
 	private Ticket ticket;
@@ -38,7 +39,7 @@ public class TimesheetEmployeeBean {
 
 	@PostConstruct
 	public void init() {
-		setTickets(ticketServiceLocal.getTicketsByEmployee(1));
+		setTickets(ticketServiceLocal.getTicketsByEmployee(currentUserConnected));
 	}
 
 	public String goDetailsTicket(Ticket t) {

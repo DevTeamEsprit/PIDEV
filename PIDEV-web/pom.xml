@@ -46,10 +46,11 @@
             <version>4.3.10.Final</version>
         </dependency>
    		<dependency>
-    <groupId>org.primefaces</groupId>
-    <artifactId>primefaces</artifactId>
-    <version>7.0</version>
-</dependency>
+    		<groupId>org.primefaces</groupId>
+    		<artifactId>primefaces</artifactId>
+    		<version>7.0</version>
+		</dependency>
+		
 	   <!-- https://mvnrepository.com/artifact/org.wildfly/wildfly-ejb3 -->
 		<dependency>
 		    <groupId>org.wildfly</groupId>

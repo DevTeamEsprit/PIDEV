@@ -182,18 +182,18 @@
  
 					 
 						<li class="nav-item">
-						
+						<c:if test="#{loginbean.type eq false}">
 						<a href="../evaluation/evaluationsCenter.jsf"
 							class="nav-link"> <i class="nav-icon fa fa-th"></i>
 								<p>Evaluation</p>
 						</a>
-						<!--  </c:if>
-						<c:if test="">
+						  </c:if>
+						<c:if test="#{loginbean.type eq true}">
 						<a href="../evaluation/evaluationCenterEmployee.jsf"
 							class="nav-link"> <i class="nav-icon fa fa-th"></i>
 								<p>Evaluation</p>
 						</a>
-						</c:if>-->
+						</c:if>
 						
 						</li>
 						
