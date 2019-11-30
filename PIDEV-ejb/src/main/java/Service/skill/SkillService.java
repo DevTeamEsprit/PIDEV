@@ -71,7 +71,7 @@ public class SkillService implements SkillServiceRemote {
 
 	@Override
 	public List<Quiz> listQuizzes(Skill skill) {
-		TypedQuery<Quiz> query = em.createQuery("Select q from Quiz where q.skill=:skill", Quiz.class);
+		TypedQuery<Quiz> query = em.createQuery("Select q from Quiz q where q.skill=:skill", Quiz.class);
 		try {
 			return query.getResultList();
 		}
@@ -82,6 +82,8 @@ public class SkillService implements SkillServiceRemote {
 		return null;
 	}
 
+	
+	
 	@Override
 	public List<Skill> getSkillsByCategoryId(long categoryId) {
 		List<Skill> skills = em
@@ -90,6 +92,16 @@ public class SkillService implements SkillServiceRemote {
 				.setParameter("categoryId", categoryId).getResultList();
 
 		return skills;
+	}
+	
+	@Override
+	public List<Quiz> getQuizBySkillId(long skillId) {
+		List<Quiz> quizzes = em
+				.createQuery("SELECT Q FROM " + Quiz.class.getName() + " Q" + " WHERE Q.skill.id = :skillId",
+						Quiz.class)
+				.setParameter("skillId", skillId).getResultList();
+
+		return quizzes;
 	}
 
 	@Override

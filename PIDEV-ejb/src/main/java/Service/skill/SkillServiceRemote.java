@@ -21,4 +21,6 @@ public interface SkillServiceRemote {
 	public void updateUserSkill(UserSkill userSkill);
 	public Skill getSkillByName(String skillName);
 	public Skill getSkillById(long skillId);
+	public List<Quiz> getQuizBySkillId(long skillId);
+
 }

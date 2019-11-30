@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class QuizQuestion implements Serializable {
 	private Quiz quiz;
 	
 	
-	@OneToMany(mappedBy="question")
+	@OneToMany(mappedBy="question", fetch = FetchType.EAGER)
 	private List<QuestionResponse> responses;
 
 	public QuizQuestion() {}
@@ -60,9 +61,10 @@ public class QuizQuestion implements Serializable {
 	public void setResponses(List<QuestionResponse> responses) {
 		this.responses = responses;
 	}
+	/*
 	public Quiz getQuiz() {
 		return quiz;
-	}
+	}*/
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
 	}

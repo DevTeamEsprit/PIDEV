@@ -59,6 +59,21 @@ public class QuizService implements QuizServiceRemote {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<QuizQuestion> listQuestionsByQuizId(long quizId) {
+
+		TypedQuery<QuizQuestion> query = em.createQuery("SELECT Q FROM " + QuizQuestion.class.getName() + " Q WHERE Q.quiz.id = :quizId",
+				QuizQuestion.class).setParameter("quizId", quizId);
+		try {
+			return query.getResultList();
+		}
+
+		catch (Exception e) {
+			System.out.print("error");
+		}
+		return null;
+	}
 
 	@Override
 	public UserQuiz getOrCreateUserQuiz(long userId, long quizId) {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class Skill implements Serializable {
 	private String description;
 	@ManyToOne(cascade= {CascadeType.PERSIST})
 	private Category category;
-	@OneToMany(mappedBy="skill")
+	@OneToMany(mappedBy="skill", fetch = FetchType.EAGER)
 	private List<Quiz> quizzes;
 	
 	
@@ -90,9 +91,10 @@ public class Skill implements Serializable {
 		this.description = description;
 	}
 	
+	/*
 	public Category getCategory() {
 		return category;
-	}
+	}*/
 	public void setCategory(Category category) {
 		this.category = category;
 	}

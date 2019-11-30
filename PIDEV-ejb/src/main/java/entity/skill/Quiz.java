@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +32,7 @@ public class Quiz implements Serializable {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Skill skill;
 
-	@OneToMany(mappedBy = "quiz")
+	@OneToMany(mappedBy = "quiz", fetch = FetchType.EAGER)
 	private List<QuizQuestion> questions;
 
 	@Column(name = "required_min_level", columnDefinition = "int default 1")
@@ -65,10 +66,11 @@ public class Quiz implements Serializable {
 		this.description = description;
 	}
 
+	/*
 	public Skill getSkill() {
 		return skill;
 	}
-
+*/
 	public void setSkill(Skill skill) {
 		this.skill = skill;
 	}

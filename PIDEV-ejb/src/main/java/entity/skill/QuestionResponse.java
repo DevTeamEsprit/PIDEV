@@ -2,6 +2,7 @@ package entity.skill;
 
 import java.io.Serializable;
 
+import entity.skill.QuizQuestion;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,10 +63,12 @@ public class QuestionResponse implements Serializable {
 		this.content = content;
 	}
 
+	/*
 	public QuizQuestion getQuestion() {
 		return question;
 	}
-
+	 */
+	
 	public void setQuestion(QuizQuestion question) {
 		this.question = question;
 	}
