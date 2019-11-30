@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import entity.Commentaire;
 import entity.Employe;
 import entity.Manager;
 import entity.Publication;
@@ -78,4 +79,7 @@ public class PublicationService {
 		return null;    	
     }
  
+    public List<Commentaire> getComPub(long idpub){
+    	return (em.find(Publication.class,idpub)).getLstComm();
+    }
 }

@@ -44,23 +44,7 @@ public class TimesheetUpdateBean {
 	
 	public String doUpdateTicket() {
 		String navigateTo = "/Timesheet_Web/tickets?faces-redirect=true";
-		String updateUrl = "/Timesheet_Web/update?faces-redirect=true";
-
-		Date endDate = new Date();
-		Date startDate = new Date();
-		try {
-			// cast string to date
-			String pattern = "dd-MM-yyyy";
-			startDate=new SimpleDateFormat(pattern).parse(startDateString);  
-			endDate=new SimpleDateFormat(pattern).parse(endDateString);  
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			error = "Date invalide";
-			return updateUrl;
-		}
-		updateTicket.setStartDate(startDate);
-		updateTicket.setEndDate(endDate);	
+		String updateUrl = "/Timesheet_Web/update?faces-redirect=true";	
 		ticketServiceLocal.update(updateTicket);
 		error = "";
 		return navigateTo;

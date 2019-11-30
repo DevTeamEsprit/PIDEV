@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import entity.Employe;
 import entity.StatusTicket;
 import entity.Ticket;
 
@@ -16,6 +17,7 @@ public interface TicketServiceLocal {
 	Ticket getById(int id);
 	void update(Ticket t);
 	void delete(int id);
+
 	void addTicketToProject(int idTicket, int idProject);
 	void assignTicketToEmploye(int idTicket, int idEmploye);
 	void updateStatus(int idTicket,StatusTicket status);
@@ -24,7 +26,8 @@ public interface TicketServiceLocal {
 	List<Ticket> getTicketsByProjectByStaus(int idProject,StatusTicket status);
 	List<Ticket> getTicketsByEmployee(int idEmployee);
 	List<Ticket> getTicketsByEmployeeByStaus(int idEmployee, StatusTicket status);
-
+	List<Employe> getEmployes();
+	Employe findemployeebyId(int id);
 
 }
 

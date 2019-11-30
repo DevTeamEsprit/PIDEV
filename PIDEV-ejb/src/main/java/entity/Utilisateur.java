@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
  
 
@@ -45,13 +46,17 @@ public class Utilisateur implements Serializable {
 	@JsonIgnore
 	private String password;
 	@Temporal(TemporalType.DATE)
+	@JsonIgnore
 	private Date datNais;
+	@JsonIgnore
 	private boolean Actif;
 	@Column(columnDefinition = "MEDIUMTEXT")
 	//@JsonIgnore
 	private String image;
 	@Enumerated(EnumType.STRING)
+	@JsonIgnore
 	private Sexe sexe;
+	@JsonIgnore
 	private boolean firstLogin;
 
 	
@@ -95,7 +100,7 @@ public class Utilisateur implements Serializable {
 	private List<Publication> lstPub;
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
-	//@JsonBackReference(value="user_pub")
+	//@JsonManagedReference(value="user_com")
 	@JsonIgnore
 	private List<Commentaire> lstcom;
 

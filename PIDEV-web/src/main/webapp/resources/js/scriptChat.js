@@ -47,7 +47,7 @@ $(document).ready(function() {
 	}
 
 	$("#direct-chat-messages").on('scroll', function() {
-		scrolled = true;
+		scrolled = false;
 	});
 
 	getMessages();

@@ -16,6 +16,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import entity.Commentaire;
 import entity.Employe;
 import entity.Publication;
 import entity.Utilisateur;
@@ -32,12 +33,14 @@ public class employeResources {
  
 	}
 
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response consulterEmploy(){
 		return Response.status(Response.Status.CREATED).entity(this.serviceManager.listerEmploye()).build();
 	}
 	
+	// web service publication ajout+delete + lister + getpub
 	@GET
 	@Path("/publication")
 	@Produces(MediaType.APPLICATION_JSON)	
@@ -45,33 +48,24 @@ public class employeResources {
 		return Response.status(Response.Status.CREATED).entity(this.serviceManager.getPubs()).build();
 	}
 
+	
 	@GET
 	@Path("/publication/{id}")
 	@Produces(MediaType.APPLICATION_JSON)	
-	public Response getUserPub(@PathParam(value="id") long idPub ) {
+	public Response getPubById(@PathParam(value="id") long idPub ) {
 	
-		return Response.status(Response.Status.CREATED).entity(this.serviceManager.getPubById(idPub).getUser()).build();
+		return Response.status(Response.Status.CREATED).entity(this.serviceManager.getPubById(idPub)).build();
 	}
-	
-	
+		
 	@POST
 	@Path("/publication")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addPub(Publication p) {
+	
 		p.setDateCreation(new Date());
 		this.serviceManager.addPub(p);
-		return Response.status(Response.Status.CREATED).entity(this.serviceManager.getPubs()).build();
-	}
-	
-	
-	@PUT
-	@Path("/publication")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)	
-	public Response updatePub(Publication p) {
-		this.serviceManager.updatePub(p);
-		return Response.status(Response.Status.OK).entity(this.serviceManager.getPubs()).build();
+		return Response.status(Response.Status.CREATED).entity("ajouter avec succée").build();
 	}
 
 	@DELETE
@@ -81,15 +75,47 @@ public class employeResources {
 		this.serviceManager.deletePub(idPub);
 		return Response.status(Response.Status.OK).entity(this.serviceManager.getPubs()).build();
 	}
+	
+	/*
+	@PUT
+	@Path("/publication")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)	
+	public Response updatePub(Publication p) {
+		this.serviceManager.updatePub(p);
+		return Response.status(Response.Status.OK).entity("modifier avec succée").build();
+	}*/
 
 
+	/*
+	@GET
+	@Path("/publication/commentaire/{id}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public Response getlstCom(@PathParam(value="id") long idpub ) {
+	 
+		return Response.status(Response.Status.OK).entity(this.serviceManager.getComPuB(idpub)).build();
+	}
+	*/
+	
+	@POST
+	@Path("/publication/commentaire/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPubCom(Commentaire c,@PathParam(value="id") long idpub) {
+		c.setDateCreation(new Date());
+		c.setPub(this.serviceManager.getPubById(idpub));
+		this.serviceManager.addCom(c);
+		return Response.status(Response.Status.CREATED).entity("ajouter avec succée").build();
+	}
+	
 	@DELETE
 	@Path("/publication/commentaire/{id}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public Response deleteCom(@PathParam(value="id") long idCom ) {
 		this.serviceManager.deleteCom(idCom);
-		return Response.status(Response.Status.OK).entity(this.serviceManager.getPubs()).build();
+		return Response.status(Response.Status.OK).entity("supprimer avec succée").build();
 	}
+	
 	
 	@GET
 	@Path("/login")

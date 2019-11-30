@@ -31,17 +31,17 @@ public class Publication implements Serializable {
 	private Long id;
 	private String description;
 	@Temporal(TemporalType.TIMESTAMP)
-	//@JsonIgnore
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date dateCreation;
 	
 	@ManyToOne 
 	@JoinColumn(name="id_user")
+	//@JsonIgnore
 	private Utilisateur user;
 	
 	
 	@OneToMany(mappedBy="pub" , cascade= {CascadeType.REMOVE} , fetch=FetchType.EAGER)
-	@JsonManagedReference(value="commentaire_pub")
+	//@JsonManagedReference(value="commentaire_pub")
 	//@JsonIgnore
 	private List<Commentaire> lstComm = new ArrayList<>();
 	
@@ -54,7 +54,7 @@ public class Publication implements Serializable {
 		return lstComm;
 	}
 
-
+ 
 	public void setLstComm(List<Commentaire> lstComm) {
 		this.lstComm = lstComm;
 	}

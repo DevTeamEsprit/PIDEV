@@ -33,6 +33,11 @@ public class TicketService implements TicketServiceRemote, TicketServiceLocal {
 	public void update(Ticket t) {
 		em.merge(t);
 	}
+
+	@Override
+	public Employe findemployeebyId(int id) {		
+		return em.find(Employe.class, (long) id);
+	}
 	
 	@Override
 	public void delete(int id) {		
@@ -92,6 +97,12 @@ public class TicketService implements TicketServiceRemote, TicketServiceLocal {
 	@Override
 	public List<Ticket> getTicketsByEmployeeByStaus(int idEmployee, StatusTicket status) {
 		return em.createQuery("from Ticket t where t.employe.id="+idEmployee+" and t.status='"+status.toString()+"'", Ticket.class).getResultList();
+	}
+
+	@Override
+	public List<Employe> getEmployes() {
+		return em.createQuery("from Employe", Employe.class).getResultList();
+
 	}
 	
 	
