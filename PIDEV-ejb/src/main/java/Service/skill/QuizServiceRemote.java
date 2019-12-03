@@ -23,6 +23,7 @@ public interface QuizServiceRemote {
 	public Quiz getQuizOfSkillWithLevel(long skillId, int quizLevel);
 	void updateUserQuiz(UserQuiz userQuiz);
 	public List<QuizQuestion> listQuestionsByQuizId(long quizId);
+	public void updateUserQuizQuestionIndex(long userQuizId, int newIndex);
 	
 	public Map<QuizQuestion, List<UserQuizResponse>> getUserQuizQuestionResponseMap(long userId, long quizId);
 	

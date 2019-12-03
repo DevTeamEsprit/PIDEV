@@ -97,7 +97,7 @@ public class QuizBean {
 
 		UserSkill userSkill = skillService.getOrCreateUserSkill(user.getId(), selectedSkillId);
 		startQuizMsg = "Your current level is: " + userSkill.getLevel();
-
+																			
 		refreshQuiz(abe);
 	}
 

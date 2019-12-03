@@ -25,11 +25,11 @@ public class Employe extends Utilisateur implements Serializable {
 		super(nom, prenom, cin, adresse, tel, email, password, datNais);
 		
 	}
-
+/*
 	public Manager getManager() {
 		return manager;
 	}
-
+*/
 	public void setManager(Manager manager) {
 		this.manager = manager;
 	}

@@ -147,6 +147,23 @@ public class QuizService implements QuizServiceRemote {
 	}
 	
 	@Override
+	public void updateUserQuizQuestionIndex(long userQuizId, int newIndex)
+	{
+		UserQuiz userQuiz = em.find(UserQuiz.class, userQuizId);
+	
+		if(userQuiz == null)
+		{
+			System.out.println("Failed to find a user quiz during question index update.");
+			return;
+		}
+		
+		userQuiz.setCurrentQuestionIndex(newIndex);
+		updateUserQuiz(userQuiz);
+		System.out.println("Success question index update.");
+
+	}
+	
+	@Override
 	public Map<QuizQuestion, List<UserQuizResponse>> getUserQuizQuestionResponseMap(long userId, long quizId)
 	{
 		Map<QuizQuestion, List<UserQuizResponse>> map = new HashMap<QuizQuestion, List<UserQuizResponse>>();

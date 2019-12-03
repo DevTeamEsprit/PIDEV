@@ -46,6 +46,19 @@ public class QuestionService  implements QuestionServiceRemote{
 		}
 		return null;
 	} 
+	@Override
+	public List<QuestionResponse> listResponsesByQuestionId(int questionId) {
+		TypedQuery<QuestionResponse> query = em.createQuery("SELECT R FROM " + QuestionResponse.class.getName() + " R WHERE R.question.id = :questionId", QuestionResponse.class)
+				.setParameter("questionId", questionId);
+		try {
+			return query.getResultList();
+		}
+
+		catch (Exception e) {
+			System.out.print("error");
+		}
+		return null;
+	} 
 	
 	@Override
 	public UserQuizResponse getOrCreateUserQuestionResponse(long userId, long responseId)

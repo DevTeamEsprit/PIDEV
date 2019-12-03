@@ -3,11 +3,14 @@ package entity.skill;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import entity.Utilisateur;
 
@@ -22,7 +25,7 @@ public class UserSkill implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = true, updatable = true)
 	private Utilisateur user;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "skill_id", referencedColumnName = "id", insertable = true, updatable = true)
 	private Skill skill;
 	private int level;
@@ -54,10 +57,11 @@ public class UserSkill implements Serializable {
 		this.id = id;
 	}
 
+	/*
 	public Utilisateur getUser() {
 		return user;
 	}
-
+*/
 	public void setUser(Utilisateur user) {
 		this.user = user;
 	}

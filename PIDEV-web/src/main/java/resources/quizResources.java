@@ -12,10 +12,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import Service.skill.CategoryService;
+import Service.skill.QuestionService;
 import Service.skill.QuizService;
 import Service.skill.SkillService;
 import entity.skill.Quiz;
 import entity.skill.Skill;
+import entity.skill.UserQuizResponse;
 
 @Path("gestionQuiz")
 @RequestScoped
@@ -27,6 +29,8 @@ public class quizResources {
 	SkillService skillService;
 	@EJB
 	QuizService quizService;
+	@EJB
+	QuestionService questionService;
 
 	@GET
 	@Path("category")
@@ -67,5 +71,59 @@ public class quizResources {
 		return Response.status(Response.Status.OK).entity(this.quizService.getOrCreateUserQuiz(userId, quizId)).build();
 		
 	}
+	
+	@GET
+	@Path("responses/{questionId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getResponsesByQuestionId( @PathParam(value="questionId") int questionId) {
+		
+		return Response.status(Response.Status.OK).entity(this.questionService.listResponsesByQuestionId(questionId)).build();
+		
+	}
+	
+	@GET
+	@Path("userSkill/{skillId}/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrCreateUserSkill( @PathParam(value="userId") long userId, @PathParam(value = "skillId") long skillId) {
+		
+		return Response.status(Response.Status.OK).entity(this.skillService.getOrCreateUserSkill(skillId, userId)).build();
+		
+	}
+	
+	@GET
+	@Path("quizBySkillAndLevel/{skillId}/{level}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getQuizOfSkillWithLevel( @PathParam(value="level") int level, @PathParam(value = "skillId") long skillId)
+	{
+		return Response.status(Response.Status.OK).entity(this.quizService.getQuizOfSkillWithLevel(skillId, level)).build();
+	}
 
+	@GET
+	@Path("updateResponse/{userId}/{responseId}/{check}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateUserQuestionResponseCheck(@PathParam(value="userId") long userId, @PathParam(value="responseId") long responseId, @PathParam(value = "check") boolean check)
+	{
+		UserQuizResponse response = this.questionService.getOrCreateUserQuestionResponse(userId, responseId);
+		
+		if(response == null)
+			return Response.status(Response.Status.NOT_FOUND).entity("Not found... check response id.").build();
+		
+		response.setIsChecked(check);
+		
+		this.questionService.updateUserQuizResponse(response);
+		
+		return Response.status(Response.Status.OK).entity("Update done...").build();
+	}
+	
+	@GET
+	@Path("updateQuestionIndex/{uqId}/{index}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateUserQuizQuestionIndex(@PathParam(value="index") int newIndex, @PathParam(value="userQuizId") long uqId)
+	{
+		quizService.updateUserQuizQuestionIndex(uqId, newIndex);
+		return Response.status(Response.Status.OK).entity("Update done...").build();
+	}
+	
+	
+	
 }
