@@ -46,6 +46,15 @@ public class QuestionService  implements QuestionServiceRemote{
 		}
 		return null;
 	} 
+	
+	
+	@Override
+	public QuizQuestion getQuestionById(int questionId)
+	{
+		return em.find(QuizQuestion.class, questionId);
+		
+	}
+	
 	@Override
 	public List<QuestionResponse> listResponsesByQuestionId(int questionId) {
 		TypedQuery<QuestionResponse> query = em.createQuery("SELECT R FROM " + QuestionResponse.class.getName() + " R WHERE R.question.id = :questionId", QuestionResponse.class)
