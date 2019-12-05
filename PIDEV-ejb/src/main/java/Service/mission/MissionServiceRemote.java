@@ -6,6 +6,7 @@ import javax.ejb.Remote;
 
 import entity.Mission;
 import entity.Utilisateur;
+import entity.resultatMission;
 
 @Remote
 public interface MissionServiceRemote {
@@ -15,7 +16,12 @@ public interface MissionServiceRemote {
 	void update(Mission M);
 	void delete(int id);
 	List<Mission> showEmpMission(int id);
-	List<Mission> search(String s);
+	List<Mission> search(resultatMission val);
     int updatestat(int id,Mission M);
+    void updateAcce(int id);
+    void updateFail(int id);
+	void updateSuc(int id);
+
+
 }
 

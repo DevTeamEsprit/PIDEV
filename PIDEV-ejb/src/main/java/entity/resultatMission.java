@@ -2,5 +2,5 @@ package entity;
 
 public enum resultatMission {
 
-		WAITING,PRGRESSE,FAIL,SUCSCESS;
+	WAITING,PRGRESSE,FAIL,SUCSCESS;
 }

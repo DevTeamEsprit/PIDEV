@@ -84,10 +84,6 @@ public class Mission implements Serializable {
 		this.resultat = resultat;
 	}
 
-	
-
-	
-
 	public Mission() {
 		super();
 	}
@@ -102,6 +98,14 @@ public class Mission implements Serializable {
 		this.duration = duration;
 		this.stat = stat;
 		this.resultat = resultat;
+	}
+
+	public Mission(int id, String localisation, Date date, int duration) {
+		super();
+		this.id = id;
+		this.localisation = localisation;
+		this.date = date;
+		this.duration = duration;
 	}
 	
 	

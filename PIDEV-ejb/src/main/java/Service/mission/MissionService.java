@@ -5,12 +5,9 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
-import Service.UtilisateurService;
-import entity.Employe;
 import entity.Mission;
-import entity.Utilisateur;
+import entity.resultatMission;
 
 @Stateless
 public class MissionService implements MissionServiceRemote, MissionServiceLocal {
@@ -49,29 +46,39 @@ public class MissionService implements MissionServiceRemote, MissionServiceLocal
 
 	@Override
 	public List<Mission> showEmpMission(int id) {
-TypedQuery<Mission> query = em.createQuery("select m from Mission m where m.idemp='id' ", Mission.class);
-		
-		try {
-			return query.getResultList();
-			}catch (Exception e) {
-				System.err.println(e.getMessage());
-			}		return null;
-	}
+		List<Mission> emp = em.createQuery("select m from Mission m where m.idemp="+id+"",Mission.class).getResultList();
+		return emp;	}
 
 	@Override
 	public int updatestat(int id,Mission e) {
 		return em.createQuery("update Mission u set u.location='"+e.getLocalisation()+"' , u.duration='"+e.getDuration()+"' where u.id="+id).executeUpdate();	
 	}
-
+	
 	@Override
-	public List<Mission> search(String s) {
-TypedQuery<Mission> query = em.createQuery("select m from Mission m where m.idemp=:id ", Mission.class);
-		
-		try {
-			return query.getResultList();
-			}catch (Exception e) {
-				System.err.println(e.getMessage());
-			}		return null;
+	public List<Mission> search(resultatMission val) {
+		List<Mission> emp = em.createQuery("select m from Mission m where m.resultat LIKE :custResultat ",Mission.class).setParameter("custResultat", val).getResultList();
+		return emp;	}
+	
+	
+	
+	@Override
+	public void updateAcce(int id) {
+		Mission m = em.find(Mission.class, id);
+		m.setResultat(resultatMission.PRGRESSE);
+		em.merge(m);
+	}
+	@Override
+	public void updateFail(int id) {
+		Mission m = em.find(Mission.class, id);
+		m.setResultat(resultatMission.FAIL);
+		em.merge(m);
+	}
+	
+	public void updateSuc(int id) {
+		Mission m = em.find(Mission.class, id);
+		m.setResultat(resultatMission.SUCSCESS);
+		em.merge(m);
+	}
 	}
 
 	
@@ -81,5 +88,5 @@ TypedQuery<Mission> query = em.createQuery("select m from Mission m where m.idem
 	
 
 
-}
+
 

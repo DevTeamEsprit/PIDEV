@@ -1,3 +1,4 @@
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -5,10 +6,10 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:a4j="http://richfaces.org/a4j" template="/template/index.xhtml">
+	xmlns:a4j="http://richfaces.org/a4j" template="/template/templateNew.xhtml">
 	<ui:param name="page_name" value="index" />
 	
-	<ui:define name="content2">
+	<ui:define name="content">
 	<h:form styleClass="form">
 			<div style="width : 60%">
 				<div class="form-group">
@@ -40,14 +41,67 @@
 				<h:commandButton styleClass="btn btn-success"
 					action="#{missionBean.addms()}" value="Add Mission" />
 			</div>
+			
 <br></br>
 				<br></br>
 		</h:form>
 
-		<h3>Liste des Mission</h3>
+		<h3>ALL MISSIONS</h3>
 
 		<h:form>
 			<h:dataTable value="#{missionBean.missions}" var="ms"
+				styleClass="table">
+				<h:column>
+					<f:facet name="header">ID</f:facet>
+					<h:outputText value="#{ms.id}" />
+
+				</h:column>
+				<h:column>
+					<f:facet name="header"> ID.employe</f:facet>
+					<h:outputText value="#{ms.idemp}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">localisation</f:facet>
+					<h:outputText value="#{ms.localisation}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{ms.resultat}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">StartDate</f:facet>
+					<h:outputText value="#{ms.date}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Duration(in days)</f:facet>
+					<h:outputText value="#{ms.duration}" />
+				</h:column>
+
+<!-- 				<h:column> -->
+<!-- 					<f:facet name="header">Action</f:facet> -->
+<!-- 					<h:commandButton styleClass="btn btn-danger" -->
+<!-- 						action="#{missionBean.doDeletM(ms.id)}" -->
+<!-- 						value="Delete Mission" /> -->
+<!-- 					<h:commandButton styleClass="btn btn-info" -->
+<!-- 						action="#{missionBean.doUpdateM(ms)}" -->
+<!-- 						value="Update Mission" /> -->
+<!-- 					<h:commandButton styleClass="btn btn-primary" -->
+<!-- 						action="#{timesheetDetailsBean.goDetailsTicket(mission)}" -->
+<!-- 						value="Details Mission" /> -->
+
+<!-- 				</h:column> -->
+			</h:dataTable>
+
+		</h:form>
+		
+		
+<h3>WAITING MISSIONS</h3>
+
+		<h:form>
+			<h:dataTable value="#{missionBean.missions3}" var="ms"
 				styleClass="table">
 				<h:column>
 					<f:facet name="header">ID</f:facet>
@@ -82,19 +136,16 @@
 					<f:facet name="header">Action</f:facet>
 					<h:commandButton styleClass="btn btn-danger"
 						action="#{missionBean.doDeletM(ms.id)}"
-						value="Delete Ticket" />
+						value="Refuse Mission" />
 					<h:commandButton styleClass="btn btn-info"
-						action="#{timesheetUpdateBean.goUpdateTicket(mission)}"
-						value="Update Ticket" />
-					<h:commandButton styleClass="btn btn-primary"
-						action="#{timesheetDetailsBean.goDetailsTicket(mission)}"
-						value="Details Ticket" />
+						action="#{missionBean.doAcc(ms.id)}"
+						value="Accept Mission" />
+					
 
 				</h:column>
 			</h:dataTable>
 
 		</h:form>
-
 	</ui:define>
 
 </ui:composition>
